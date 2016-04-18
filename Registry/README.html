@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Registry class - Access to the Windows registry</title>
+<style>
+h1, h2
+   {
+   	text-decoration		:  underline ;
+    }
+    
+.level1
+   {
+   	margin-left		:  32px ;
+    }
+    
+.level2
+   {
+   	margin-left		:  32px ;
+    }
+    
+.function
+   {
+   	margin			:  0px ;
+   	padding			:  3px 6px ;
+   	border			:  1px solid black ;
+   	font-family		:  "Courier New", "Lucida Console" ;
+   	font-weight		:  bold ;
+   	display			:  inline-block ;
+   	margin-bottom		:  8px ;
+   	font-size		:  12px ;
+   	color			:  #0000FF ;
+    }
+    
+.code
+   {
+   	padding			:  3px 6px ;
+   	margin-left		:  32px ;
+   	margin-top		:  8px ;
+   	border			:  1px solid #808080 ;
+   	font-family		:  "Courier New", "Lucida Console" ;
+   	font-weight		:  bold ;
+   	margin-bottom		:  8px ;
+   	font-size		:  11px ;
+    }
+</style>
+</head>
+<body>
+
+	<h1>INTRODUCTION</h1>
+
+	<div class="level1">
+		The Registry class provides easy access to the Windows registry. You can create, update or delete registry values,
+		as well as create or delete registry keys.<br />
+		<br />
+		Most of the Registry functions accept as their first parameter a registry root key, which can be one of the following :
+		<ul>
+			<li>Registry::HKEY_CLASSES_ROOT (or HKCR)</li>
+			<li>Registry::HKEY_CURRENT_USER (or HKCU)</li>
+			<li>Registry::HKEY_LOCAL_MACHINE (or HKLM)</li>
+			<li>Registry::HKEY_USERS</li>
+			<li>Registry::HKEY_PERFORMANCE_DATA</li>
+			<li>Registry::HKEY_PERFORMANCE_TEXT</li>
+			<li>Registry::HKEY_PERFORMANCE_NLSTEXT</li>
+			<li>Registry::HKEY_CURRENT_CONFIG (or HKCC)</li>
+			<li>Registry::HKEY_DYN_DATA</li>
+		</ul>
+
+		No means are currently provided to retrieve a handle from any other existing registry key.<br />
+		<br />
+		Almost all methods use the StdRegProv WMI interface, which assumes that you already know the type of the underlying registry
+		values you are manipulating.<br />
+		If you want a little bit more freedom when reading or updating registry values, use the <code>GetValue()</code> / <code>SetValue()</code> methods,
+		which do not require you to specify an explicit value type. However, the number of available value types is restricted when compared to
+		the Registry WMI interface.<br />
+		<br />
+
+		Registry keys do not include the root key when calling the Registry class methods, since it is specified as a separate parameter.<br />
+		Both slashes and backslashes can be used ; thus, the key <code>'TestKey/subkey'</code> is the same as <code>'TestKey\subkey'</code>.<br />
+		<br />
+		Regarding key paths, some provisions have been made to perform automatic inline substitutions. The origin of this came from the day I tried
+		to retrieve Visual Studio settings for some reason ; it appeared that those settings, on 64-bit platforms, were only accessible from a subkey
+		named <b>Wow6432Node</b>, and not from the classic <code>HKLM/Microsoft/Visual Studio/*</code> registry key, where access rights were refused.<br />
+		<br />
+		To handle such cases, you can specify the <code>{OsArchitecture}</code> keyword (enclosed in curly braces), and it will be replaced by the
+		appropriate subkey name. For example :<br />
+
+		<div class="code">Software/{OsArchitecture}/SomeSoftware</div>
+
+		will give, on 64-bits platforms :<br />
+
+		<div class="code">Software/Wow6432Node/SomeSoftware</div>
+
+		and, on 32-bits platforms :
+
+		<div class="code">Software/SomeSoftware</div>
+
+		Note that the extra slashes are removed.<br />
+		<br />
+		After calling any registry access method, the <code>GetLastError()</code> method can be called to retrieve the Windows error codeof the last
+		API result. Zero means everything is ok.
+	</div>
+
+	<h1>METHODS</h1>
+
+	<div class="level1">
+		<h2>Creation/deletion</h2>
+
+		<div class="level2">
+			<div class="function">CreateKey  ( $root, $keypath )</div><br />
+
+			Creates a registry key.<br />
+			<b>$root</b> is one of the <code>Registry::HKEY_*</code> constants.<br />
+			<b>$keypath</b> is the key to be created. It can include as many subkeys as you want, since Windows will recursively
+			create them if they do not exist.<br />
+			<br />
+		</div>	
+
+		<div class="level2">
+			<div class="function">DeleteKey  ( $root, $keypath )</div><br />
+
+			Deletes a registry key.<br />
+			<b>$root</b> is one of the <code>Registry::HKEY_*</code> constants.<br />
+			<b>$keypath</b> is the key to be deleted.<br />
+			<br />
+			The key won't be deleted if it contains subkeys or values. Note that, for security reasons, I chosed not to implement
+			a recursive delete, although it would be really simple.<br />
+			<br />
+		</div>	
+
+		<div class="level2">
+			<div class="function">DeleteValue  ( $root, $keypath, $key_value )</div><br />
+
+			Deletes the specified registry value.<br />
+			<br />
+		</div>	
+
+	</div>
+
+	<div class="level1">
+		<h2>Setting key values</h2>
+
+		<div class="level2">
+			<div class="function">SetBinaryValue ( $root, $keypath, $value_name, $value )</div><br />
+
+			Creates or updates the specified binary value <b>$value_name</b>.<br />
+			<b>$value</b> is a string that can hold any arbitrary data.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">SetBinaryValueFromHexString ( $root, $keypath, $value_name, $value )</div><br />
+
+			Creates or updates the specified binary value <b>$value_name</b>.<br />
+			<code>SetBinaryValueFromHexString()</code> is similar to <code>SetBinaryValue()</code>, except that the 
+			<b>$value</b> parameter must be a string of hexadecimal digits.<br />
+			If the supplied string has an odd number of hexadecimal digits, the last digit will be used for the high nibble of the last byte.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">SetDWORDValue ( $root, $keypath, $value_name, $value )</div><br />
+
+			Creates or updates the specified DWORD value <b>$value_name</b>.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">SetExpandedStringValue ( $root, $keypath, $value_name, $value )</div><br />
+
+			Creates or updates the specified "expand" string value <b>$value_name</b>.<br />
+			A registry value of type REG_EXPAND_SZ is like a REG_SZ one, except that references to environment variables
+			(such as %WINDIR%) will be expanded when the value is retrieved.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">SetMultiStringValue ( $root, $keypath, $value_name, $values )</div><br />
+
+			Creates or updates the specified multi-string value <b>$value_name</b>.<br />
+			The <b>$values</b> parameter can be either an array of strings or a single string value.<br />
+			Multi-string values are returned as array of strings when retrieved from the registry.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">SetQWORDValue ( $root, $keypath, $value_name, $value )</div><br />
+
+			Creates or updates the specified QWORD value <b>$value_name</b>.<br />
+			Note that values greater than PHP_INT_MAX will be converted to doubles.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">SetStringValue ( $root, $keypath, $value_name, $value )</div><br />
+
+			Creates or updates the specified string value <b>$value_name</b>.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">SetValue ( $root, $keypath, $value_name, $value, $value_type )</div><br />
+
+			Creates or updates the specified value <b>$value_name</b>. This method uses the WShell object.<br />
+			The <b>$value_type</b> parameter can be one of the <code>REG_SZ, REG_EXPAND_SZ, REG_DWORD</code> or
+			<code>REG_BINARY</code> constants (other registry value types are not supported).<br />
+			Note that the <code>REG_BINARY</code> type only supports one DWORD value.<br />
+			<br />
+		</div>
+
+	</div>
+
+	<div class="level1">
+		<h2>Retrieving key values</h2>
+
+		<div class="level2">
+			<div class="function">GetBinaryValue ( $root, $keypath, $value_name )</div><br />
+
+			Retrieves the specified binary registry value, as a string of hexadecimal digits.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">GetDWORDValue ( $root, $keypath, $value_name )</div><br />
+
+			Retrieves the specified DWORD registry value, as an integer value.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">GetExpandedStringValue ( $root, $keypath, $value_name )</div><br />
+
+			Retrieves the specified string value, expanding environment variable references.<br />
+			(for example, a value of '%WINDIR\Something' will expand to 'C:\Windows\Something').<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">GetMultiStringValue ( $root, $keypath, $value_name )</div><br />
+
+			Retrieves the specified multi-string registry value, as an array of strings.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">GetQWORDValue ( $root, $keypath, $value_name )</div><br />
+
+			Retrieves the specified QWORD registry value, as an integer value on true 64-bit implementations, or
+			as a double, on Windows (as of PHP 5.6).<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">GetStringValue ( $root, $keypath, $value_name )</div><br />
+
+			Retrieves the specified string registry value.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">GetValue ( $root, $keypath, $value_name )</div><br />
+
+			Retrieves the specified registry value.<br />
+			Only the <code>REG_SZ, REG_EXPAND_SZ, REG_DWORD</code> or <code>REG_BINARY</code> registry value types are
+			supported. <br />
+			<br />
+		</div>
+	</div>
+
+	<div class="level1">
+		<h2>Enumerating keys and values</h2>
+
+		<div class="level2">
+			<div class="function">EnumKeys  ( $root, $keypath )</div><br />
+
+			Retrieves the list of all subkeys in <b>$keypath</b> and returns them as an array of strings.<br />
+			If <b>$keypath</b> is null or unspecified, the keys that are directly under <b>$root</b> will be returned.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">EnumValues  ( $root, $keypath, $value_names_only = true )</div><br />
+
+			Retrieves the list of all value names in <b>$keypath</b> and returns them as an array of strings.<br />
+			If the <b>$value_names_only</b> parameter is false, the returned value will be an associative array,
+			whose keys are the value names and whose elements are the value types (<code>REG_*</code> constants).<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">EnumValuesEx  ( $root, $keypath )</div><br />
+
+			Retrieves the list of all values in <b>$keypath</b> and returns an array of RegistryValue objects.<br />
+			<br />
+		</div>
+	</div>
+
+
+	<div class="level1">
+		<h2>Miscellaneous methods</h2>
+
+		<div class="level2">
+			<div class="function">GetHKConstant ( $constant_value )</div><br />
+
+			Returns the integer <code>HKEY_*</code> constant to the specified <b>$constant_value</b> string value.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">GetOsArchitecture ( )</div><br />
+
+			Returns the OS architecture as an integer : 32 for 32-bit platforms, 64 for 64-bits platforms.<br />
+			<br />
+		</div>
+
+		<div class="level2">
+			<div class="function">GetLastError ( )</div><br />
+
+			Retrieves the last error returned by one of the registry access methods.<br />
+			<br />
+		</div>
+
+	</div>
+</body>
+</html>

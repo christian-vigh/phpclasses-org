@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+</head>
+<body>
+	<div>
+		<div style="float: right; padding-left: 8px; padding-bottom: 8px; text-align: center">
+			<img itemprop="image" class="photo" src="http://files.phpclasses.org/picture/user/676432.jpg" width="90" height="117" alt="Picture of Christian Vigh" title="Picture of Christian Vigh"><br />
+			By <a rel="author" href="/browse/author/676432.html">Christian Vigh</a>
+			<img align="middle" width="18" height="20" src="http://files.phpclasses.org/graphics/fr.gif" alt="France" title="France"><br>
+			<br>
+			<a rel="nofollow" href="http://www.christian-vigh.net/" target="_blank">christian-vigh.net</a><br>
+			<br>
+			<tt>&lt;<a href="http://www.phpclasses.org/contact/package/9336/" target="_blank">email contact</a>&gt;</tt></div>
+		<div itemprop="articleBody">
+			<h2>Contents</h2>
+			<h3>Introduction</h3>
+			<h3>The Beginning Problem</h3>
+			<h3>The Concept of Meta Regular Expression Matching</h3>
+			<h3>The PHP Advanced Regex package</h3>
+			<h3>Conclusion</h3>
+			<p style="text-align: center;">
+				<img src="http://files.phpclasses.org/files/blog/package/9336/file/Email-regex.png" alt="Email Regex from https://commons.wikimedia.org/wiki/File:Email-regex.svg  Creative Commons Attribution-Share Alike 2.5 Generic" title="Email Regex from https://commons.wikimedia.org/wiki/File:Email-regex.svg  Creative Commons Attribution-Share Alike 2.5 Generic" width="480" height="58"></p>
+			<h2>Introduction</h2>
+			<div>Some time ago I had the need to go farther than what PHP can offer regarding regular expressions. I wanted to analyze log file contents, each line being matched by a specific regular expression. I wanted that a single regular expression could be used to match a sequence of lines in a logfile using some kind of <b>meta-matching</b>.</div>
+			<div>
+				<br>
+			</div>
+			<div>This article explains the basic knowledge about regular expressions that was needed to achieve that goal. It describes the intermediate methods that I built as steps towards meta-matching.</div>
+			<div>
+				<br>
+			</div>
+			<div>Then it introduces this so-called &quot;meta-matching&quot; feature that allows you to describe text flows as sequences of meta-regular expressions involving themselves their own sets of regular expressions provided to match particular lines of text.</div>
+			<h2>The Beginning Problem</h2>
+			Let's suppose you have to scan a sequence of lines, such as in a log file. You want to	recognize which sequence follows which pattern.
+
+			A typical sequence in an example log file could be, for example:
+			<ul>
+				<li>A line containing the string &quot;<i>message start</i>&quot;</li>
+				<li>
+					Any number of lines starting with &quot;<i>log:</i>&quot; and followed by any sequence of characters
+				</li>
+				<li>A line containing &quot;<i>message end</i>&quot;</li>
+			</ul>
+
+			The following example gives a layout of how such a log file could look like:x<br><pre class="code">message start
+log: message 1<br>log: message 2<br>...<br>log: message n<br>message end<br></pre>
+
+			The idea behind that is to say:
+			<ul>
+				<li>Ok, I want to match the string &quot;message start&quot;, and every string that starts with &quot;message&quot; and ends up with a number ; and I also want to match strings that contain &quot;message end&quot;</li>
+				<li>
+					But... wait... these sequences of strings can also be described by a regular expression ! If I could be able to say :
+					<ul>
+						<li>I'm expecting the string &quot;message start&quot; as the first line</li>
+						<li>Then, any number of lines containing the word &quot;log&quot; followed a number</li>
+						<li>And finally, a line containing &quot;message end&quot;</li>
+					</ul>
+				</li>
+			</ul>
+			Wouldn't it be better if it could be described using a regular expression ?<br>
+
+			<h2>The Concept of Meta Regular Expression Matching</h2><p>
+				Let's say that the sequence \1 references a regular expression that matches the string &quot;message start&quot;, \2 is a reference to an expression that matches the string &quot;log:&quot; followed by a number, and \3 a reference to a regular expression that matches the string &quot;message end&quot;.
+			</p><p>Matching our example input stream with a single&nbsp;<i>meta</i> regular expression could be written as:</p><div>
+
+<pre class="code">\1 \2* \3
+</pre>
+
+				<p>This means : a line containing &quot;message start&quot;, followed by any number of lines containing the word &quot;log&quot; followed by an integer, and ending with a line containing &quot;message end&quot;.</p><p>
+					You're done! You just learned how to do <i>meta regular expression</i> matching. Although you do not yet know how to tell that &quot;\1&quot; is intended to match the string &quot;message start&quot;, &quot;\2&quot; the string &quot;log&quot; followed by an integer, and so on, you have moved a step forward in the direction of <i>meta-thinking</i> (the term is humbly mine), which is an activity of choice for so many mathematicians and developers.
+				</p><h2>The PHP Advanced Regex package</h2><p>
+					The <a href="http://www.phpclasses.org/package/9336.html">PHP&nbsp;Advanced Regex package</a> is here to relieve you from the burden of this <i>meta-something</i> stuff.
+				</p><p>If you feel uncomfortable with basic regular expressions, may I recommend you to read the next part of this article which is basically a<i>&nbsp;survival guide to regular expressions?</i></p><p>Although it is not intended to provide a thorough coverage on how to be a regular expression superstar, it explains some basic concepts, introduces some habits I have taken in PHP when writing regular expressions and that saved me a lot of time.</p><p>It also contains some stuff to explain how to get proper match results from applying a regular expression to input strings. The last two items belong more to common sense rather than to rigid coding rules.&nbsp;</p>
+			</div><div>
+				<h2>Conclusion</h2><p>In this part of the article you learned how to think about meta regular expression matching to match complex text sequences.</p><p>In the next part you will be guided you through basic rules for using regular expressions. It will detail the intermediary utility methods that have been implemented in the <a href="http://www.phpclasses.org/package/9336-PHP-Match-MSDOS-UNIX-patterns-with-regular-expressions.html">PHP dvanced Regex package</a> to assist you into meta-regular expression matching.</p><p>
+					The third and last part which will show you how to cope with meta-regular expression matching.
+
+
+</body>
+</html>

@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>phpclasses.org</Name>
+    <ProjectGuid>{c0a9e223-7b1c-4eaa-a50f-c79e011cfbf6}</ProjectGuid>
+    <OutputType>Console</OutputType>
+    <OutputPath>.</OutputPath>
+    <RootNamespace>phpclasses</RootNamespace>
+    <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
+    <StartupFile>
+    </StartupFile>
+    <ProjectHome />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <IncludeDebugInformation>true</IncludeDebugInformation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <IncludeDebugInformation>false</IncludeDebugInformation>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="ApiLayer\Examples\" />
+    <Folder Include="ApiLayer\Sources\" />
+    <Folder Include="Articles\performance\" />
+    <Folder Include="Articles\regex\" />
+    <Folder Include="AsynchronousCommand\" />
+    <Folder Include="AsynchronousCommand\examples\" />
+    <Folder Include="DbStringStore\data\" />
+    <Folder Include="IniFile\" />
+    <Folder Include="DbVariableStore\" />
+    <Folder Include="Articles\" />
+    <Folder Include="DbStringStore\" />
+    <Folder Include="DbBufferedOperation\" />
+    <Folder Include="ApiLayer\" />
+    <Folder Include="PdfToText\" />
+    <Folder Include="RtfTools\" />
+    <Folder Include="RtfTools\.git\" />
+    <Folder Include="RtfTools\.git\hooks\" />
+    <Folder Include="RtfTools\.git\info\" />
+    <Folder Include="RtfTools\.git\objects\" />
+    <Folder Include="RtfTools\.git\objects\info\" />
+    <Folder Include="RtfTools\.git\objects\pack\" />
+    <Folder Include="RtfTools\.git\refs\" />
+    <Folder Include="RtfTools\.git\refs\heads\" />
+    <Folder Include="RtfTools\.git\refs\tags\" />
+    <Folder Include="RtfTools\examples\" />
+    <Folder Include="SearchableFile\" />
+    <Folder Include="RandomAccessFile\" />
+    <Folder Include="Registry\" />
+    <Folder Include="Regex\" />
+    <Folder Include="SearchableFile\examples\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApiLayer\Examples\get_mail.php" />
+    <Compile Include="ApiLayer\Examples\get_pdf.php" />
+    <Compile Include="ApiLayer\Examples\get_screenshot.php" />
+    <Compile Include="ApiLayer\Sources\ApiLayer.php" />
+    <Compile Include="ApiLayer\Sources\MailboxLayer.php" />
+    <Compile Include="ApiLayer\Sources\PdfLayer.php" />
+    <Compile Include="ApiLayer\Sources\ScreenshotLayer.php" />
+    <Compile Include="AsynchronousCommand\examples\askforinput.php" />
+    <Compile Include="AsynchronousCommand\examples\example.find.php" />
+    <Compile Include="AsynchronousCommand\examples\example.input.php" />
+    <Compile Include="DbBufferedOperation\benchmark.php" />
+    <Compile Include="DbStringStore\DbStringStore.php" />
+    <Compile Include="DbStringStore\DbTable.php" />
+    <Compile Include="DbStringStore\example.php" />
+    <Compile Include="DbVariableStore\example.php" />
+    <Compile Include="IniFile\IniFile.class.php" />
+    <Compile Include="PdfToText\example.php" />
+    <Compile Include="RandomAccessFile\example.php" />
+    <Compile Include="Regex\Regex.class.php" />
+    <Compile Include="Regex\example.php" />
+    <Compile Include="Registry\example.php" />
+    <Compile Include="Registry\Registry.class.php" />
+    <Compile Include="DbVariableStore\DbVariableStore.class.php" />
+    <Compile Include="RtfTools\examples\beautifier.php" />
+    <Compile Include="RtfTools\examples\create_samples.php" />
+    <Compile Include="RtfTools\examples\Rtf.php" />
+    <Compile Include="SearchableFile\examples\multistrpos.php" />
+    <Compile Include="SearchableFile\examples\preg_match_all.php" />
+    <Compile Include="SearchableFile\examples\preg_match.php" />
+    <Compile Include="SearchableFile\examples\strpos.php" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApiLayer\LICENSE" />
+    <Content Include="ApiLayer\NOTICE" />
+    <Content Include="ApiLayer\README.MAILBOXLAYER.md" />
+    <Content Include="ApiLayer\README.md" />
+    <Content Include="ApiLayer\README.PDFLAYER.md" />
+    <Content Include="ApiLayer\README.SCREENSHOTLAYER.md" />
+    <Content Include="Articles\performance\perf01.html" />
+    <Content Include="Articles\regex\regex01.html" />
+    <Content Include="Articles\regex\regex02.html" />
+    <Content Include="AsynchronousCommand\AsynchronousCommand.php" />
+    <Content Include="AsynchronousCommand\LICENSE" />
+    <Content Include="AsynchronousCommand\NOTICE" />
+    <Content Include="DbBufferedOperation\DbBufferedInsert.php" />
+    <Content Include="DbBufferedOperation\DbBufferedLoadFile.php" />
+    <Content Include="DbBufferedOperation\DbBufferedOperation.php" />
+    <Content Include="DbBufferedOperation\DbBufferedUpdate.php" />
+    <Content Include="DbBufferedOperation\LICENSE" />
+    <Content Include="DbBufferedOperation\NOTICE" />
+    <Content Include="DbBufferedOperation\README.md" />
+    <Content Include="DbStringStore\article.md" />
+    <Content Include="DbStringStore\data\example.log" />
+    <Content Include="DbStringStore\data\words-english-big.dic" />
+    <Content Include="DbStringStore\README.md" />
+    <Content Include="IniFile\LICENSE" />
+    <Content Include="IniFile\NOTICE" />
+    <Content Include="PdfToText\PdfToText.phpclass" />
+    <Content Include="PdfToText\sample.pdf" />
+    <Content Include="RandomAccessFile\LICENSE" />
+    <Content Include="RandomAccessFile\NOTICE" />
+    <Content Include="Regex\README.html" />
+    <Content Include="Regex\NOTICE" />
+    <Content Include="Regex\LICENSE" />
+    <Content Include="Registry\LICENSE" />
+    <Content Include="Registry\NOTICE" />
+    <Content Include="Registry\README.html" />
+    <Content Include="DbVariableStore\LICENSE" />
+    <Content Include="DbVariableStore\NOTICE" />
+    <Content Include="RtfTools\.git\config" />
+    <Content Include="RtfTools\.git\description" />
+    <Content Include="RtfTools\.git\HEAD" />
+    <Content Include="RtfTools\.git\hooks\applypatch-msg.sample" />
+    <Content Include="RtfTools\.git\hooks\commit-msg.sample" />
+    <Content Include="RtfTools\.git\hooks\post-update.sample" />
+    <Content Include="RtfTools\.git\hooks\pre-applypatch.sample" />
+    <Content Include="RtfTools\.git\hooks\pre-commit.sample" />
+    <Content Include="RtfTools\.git\hooks\pre-push.sample" />
+    <Content Include="RtfTools\.git\hooks\pre-rebase.sample" />
+    <Content Include="RtfTools\.git\hooks\prepare-commit-msg.sample" />
+    <Content Include="RtfTools\.git\hooks\update.sample" />
+    <Content Include="RtfTools\.git\info\exclude" />
+    <Content Include="RtfTools\examples\bigfile.rtf" />
+    <Content Include="RtfTools\examples\sample_file.rtf" />
+    <Content Include="RtfTools\examples\verybigfile.rtf" />
+    <Content Include="RtfTools\LICENSE" />
+    <Content Include="RtfTools\NOTICE" />
+    <Content Include="RtfTools\RtfBeautifier.phpclass" />
+    <Content Include="RtfTools\RtfDocument.phpclass" />
+    <Content Include="RtfTools\SearchableFile.phpclass" />
+    <Content Include="SearchableFile\examples\verybigfile.rtf" />
+    <Content Include="SearchableFile\LICENSE" />
+    <Content Include="SearchableFile\NOTICE" />
+    <Content Include="SearchableFile\README.md" />
+    <Content Include="SearchableFile\SearchableFile.phpclass" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\DEVSENSE\PHP Tools\VS$(VisualStudioVersion)\Devsense.PHP.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

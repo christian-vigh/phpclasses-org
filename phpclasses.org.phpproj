@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="ApiLayer\Examples\" />
     <Folder Include="ApiLayer\Sources\" />
+    <Folder Include="Articles\PdfToText\" />
     <Folder Include="Articles\performance\" />
     <Folder Include="Articles\regex\" />
     <Folder Include="AsynchronousCommand\" />
@@ -34,6 +35,9 @@
     <Folder Include="DbBufferedOperation\" />
     <Folder Include="ApiLayer\" />
     <Folder Include="PdfToText\" />
+    <Folder Include="PdfToText\examples\" />
+    <Folder Include="PdfToText\examples\example 02\" />
+    <Folder Include="PdfToText\examples\example 01\" />
     <Folder Include="RtfTools\" />
     <Folder Include="RtfTools\.git\" />
     <Folder Include="RtfTools\.git\hooks\" />
@@ -67,8 +71,10 @@
     <Compile Include="DbStringStore\DbTable.php" />
     <Compile Include="DbStringStore\example.php" />
     <Compile Include="DbVariableStore\example.php" />
+    <Compile Include="IniFile\example.php" />
     <Compile Include="IniFile\IniFile.class.php" />
-    <Compile Include="PdfToText\example.php" />
+    <Compile Include="PdfToText\examples\example 01\example.php" />
+    <Compile Include="PdfToText\examples\example 02\example.php" />
     <Compile Include="RandomAccessFile\example.php" />
     <Compile Include="Regex\Regex.class.php" />
     <Compile Include="Regex\example.php" />
@@ -90,6 +96,7 @@
     <Content Include="ApiLayer\README.md" />
     <Content Include="ApiLayer\README.PDFLAYER.md" />
     <Content Include="ApiLayer\README.SCREENSHOTLAYER.md" />
+    <Content Include="Articles\PdfToText\PdfToText.html" />
     <Content Include="Articles\performance\perf01.html" />
     <Content Include="Articles\regex\regex01.html" />
     <Content Include="Articles\regex\regex02.html" />
@@ -107,10 +114,21 @@
     <Content Include="DbStringStore\data\example.log" />
     <Content Include="DbStringStore\data\words-english-big.dic" />
     <Content Include="DbStringStore\README.md" />
+    <Content Include="IniFile\example.ini" />
     <Content Include="IniFile\LICENSE" />
     <Content Include="IniFile\NOTICE" />
+    <Content Include="IniFile\README.md" />
+    <Content Include="PdfToText\examples\example 01\README.md" />
+    <Content Include="PdfToText\examples\example 01\sample.pdf" />
+    <Content Include="PdfToText\examples\example 01\sample.txt" />
+    <Content Include="PdfToText\examples\example 02\README.md" />
+    <Content Include="PdfToText\examples\example 02\sample.txt" />
+    <Content Include="PdfToText\examples\README.md" />
+    <Content Include="PdfToText\LICENSE" />
+    <Content Include="PdfToText\NOTICE" />
     <Content Include="PdfToText\PdfToText.phpclass" />
-    <Content Include="PdfToText\sample.pdf" />
+    <Content Include="PdfToText\examples\example 02\sample.pdf" />
+    <Content Include="PdfToText\README.md" />
     <Content Include="RandomAccessFile\LICENSE" />
     <Content Include="RandomAccessFile\NOTICE" />
     <Content Include="Regex\README.html" />

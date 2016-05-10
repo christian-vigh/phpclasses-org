@@ -9,17 +9,57 @@ It is up to you to decide whether you will have to handle big files. If you are 
 
 This package currently implements the following classes :
 
-- *RtfSringBeautifier* and *RtfFileBeautifier* : pretty-prints Rtf file contents so that you will be able to compare two Rtf files using utilities such as *diff* or *windiff*.
+- *RtfStringBeautifier* and *RtfFileBeautifier* : pretty-prints Rtf file contents so that you will be able to compare two Rtf files using utilities such as *diff* or *windiff*. You will find some help here : [README.beautifier.md](README.beautifier.md "README.beautifier.md").
+- *RtfStringParser* and *RtfFileParser* : a generic parser for Rtf contents. It provides a set of *Rtf\*Token* classes that map to underlying Rtf token types, along with a minimal intelligence that allows you to track certain control word values depending on the current nesting level, as well as handling picture or binary data contents ([README.parser.md](README.parser.md "README.parser.md")).
+- *RtfStringTexter* and *RtfFileTexter* : a class that extracts raw text from Rtf contents, with some basic formatting capabilities ([README.texter.md](README.texter.md "README.texter.md")). 
+
+ 
 
 More to come :
 
-- *RtfMerger*, a class that allows you to merge various Rtf files into a single Rtf document (should be available by may 2016).
+- *RtfMerger*, a class that allows you to merge various Rtf files into a single Rtf document (should be available by july 2016).
 - *RtfTemplater*, a class that allows you to preprocess Rtf contents that reference variables, have loops and conditional constructs (should be available by june 2016).
-- *RtfTexter*, a class that extracts text contents from Rtf files (should be available by september 2016).
+
+
+# PACKAGING #
+
+The class sources of this package do not belong to any namespace. This is intentional, so that you will be able to add the one of your own if you want to integrate them into some workspace having its own class autoloader.
+
+All the classes throw an exception when an error is encountered. If you have your own error handling mechanism, then you might be interested into substituting exception throwings with it. For that, a reliable method would be to search for the keyword *throw* over all files and replace every occurrence with your error handling routine. You can also use *try/catch* blocks whenever you use the Rtf classes of this package.
+
+
+# DEPENDENCIES #
+
+All the classes in this package rely on the **SearchableFile** class ([http://www.phpclasses.org/package/9697-PHP-Process-text-files-too-big-to-fit-into-memory.html](http://www.phpclasses.org/package/9697-PHP-Process-text-files-too-big-to-fit-into-memory.html "http://www.phpclasses.org/package/9697-PHP-Process-text-files-too-big-to-fit-into-memory.html")) that allows to search for contents in files too big to fit into memory. A copy of this class is present in this package for your convenience but note that it may not be the latest release.
+
+All the main class files in this package ([RtfBeautifier.phpclass](RtfBeautifier.phpclass "RtfBeautifier.phpclass"), [RtfParser.phpclass](RtfParser.phpclass "RtfParser.phpclass")
+ and [RtfTexter.phpclass](RtfTexter.phpclass "RtfTexter.phpclass")) also inherit from the **RtfDocument** class ([RtfDocument.phpclass](RtfDocument.phpclass "RtfDocument.phpclass")).
+
+To use the **RtfBeautifier** class, you will need the following includes :
+
+	require ( 'SearchableFile.phpclass' ) ;
+	require ( 'RtfDocument.phpclass' ) ;
+	require ( 'RtfBeautifier.phpclass' ) ;
+
+Using the **RtfParser** class requires an additional include, *RtfToken.phpclass* so you will need the following includes :
+
+	require ( 'SearchableFile.phpclass' ) ;
+	require ( 'RtfDocument.phpclass' ) ;
+	require ( 'RtfToken.phpclass' ) ;
+	require ( 'RtfParser.phpclass' ) ;
+
+Finally, the **RtfTexter** class inherits from **RtfParser**, so you will need the following includes in this case :
+
+	require ( 'SearchableFile.phpclass' ) ;
+	require ( 'RtfDocument.phpclass' ) ;
+	require ( 'RtfToken.phpclass' ) ;
+	require ( 'RtfParser.phpclass' ) ;
+	require ( 'RtfTexter.phpclass' ) ;
+
 
 # REFERENCES #
 
-This package depends on the following package, **SearchableFile** :
+This package depends on the following package, **SearchableFile**, which allows you to search text data from files too big to fit into memory :
 
 	[http://www.phpclasses.org/package/9697-PHP-Process-text-files-too-big-to-fit-into-memory.html](http://www.phpclasses.org/package/9697-PHP-Process-text-files-too-big-to-fit-into-memory.html "http://www.phpclasses.org/package/9697-PHP-Process-text-files-too-big-to-fit-into-memory.html")
 
@@ -36,109 +76,5 @@ But you can also consult the excellent book *"Rtf pocket guide"* from Sean M. Bu
 or visit his page :
 
 	[http://interglacial.com/~sburke/](http://interglacial.com/~sburke/ "http://interglacial.com/~sburke/")
-
-
-# RTF CLASSES REFERENCE #
-
-## RtfBeautifier ###
-
-The **RtfBeautifier** class is an abstract class that allows you to pretty-print Rtf files, using either the **RtfStringBeautifier** or **RtfFileBeautifier** classes.
-
-But why pretty-printing Rtf contents ? 
-
-Suppose you have to compare two Rtf files, who should have similar contents. You can do that using utilities such as the Unix *diff* command, or the Windows *windiff* command (available here : [http://www.grigsoft.com/windiff.zip](http://www.grigsoft.com/windiff.zip "http://www.grigsoft.com/windiff.zip")).
-
-However, you will have to perform a difference checking on lines that include several Rtf control words. This may not be comfortable, since several dozens of control words or text data can be put on the same line.
-
-The *RtfBeautifier* class ensures that every syntactic Rtf element is printed on a single line.
-Rtf syntactic elements are not so numerous ; it can be :
-
-- An opening or closing brace
-- A control word that begins with a slash (such as "*\\par*", "*\\pard*", but also a character specification such as "*\\'ae*", or even an escape sequence such as "*\\{*")
-- Any text that constitutes the contents of your document
-
-Picture or binary data can be omitted in the output. You can also set the indentation space required.
-
-Note that the output will not be valid Rtf data ; it's goal is definitely to easily enable you to compare two Rtf files.
-
-### Example ###
-
-Pretty-printing an Rtf file is very simple ; you can use either the **Beautify** or **BeautifyTo** methods. The **Beautify** method can be used if you're sure that your Rtf file contents fits into memory, even if you're using the *file* version of the class :
-
-	$pp 	=  new RtfFileBeautifier ( "sample.rtf" ) ;
-	$text 	=  $pp -> Beautify ( ) ;
-	echo $text ;
-
-but you can also use the **BeautifyTo** method to write pretty-printed contents to an output file, whathever the class you are using, *string* or *file* :
-
-	$pp 	=  new RtfStringBeautifier ( "sample.rtf" ) ;
-	$pp -> BeautifyTo ( 'sample.txt' ) ;
-
-### Reference ###
-
-The following section describe the properties and methods available in the *RtfBeautifier* classes.
-
-#### Constructor ####
-
-An Rtf beautifier object can be instantiated with the following instructions :
-
-	$pp 	=  new RtfStringBeautifier ( $rtfdata, $options, $indentation_size ) ;
-
-or :
-
-	$pp 	=  new RtfFileBeautifier ( $file, $options, $indentation_size ) ;
-
-The parameters are the following :
-
-- *$rtfdata* : Rtf contents to be pretty-printed
-- *$file* : File whose Rtf contents are to be pretty-printed.
-- *options* : A combination of the following flags :
-	- **BEAUTIFY\_GROUP\_SPECIAL\_WORDS** : When a \\\*\\word construct is encountered, keeps them together instead of putting them on a separate line. This works only if the *BEAUTIFY\_SPLIT\_ADJACENT\_WORDS* flag is set.
-	- **BEAUTIFY\_SPLIT\_ADJACENT\_WORDS** : 	When several control words are catenated, such as in :
-	    			
-	    	\word1\word2\word3
-
-	indicates the beautifier to split them, one per line, instead of keeping them on	the same line.
-	    			
-	- **BEAUTIFY\_SPLIT\_CHARS** : Indicates whether character code control words (of the form \'xy) should be put on a separate line or not. For example, "En-tête" is encoded as "En-t\'eate" and the encoded version will be output as is if this flag is not specified. When specified, it will be output as :
-	    			
-	    				En-t
-	    				\'ea
-	    				te
-	    			
-	- **BEAUTIFY\_STRIP\_IMAGE\_DATA** : For large files containing many images (*\pict* control word), it could be of interest not to include image data to save space and processing time. In this case, image data will be replaced with a comment indicating how many bytes were present.
-	    			
-	- **BEAUTIFY\_STRIP\_BIN\_DATA** : Same, for *\bin* control words.
-	    			
-	- **BEAUTIFY\_STRIP\_DATA** : Enables the *BEAUTIFY\_STRIP\_IMAGE\_DATA* and *BEAUTIFY\_STRIP_BIN\_DATA* flags.
-	    			
-	- **BEAUTIFY\_ALL** : Enables all flags.
-
-- *$indentation\_size* : Specifies how many spaces to insert for each indentation level. The default is 4.
-
-#### Beautify ####
-
-Pretty-prints Rtf contents and returns them as a string :
-
-	$pp 	=  new RtfStringBeautifier ($rtfdata, $options, $indentation_size ) ;
-	$text 	=  $pp -> Beautify ( ) ;
-
-or : 
-
-	$pp 	=  new RtfFileBeautifier ( $file, $options, $indentation_size ) ;
-	$text 	=  $pp -> Beautify ( ) ;
-
-
-#### BeautifyTo ####
-
-Pretty-prints Rtf contents and saves them to a file :
-
-	$pp 	=  new RtfStringBeautifier ( $rtfdata, $options, $indentation_size ) ;
-	$text 	=  $pp -> BeautifyTo ( 'sample.txt' ) ;
-
-or : 
-
-	$pp 	=  new RtfFileBeautifier ( $file, $options, $indentation_size ) ;
-	$text 	=  $pp -> BeautifyTo ( 'sample.txt' ) ;
 
 

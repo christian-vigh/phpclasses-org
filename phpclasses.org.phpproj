@@ -34,10 +34,12 @@
     <Folder Include="DbStringStore\" />
     <Folder Include="DbBufferedOperation\" />
     <Folder Include="ApiLayer\" />
+    <Folder Include="CacheGrind\" />
     <Folder Include="PdfToText\" />
     <Folder Include="PdfToText\examples\" />
     <Folder Include="PdfToText\examples\example 02\" />
     <Folder Include="PdfToText\examples\example 01\" />
+    <Folder Include="Articles\images\" />
     <Folder Include="RtfTools\" />
     <Folder Include="RtfTools\.git\" />
     <Folder Include="RtfTools\.git\hooks\" />
@@ -54,6 +56,7 @@
     <Folder Include="Registry\" />
     <Folder Include="Regex\" />
     <Folder Include="SearchableFile\examples\" />
+    <Folder Include="SearchableFile\PSRless\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiLayer\Examples\get_mail.php" />
@@ -163,6 +166,7 @@
     <Content Include="SearchableFile\examples\verybigfile.rtf" />
     <Content Include="SearchableFile\LICENSE" />
     <Content Include="SearchableFile\NOTICE" />
+    <Content Include="SearchableFile\PSRless\SearchableFile.phpclass" />
     <Content Include="SearchableFile\README.md" />
     <Content Include="SearchableFile\SearchableFile.phpclass" />
   </ItemGroup>

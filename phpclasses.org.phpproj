@@ -87,6 +87,7 @@
     <Compile Include="RtfTools\examples\beautifier.php" />
     <Compile Include="RtfTools\examples\create_samples.php" />
     <Compile Include="RtfTools\examples\Rtf.php" />
+    <Compile Include="RtfTools\examples\texter.php" />
     <Compile Include="SearchableFile\examples\multistrpos.php" />
     <Compile Include="SearchableFile\examples\preg_match_all.php" />
     <Compile Include="SearchableFile\examples\preg_match.php" />
@@ -155,9 +156,7 @@
     <Content Include="RtfTools\.git\hooks\prepare-commit-msg.sample" />
     <Content Include="RtfTools\.git\hooks\update.sample" />
     <Content Include="RtfTools\.git\info\exclude" />
-    <Content Include="RtfTools\examples\bigfile.rtf" />
     <Content Include="RtfTools\examples\sample_file.rtf" />
-    <Content Include="RtfTools\examples\verybigfile.rtf" />
     <Content Include="RtfTools\LICENSE" />
     <Content Include="RtfTools\NOTICE" />
     <Content Include="RtfTools\RtfBeautifier.phpclass" />

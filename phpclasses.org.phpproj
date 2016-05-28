@@ -34,7 +34,6 @@
     <Folder Include="DbStringStore\" />
     <Folder Include="DbBufferedOperation\" />
     <Folder Include="ApiLayer\" />
-    <Folder Include="CacheGrind\" />
     <Folder Include="PdfToText\" />
     <Folder Include="PdfToText\examples\" />
     <Folder Include="PdfToText\examples\example02\" />

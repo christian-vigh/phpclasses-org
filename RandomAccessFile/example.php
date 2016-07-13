@@ -17,7 +17,7 @@
 	// Instantiate a random access file and open it in read/write mode.
 	// "4" is the record size, "1024" the number of records to be cached, and "\n" the filler character to be
 	// used when inserting empty records 
-	$rf = new RandomAccessFile ( $random_file, 4, 1024, "\n" ) ;
+	$rf = new RandomAccessFile ( $random_file, 4, 0, 1024, "\n" ) ;
 	$rf -> Open ( ) ;
 
 	// Show the number of records that this file holds (should be 100)

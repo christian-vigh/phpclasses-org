@@ -8,13 +8,32 @@ The class also allows you to access file data as if it were an array or an itera
 
 See the file [example.php](example.php "example.php") for a short example on how to use this class.
 
+# HISTORY #
+
+## VERSION 1.1 ##
+
+- Added support for fixed-size and variable-size headers at the beginning of a random access file.
+
+
+## VERSION 1.0 ##
+
+- Initial version
+
+
+
+## NOTES FOR USERS OF VERSION 1.0 ##
+
+The version 1.0 was not able to process headers in random access files.
+
+In version 1.1, a parameter, *$header\_size*, has been added as the third parameter of the class constructor. If you have code that already uses this class, then you should modify it to specify an additional value of 0 or false at the third position in the constructor (between the *$record\_size* and the *$cache\_size* parameters), if you are also specifying the optional *$cache\_size* and *$filler* parameters that appear after *$record\_size*.
+
 # REFERENCE #
 
 ## METHODS ##
 
 ### CONSTRUCTOR ###
 
-	$rf	=  new  RandomAccessFile ( $filename, $record_size, $cache_size = false, $filler = "\0", $header_size = false ) ;
+	$rf	=  new  RandomAccessFile ( $filename, $record_size, $header_size = false, $cache_size = false, $filler = "\0" ) ;
 
 Instantiates a RandomAccessFile object, without opening the specified file.
 

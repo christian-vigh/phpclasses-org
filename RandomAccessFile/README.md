@@ -14,7 +14,7 @@ See the file [example.php](example.php "example.php") for a short example on how
 
 ### CONSTRUCTOR ###
 
-	$rf	=  new  RandomAccessFile ( $filename, $record_size, $cache_size = false, $filler = "\0" ) ;
+	$rf	=  new  RandomAccessFile ( $filename, $record_size, $cache_size = false, $filler = "\0", $header_size = false ) ;
 
 Instantiates a RandomAccessFile object, without opening the specified file.
 
@@ -28,6 +28,11 @@ The parameters are the following :
 
 **$filler** *(char)* - Character to be used for filling when an incomplete record is written.
 
+**$header_size** *(integer)* - Size of an optional fixed header at the start of the file. The default is *false*, which means *no header*. If your random access file contains a variable-length header, whose size is specified into some fixed-part of the header itself, then you can also specify a callback function that must have the following signature :
+
+	integer function  mycallback ( $fd ) ;
+
+*$fd* being the file descriptor which will allow you to read the part of the header that contains the real header size, then return this size. Note that the callback will be called whenever the **Open()** method is called.
 
 ### CLOSE ###
 
@@ -134,22 +139,33 @@ If the specified record number is past the end of file, then the last incomplete
 
 ## PROPERTIES ##
 
-### Filename ###
+### CacheMisses, CacheHits ###
 
-Underlying random access file name.
-
-### RecordSize ###
-
-Random access file record size.
+Number of cache misses and cache hits since the file was opened.
 
 ### CacheSize ###
 
 Number of cached records.
 
+### Filename ###
+
+Underlying random access file name.
+
 ### Filler ###
 
 Filler character to be used when expanding incomplete records or inserting new ones.
 
-### CacheMisses, CacheHits ###
+### Header ###
 
-Number of cache misses and cache hits since the file was opened.
+This property will contain header data, once the **Open()** method has been called.
+
+### HeaderSize ###
+
+Contains the header size, as specified to the constructor, or returned by the **GetHeaderSize()** method when implemented by derived classes.
+
+This property can also be set manually before calling the **Open()** method (but note that the results will be unpredictable if it is set after calling the method). 
+
+### RecordSize ###
+
+Random access file record size.
+

@@ -20,7 +20,6 @@ See the file [example.php](example.php "example.php") for a short example on how
 - Initial version
 
 
-
 ## NOTES FOR USERS OF VERSION 1.0 ##
 
 The version 1.0 was not able to process headers in random access files.

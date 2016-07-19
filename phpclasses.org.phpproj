@@ -34,6 +34,16 @@
     <Folder Include="DbStringStore\" />
     <Folder Include="DbBufferedOperation\" />
     <Folder Include="ApiLayer\" />
+    <Folder Include="Minifiers\" />
+    <Folder Include="Minifiers\.git\" />
+    <Folder Include="Minifiers\.git\hooks\" />
+    <Folder Include="Minifiers\.git\info\" />
+    <Folder Include="Minifiers\.git\objects\" />
+    <Folder Include="Minifiers\.git\objects\info\" />
+    <Folder Include="Minifiers\.git\objects\pack\" />
+    <Folder Include="Minifiers\.git\refs\" />
+    <Folder Include="Minifiers\.git\refs\heads\" />
+    <Folder Include="Minifiers\.git\refs\tags\" />
     <Folder Include="PdfToText\" />
     <Folder Include="PdfToText\examples\" />
     <Folder Include="PdfToText\examples\example02\" />
@@ -57,6 +67,7 @@
     <Folder Include="Regex\" />
     <Folder Include="SearchableFile\examples\" />
     <Folder Include="SearchableFile\PSRless\" />
+    <Folder Include="SshSession\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiLayer\Examples\get_mail.php" />
@@ -79,6 +90,8 @@
     <Compile Include="PdfToText\examples\example01\example.php" />
     <Compile Include="PdfToText\examples\example02\example.php" />
     <Compile Include="PdfToText\examples\example03\example.php" />
+    <Compile Include="RandomAccessFile\example-with-variable-header.php" />
+    <Compile Include="RandomAccessFile\example-with-fixed-header.php" />
     <Compile Include="RandomAccessFile\example.php" />
     <Compile Include="Regex\Regex.class.php" />
     <Compile Include="Regex\example.php" />
@@ -123,6 +136,24 @@
     <Content Include="IniFile\LICENSE" />
     <Content Include="IniFile\NOTICE" />
     <Content Include="IniFile\README.md" />
+    <Content Include="Minifiers\.git\config" />
+    <Content Include="Minifiers\.git\description" />
+    <Content Include="Minifiers\.git\HEAD" />
+    <Content Include="Minifiers\.git\hooks\applypatch-msg.sample" />
+    <Content Include="Minifiers\.git\hooks\commit-msg.sample" />
+    <Content Include="Minifiers\.git\hooks\post-update.sample" />
+    <Content Include="Minifiers\.git\hooks\pre-applypatch.sample" />
+    <Content Include="Minifiers\.git\hooks\pre-commit.sample" />
+    <Content Include="Minifiers\.git\hooks\pre-push.sample" />
+    <Content Include="Minifiers\.git\hooks\pre-rebase.sample" />
+    <Content Include="Minifiers\.git\hooks\prepare-commit-msg.sample" />
+    <Content Include="Minifiers\.git\hooks\update.sample" />
+    <Content Include="Minifiers\.git\info\exclude" />
+    <Content Include="Minifiers\CssMinifier.phpclass" />
+    <Content Include="Minifiers\JavascriptMinifier.phpclass" />
+    <Content Include="Minifiers\LICENSE" />
+    <Content Include="Minifiers\Minifier.phpclass" />
+    <Content Include="Minifiers\NOTICE" />
     <Content Include="PdfToText\examples\example01\README.md" />
     <Content Include="PdfToText\examples\example01\sample.pdf" />
     <Content Include="PdfToText\examples\example01\sample.txt" />
@@ -139,6 +170,11 @@
     <Content Include="PdfToText\README.md" />
     <Content Include="RandomAccessFile\LICENSE" />
     <Content Include="RandomAccessFile\NOTICE" />
+    <Content Include="RandomAccessFile\random-with-fixed-header.dat" />
+    <Content Include="RandomAccessFile\random-with-variable-header.dat" />
+    <Content Include="RandomAccessFile\random.dat" />
+    <Content Include="RandomAccessFile\RandomAccessFile.phpclass" />
+    <Content Include="RandomAccessFile\README.md" />
     <Content Include="Regex\README.html" />
     <Content Include="Regex\NOTICE" />
     <Content Include="Regex\LICENSE" />
@@ -172,6 +208,10 @@
     <Content Include="SearchableFile\PSRless\SearchableFile.phpclass" />
     <Content Include="SearchableFile\README.md" />
     <Content Include="SearchableFile\SearchableFile.phpclass" />
+    <Content Include="SshSession\Authentication.phpclass" />
+    <Content Include="SshSession\Connection.phpclass" />
+    <Content Include="SshSession\FileSystem.phpclass" />
+    <Content Include="SshSession\Session.phpclass" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\DEVSENSE\PHP Tools\VS$(VisualStudioVersion)\Devsense.PHP.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

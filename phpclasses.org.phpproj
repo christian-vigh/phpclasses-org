@@ -50,6 +50,7 @@
     <Folder Include="PdfToText\examples\example01\" />
     <Folder Include="Articles\images\" />
     <Folder Include="PdfToText\examples\example03\" />
+    <Folder Include="PdfToText\images\" />
     <Folder Include="RtfTools\" />
     <Folder Include="RtfTools\.git\" />
     <Folder Include="RtfTools\.git\hooks\" />
@@ -67,7 +68,6 @@
     <Folder Include="Regex\" />
     <Folder Include="SearchableFile\examples\" />
     <Folder Include="SearchableFile\PSRless\" />
-    <Folder Include="SshSession\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiLayer\Examples\get_mail.php" />
@@ -154,6 +154,7 @@
     <Content Include="Minifiers\LICENSE" />
     <Content Include="Minifiers\Minifier.phpclass" />
     <Content Include="Minifiers\NOTICE" />
+    <Content Include="PdfToText\CREDITS.md" />
     <Content Include="PdfToText\examples\example01\README.md" />
     <Content Include="PdfToText\examples\example01\sample.pdf" />
     <Content Include="PdfToText\examples\example01\sample.txt" />
@@ -163,6 +164,7 @@
     <Content Include="PdfToText\examples\example03\sample.pdf" />
     <Content Include="PdfToText\examples\example03\sample.txt" />
     <Content Include="PdfToText\examples\README.md" />
+    <Content Include="PdfToText\images\SamplePdfFile.png" />
     <Content Include="PdfToText\LICENSE" />
     <Content Include="PdfToText\NOTICE" />
     <Content Include="PdfToText\PdfToText.phpclass" />
@@ -208,10 +210,6 @@
     <Content Include="SearchableFile\PSRless\SearchableFile.phpclass" />
     <Content Include="SearchableFile\README.md" />
     <Content Include="SearchableFile\SearchableFile.phpclass" />
-    <Content Include="SshSession\Authentication.phpclass" />
-    <Content Include="SshSession\Connection.phpclass" />
-    <Content Include="SshSession\FileSystem.phpclass" />
-    <Content Include="SshSession\Session.phpclass" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\DEVSENSE\PHP Tools\VS$(VisualStudioVersion)\Devsense.PHP.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

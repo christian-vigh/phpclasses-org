@@ -46,6 +46,7 @@
     <Folder Include="Minifiers\.git\refs\heads\" />
     <Folder Include="Minifiers\.git\refs\tags\" />
     <Folder Include="PdfToText\" />
+    <Folder Include="PdfToText\contributions\" />
     <Folder Include="PdfToText\examples\" />
     <Folder Include="PdfToText\examples\example02\" />
     <Folder Include="PdfToText\examples\example01\" />
@@ -88,6 +89,7 @@
     <Compile Include="DbVariableStore\example.php" />
     <Compile Include="IniFile\example.php" />
     <Compile Include="IniFile\IniFile.class.php" />
+    <Compile Include="PdfToText\contributions\pdf2text.php" />
     <Compile Include="PdfToText\examples\example01\example.php" />
     <Compile Include="PdfToText\examples\example02\example.php" />
     <Compile Include="PdfToText\examples\example03\example.php" />

@@ -28,6 +28,7 @@
     <Folder Include="Articles\PdfToText\images\" />
     <Folder Include="Articles\performance\" />
     <Folder Include="Articles\regex\" />
+    <Folder Include="AssociativeArray\" />
     <Folder Include="AsynchronousCommand\" />
     <Folder Include="AsynchronousCommand\examples\" />
     <Folder Include="DbStringStore\data\" />
@@ -89,6 +90,7 @@
     <Compile Include="ArrayHelpers\examples\MergeAssocRecursive.php" />
     <Compile Include="ArrayHelpers\examples\MergeAssoc.php" />
     <Compile Include="ArrayHelpers\examples\CombinationsOf.php" />
+    <Compile Include="AssociativeArray\example.php" />
     <Compile Include="AsynchronousCommand\examples\askforinput.php" />
     <Compile Include="AsynchronousCommand\examples\example.find.php" />
     <Compile Include="AsynchronousCommand\examples\example.input.php" />
@@ -138,6 +140,9 @@
     <Content Include="Articles\performance\perf01.html" />
     <Content Include="Articles\regex\regex01.html" />
     <Content Include="Articles\regex\regex02.html" />
+    <Content Include="AssociativeArray\AssociativeArray.phpclass" />
+    <Content Include="AssociativeArray\LICENSE" />
+    <Content Include="AssociativeArray\NOTICE" />
     <Content Include="AsynchronousCommand\AsynchronousCommand.php" />
     <Content Include="AsynchronousCommand\LICENSE" />
     <Content Include="AsynchronousCommand\NOTICE" />

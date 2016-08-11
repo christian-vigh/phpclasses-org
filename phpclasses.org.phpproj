@@ -22,6 +22,8 @@
   <ItemGroup>
     <Folder Include="ApiLayer\Examples\" />
     <Folder Include="ApiLayer\Sources\" />
+    <Folder Include="ArrayHelpers\" />
+    <Folder Include="ArrayHelpers\examples\" />
     <Folder Include="Articles\PdfToText\" />
     <Folder Include="Articles\PdfToText\images\" />
     <Folder Include="Articles\performance\" />
@@ -80,6 +82,13 @@
     <Compile Include="ApiLayer\Sources\MailboxLayer.php" />
     <Compile Include="ApiLayer\Sources\PdfLayer.php" />
     <Compile Include="ApiLayer\Sources\ScreenshotLayer.php" />
+    <Compile Include="ArrayHelpers\examples\CrossReference.php" />
+    <Compile Include="ArrayHelpers\examples\ToRanges.php" />
+    <Compile Include="ArrayHelpers\examples\SortedFind.php" />
+    <Compile Include="ArrayHelpers\examples\MultiSort.php" />
+    <Compile Include="ArrayHelpers\examples\MergeAssocRecursive.php" />
+    <Compile Include="ArrayHelpers\examples\MergeAssoc.php" />
+    <Compile Include="ArrayHelpers\examples\CombinationsOf.php" />
     <Compile Include="AsynchronousCommand\examples\askforinput.php" />
     <Compile Include="AsynchronousCommand\examples\example.find.php" />
     <Compile Include="AsynchronousCommand\examples\example.input.php" />
@@ -121,6 +130,9 @@
     <Content Include="ApiLayer\README.md" />
     <Content Include="ApiLayer\README.PDFLAYER.md" />
     <Content Include="ApiLayer\README.SCREENSHOTLAYER.md" />
+    <Content Include="ArrayHelpers\ArrayHelpers.phpclass" />
+    <Content Include="ArrayHelpers\LICENSE" />
+    <Content Include="ArrayHelpers\NOTICE" />
     <Content Include="Articles\PdfToText\images\SamplePdfFile.png" />
     <Content Include="Articles\PdfToText\PdfToText.html" />
     <Content Include="Articles\performance\perf01.html" />

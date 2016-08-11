@@ -70,6 +70,7 @@
     <Folder Include="Regex\" />
     <Folder Include="SearchableFile\examples\" />
     <Folder Include="SearchableFile\PSRless\" />
+    <Folder Include="SshSession\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiLayer\Examples\get_mail.php" />
@@ -109,6 +110,9 @@
     <Compile Include="SearchableFile\examples\preg_match_all.php" />
     <Compile Include="SearchableFile\examples\preg_match.php" />
     <Compile Include="SearchableFile\examples\strpos.php" />
+    <Compile Include="SshSession\example.inc.php" />
+    <Compile Include="SshSession\example.key.php" />
+    <Compile Include="SshSession\example.password.php" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApiLayer\LICENSE" />
@@ -214,6 +218,12 @@
     <Content Include="SearchableFile\PSRless\SearchableFile.phpclass" />
     <Content Include="SearchableFile\README.md" />
     <Content Include="SearchableFile\SearchableFile.phpclass" />
+    <Content Include="SshSession\Authentication.phpclass" />
+    <Content Include="SshSession\Connection.phpclass" />
+    <Content Include="SshSession\FileSystem.phpclass" />
+    <Content Include="SshSession\LICENSE" />
+    <Content Include="SshSession\NOTICE" />
+    <Content Include="SshSession\Session.phpclass" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\DEVSENSE\PHP Tools\VS$(VisualStudioVersion)\Devsense.PHP.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

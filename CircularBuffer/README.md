@@ -5,7 +5,7 @@ The **CircularBuffer** class implements a circular buffer, ie a buffer that can 
 Circular buffers are often used when you have to face the following trade-offs :
 
 - The amount of memory you are authorized to use is limited
-- As time goes by, you can accept to discard some of the oldest data you're storing into the circular buffer
+- You know that you will not be able to store everything. As time goes by, you can accept to discard some of the oldest data you're storing into the circular buffer
 
  ## Creating a circular buffer ##
 

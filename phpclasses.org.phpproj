@@ -31,6 +31,7 @@
     <Folder Include="AssociativeArray\" />
     <Folder Include="AsynchronousCommand\" />
     <Folder Include="AsynchronousCommand\examples\" />
+    <Folder Include="CircularBuffer\" />
     <Folder Include="DbStringStore\data\" />
     <Folder Include="IniFile\" />
     <Folder Include="DbVariableStore\" />
@@ -94,6 +95,7 @@
     <Compile Include="AsynchronousCommand\examples\askforinput.php" />
     <Compile Include="AsynchronousCommand\examples\example.find.php" />
     <Compile Include="AsynchronousCommand\examples\example.input.php" />
+    <Compile Include="CircularBuffer\example.php" />
     <Compile Include="DbBufferedOperation\benchmark.php" />
     <Compile Include="DbStringStore\DbStringStore.php" />
     <Compile Include="DbStringStore\DbTable.php" />
@@ -146,6 +148,9 @@
     <Content Include="AsynchronousCommand\AsynchronousCommand.php" />
     <Content Include="AsynchronousCommand\LICENSE" />
     <Content Include="AsynchronousCommand\NOTICE" />
+    <Content Include="CircularBuffer\CircularBuffer.phpclass" />
+    <Content Include="CircularBuffer\LICENSE" />
+    <Content Include="CircularBuffer\NOTICE" />
     <Content Include="DbBufferedOperation\DbBufferedInsert.php" />
     <Content Include="DbBufferedOperation\DbBufferedLoadFile.php" />
     <Content Include="DbBufferedOperation\DbBufferedOperation.php" />

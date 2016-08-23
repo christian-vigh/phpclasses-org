@@ -57,6 +57,7 @@
     <Folder Include="Articles\images\" />
     <Folder Include="PdfToText\examples\example03\" />
     <Folder Include="PdfToText\images\" />
+    <Folder Include="RandomOrg\" />
     <Folder Include="RtfTools\" />
     <Folder Include="RtfTools\.git\" />
     <Folder Include="RtfTools\.git\hooks\" />
@@ -207,6 +208,9 @@
     <Content Include="RandomAccessFile\random.dat" />
     <Content Include="RandomAccessFile\RandomAccessFile.phpclass" />
     <Content Include="RandomAccessFile\README.md" />
+    <Content Include="RandomOrg\LICENSE" />
+    <Content Include="RandomOrg\NOTICE" />
+    <Content Include="RandomOrg\RandomOrg.phpclass" />
     <Content Include="Regex\README.html" />
     <Content Include="Regex\NOTICE" />
     <Content Include="Regex\LICENSE" />

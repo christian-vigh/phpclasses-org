@@ -40,6 +40,9 @@
     <Folder Include="DbBufferedOperation\" />
     <Folder Include="ApiLayer\" />
     <Folder Include="Mail\" />
+    <Folder Include="Mail\examples\" />
+    <Folder Include="Mail\examples\images\" />
+    <Folder Include="Mail\examples\data\" />
     <Folder Include="Minifiers\" />
     <Folder Include="Minifiers\.git\" />
     <Folder Include="Minifiers\.git\hooks\" />
@@ -109,6 +112,13 @@
     <Compile Include="DbVariableStore\example.php" />
     <Compile Include="IniFile\example.php" />
     <Compile Include="IniFile\IniFile.class.php" />
+    <Compile Include="Mail\examples\attachments.php" />
+    <Compile Include="Mail\examples\external-html.php" />
+    <Compile Include="Mail\examples\examples.inc.php" />
+    <Compile Include="Mail\examples\embedded-images.php" />
+    <Compile Include="Mail\examples\text-and-html.php" />
+    <Compile Include="Mail\examples\textonly.php" />
+    <Compile Include="Mail\Regex.class.php" />
     <Compile Include="Minifiers\examples\css\example.php" />
     <Compile Include="Minifiers\examples\js\example.php" />
     <Compile Include="Minifiers\examples\php\example.php" />
@@ -175,6 +185,9 @@
     <Content Include="IniFile\LICENSE" />
     <Content Include="IniFile\NOTICE" />
     <Content Include="IniFile\README.md" />
+    <Content Include="Mail\examples\data\file1.txt" />
+    <Content Include="Mail\examples\data\file2.txt" />
+    <Content Include="Mail\examples\mail.html" />
     <Content Include="Mail\LICENSE" />
     <Content Include="Mail\Mail.phpclass" />
     <Content Include="Mail\NOTICE" />

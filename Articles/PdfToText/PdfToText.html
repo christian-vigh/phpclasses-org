@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<style>
+h1
+   {
+	color			:  #113452 ;
+    }
+
+.code 
+   {
+	word-wrap		: break-word ;
+	background		: none repeat scroll 0% 0% #F6F6F6 ;
+	padding			: 4px ;    
+    }
+</style>
+
+</head>
+<body>
+
+<h3>Introduction</h3>
+
+<p>
+	Extracting text from PDF files can be a tedious task for a developer. If you ever tried to open a PDF file using a text editor such
+	as <i>Notepad++</i> just to perform a simple search on some text you know for sure to be present in it, chances are great that you will find nothing
+	but binary data !
+</p>
+
+<p>
+	This is due to the open nature of the PDF file format : the basic elements of a PDF file are <i>objects</i>, identified by a
+	(normally) unique object number and a revision id. Objects can contain anything like font definitions, character substitution tables and,
+	of course, text data, most of them being in <i>gzip</i> format, when not encrypted... And expect even more complicated things under the hood.
+</p>
+
+<p>
+	This article explains how the <a href="http://www.phpclasses.org/package/9732-PHP-Extract-text-contents-from-PDF-files.html" title="PdfToText" alt="PdfToText" target="_blank">PdfToText</a> class
+	can help you to extract text from almost any PDF file.<br />
+</p>
+
+<p>
+	It will be followed by a series of articles explaining various parts of the PDF file format that are of interest during the text extraction process.
+</p>
+
+
+<h3>Installation</h3>
+
+<p>
+	Talking about an installation process would be a little bit pretentious : just extract the <b>PdfToText.phpclass</b> file from the <i>.zip</i> archive to your preferred
+	includes directory.
+</p>
+
+<p>
+	A future version may include additional and completely optional satellit data files, but that's another story which will be the subject of another article...
+</p>
+
+<h3>Generating PDF files</h3>
+
+<p>
+	Before starting working with the <b>PdfToText</b> class, you will need of course a few PDF sample files ; if you do not have any one at hand, two or three are provided 
+	in the <b>PdfToText</b> <i>.zip</i> package, under the <i>examples</i> directory. <br />
+	If you're using the Windows operating system, the following virtual printer drivers can be of some help to generate PDF files 
+	(the following list is not exhaustive) :
+
+	<ul>
+		<li>
+			<i>Microsoft Print to PDF</i> : the native solution from Microsoft. If not installed on your system, you can have a look s
+			<a href="http://answers.microsoft.com/en-us/windows/forum/windows_10-other_settings/microsoft-print-to-pdf-missing-from-printer/e60d68b2-f530-4a9f-a31b-a87355625fae?auth=1"
+					target="_blank"
+				>here</a>.
+			Note that it may sometimes generate weird results...
+		</li>
+		<li>
+			<i>Pdf Creator</i> : a free virtual printer (<a href="http://www.pdfforge.org/pdfcreator" target="_blank">http://www.pdfforge.org/pdfcreator</a>). 
+			The free version contains some ads.
+		</li>
+		<li>
+			<i>PrimoPdf</i> : another free virtual PDF printer (<a href="http://www.primopdf.com" target="_blank">http://www.primopdf.com</a>).
+		</li>
+		<li>
+			<i>Pdf Architect 4</i> : Another product from PdfForge, which is not free (<a href="http://www.pdfforge.org/pdfarchitect" target="_blank">http://www.pdfforge.org/pdfarchitect</a>). 
+			However, it includes a free virtual PDF printer driver really similar to <i>Pdf Creator</i> (if not identical, except the name).
+		</li>
+		<li>
+			<i>Pdf Pro 10</i> : A not-free solution for editing PDF files (<a href="http://www.pdfpro10.com" target="_blank">http://www.pdfpro10.com</a>). 
+			It includes a free virtual printer driver that has many interesting features, such as an elaborate printer spooler for managing files printed on servers. 
+		</li>
+		<li>
+			<i>PdFill Image Writer</i> : A free virtual printer (<a href="https://www.pdfill.com/freewriter.html" target="_blank">https://www.pdfill.com/freewriter.html</a>).
+			You can also purchase a PDF editor for less than 20$.
+		</li>
+		<li>
+			And, of course, <i>Adobe Acrobat DC</i>.
+		</li>
+	</ul>
+
+	You can also use Microsoft Word (>= 2007), OpenOffice and LibreOffice to save your documents as PDF files.
+</p>
+
+<h3>Getting started</h3>
+
+<p>
+	Although the PDF file format is really versatile, the <b>PdfToText</b> class has been designed to hide you the complexity of the underlying data and provide 
+	a simple interface. Basically, the simplest PHP script that would process a PDF file given as a command-line argument
+	and echo its text contents to the standard output would look like this :
+
+	<pre class="code">
+		&lt;?php
+			require ('path/to/PdfToText.phpcass' ) ;
+
+			$pdf		=  new  PdfToText ( $argv [1] ) ;
+			echo $pdf -> Text ;
+	</pre>
+
+	Once you have loaded a PDF file, its text contents are accessible through the <b>Text</b> property.
+
+	The filename supplied to the class constructor is optional ; you can omit it, then later use the <i>Load()</i> method to extract its contents. 
+	This allows you to specify additional options or set special properties before loading the actual PDF contents ; the following example will extract
+	images from your PDF file, by setting the <i>Options</i> property before calling the <i>Load()</i> method :
+
+	<pre class="code">
+		&lt;?php
+			require ('path/to/PdfToText.phpcass' ) ;
+
+			$pdf			=  new  PdfToText ( ) ;
+			$pdf -> Options		=  PdfToText::PDFOPT_DECODE_IMAGE_DATA ;
+			$pdf -> Load ( $argv [1] ) ;
+			echo $pdf -> Text ;
+	</pre>
+
+	Note that this second approach will allow you to reuse the same object (with the same options) for processing different PDF files.
+</p>
+
+<h3>Retrieving page contents</h3>
+
+<p>
+	You can retrieve individual page contents by using the <b>Pages</b> array property which is available, like the <b>Text</b> property, once the PDF file contents have been loaded.
+</p>
+<p>
+	The <b>Pages</b> property is an associative array whose keys are page numbers, and values, page contents.
+</p>
+<p>
+	A sample script which would display individual page contents from a PDF file would look like this :
+
+	<pre class="code">
+		&lt;?php
+			require ('path/to/PdfToText.phpcass' ) ;
+
+			$pdf		=  new  PdfToText ( $argv [1] ) ;
+		
+			foreach  ( $pdf -> Pages  as  $page_number => $page_contents )
+				echo "Contents of page #$page_number :\n$page_contents\n" ;
+	</pre>
+</p>
+
+<h3>Retrieving image data</h3>
+
+<p>
+	The PDF file format supports several types of images contents. In its current version (1.2.46), the <b>PdftoText</b> class is only able to process
+	images encoded in the JPEG format.
+</p>
+
+<p>
+	Retrieving image contents is a simple as specifying a special option as the second parameter of the class constructor :
+
+	<pre class="code">
+		&lt;?php
+			require ('path/to/PdfToText.phpcass' ) ;
+
+			$pdf			=  new  PdfToText ( $argv [1], PdfToText::PDFOPT_DECODE_IMAGE_DATA ) ;
+	</pre>
+
+	Or, if you prefer deferred loading :
+
+	<pre class="code">
+		&lt;?php
+			require ('path/to/PdfToText.phpcass' ) ;
+
+			$pdf			=  new  PdfToText ( ) ;
+			$pdf -> Options		=  PdfToText::PDFOPT_DECODE_IMAGE_DATA ;
+			$pdf -> Load ( $argv [1] ) ;
+	</pre>
+
+	Once loaded, image contents will be available through the <b>Images</b> array property, hich is an array of image resources which
+	have been created for each JPEG image encountered in your PDF file.
+</p>
+
+<p>
+	There is another option, <i>PdfToText::PDFOPT_GET_IMAGE_DATA</i>, which simply loads raw image data into the <b>ImageData</b> array property. In this
+	way, you may have more elements in the <b>ImageData</b> property than in <b>Images</b>, since the <b>PdfToText</b> class currently supports only
+	JPEG images.
+</p>
+<p>
+	Note that specifying the <i>PDF_DECODE_IMAGE_DATA</i> flag automatically sets the <i>PDFOPT_GET_IMAGE_DATA</i> one.
+</p>
+
+<h3>Documentation</h3>
+
+<p>
+	You will find below a link to the complete Adobe PDF specifications version 1.7 :
+</p>
+
+<p>
+	<center>
+		<a href="http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_reference_1-7.pdf" title="PDF Reference revision 1.7" target="_blank">PDF Reference version 1.7</a>
+	</center>
+</p>
+
+<p>
+	If you're enough enthusiastic to read the 1300 pages of this document,
+	keep in mind that Adobe also provided a generous set of technical notes addressing various specific topics not completely
+	covered by these specifications. Some of these technical notes are more than 200 pages long...
+</p>
+
+<h3>How to contribute to the development of the PdfToText class</h3>
+
+<p>
+	There are so many ways to write the same page contents using the Adobe Postcript-like language that sometimes you may get strange results ; should this be the case, 
+	please feel free to contact me on the <a href="http://www.phpclasses.org/discuss/package/9732/" target="_blank">Support forum</a>.
+</p>
+<p>
+	You can also have a look at my <a href="https://github.com/christian-vigh-phpclasses/PdfToText" target="_blank">Github repository</a>, and even issue pull requests.
+	I also have a website dedicated for this class : <a href="http://www.pdftotext.eu" target="_blank">http://www.pdftotext.eu</a>.
+</p>
+<p>
+	However, if you have any issue while processing one of your PDF files, and really don't want to go through the code to try to understand what's happening,
+	you can reach me directly at : <a href="mailto: christian.vigh@wuthering-bytes.com">christian.vigh@wuthering-bytes.com</a>.
+	Just send me the faulty PDF file as an attachment together with a little description about the issue, and I will be happy to try to solve your problem.
+</p>
+
+<h3>Known issues</h3>
+
+<p>
+	The following is a list of known issues. I'm still working on them and they will normally be implemented in future versions :
+
+	<ul>
+		<li>RTL languages, such as Arabic, Hebrew or Syriac, are not correctly processed : they are extracted from left to right</li>
+		<li>Only JPEG images are currently supported</li>
+		<li>There is currently no support for password-protected files (note that I'm not intending to develop a password cracker !
+			just a feature that allows you to extract text contents from a password-encrypted PDF file, if you supply the correct password)
+		</li>
+		<li>Digitally signed files are not currently supported</li>
+		<li>Text contents may sometimes show badly translated characters. The reason why will be explained in the next series of articles</li>
+		<li>The extracted text contents may not exactly reflect text positioning on the page. This is especially true regarding PDF files
+			that contain data in tabular format. Again, this issue will be fixed in a future release and explained in one of the future
+			articles about this class.
+		</li>
+		<li>
+			CID fonts (Adobe internal fonts, mainly targeted at eastern languages and developed before the Unicode effort took place) are
+			not yet supported. This will be the subject of another article.
+		</li>
+	</ul>
+</p>
+
+<h3>Conclusion</h3>
+
+<p>
+This article explained the basic usage of the <a href="http://www.phpclasses.org/package/9732-PHP-Extract-text-contents-from-PDF-files.html" title="PdfToText" alt="PdfToText" target="_blank">PdfToText</a>
+class. It presented a few features of the class, gave some basic examples on how to use it, and listed its current development state.
+</p>
+
+<p>
+	More articles will follow, diving into the internals of the PDF file format and explaining how the <b>PdfToText</b> class tries to handle them. The next article will talk about
+	how the text is "drawn" on a page, and the various encoding styles that can be used to draw characters.
+</p>
+
+<p>
+	If you liked this article, please feel free to share it with other developers !
+</p>
+
+</body>
+</html>

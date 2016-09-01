@@ -1,0 +1,433 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>CLParser documentation</title>
+
+<style>
+body
+   {
+	color			:  #376FAD ;
+	font-family		:  'Palatino Linotype', Arial ;
+	font-size		:  15px ;
+    }
+
+h1
+   {
+	color			:  #376FAD ;
+	margin-top		:  6px ;
+	margin-bottom		:  6px ;
+	font-size		:  24px ;
+    }
+
+h2
+   {
+	color			:  #376FAD ;
+	margin-top		:  6px ;
+	margin-bottom		:  6px ;
+	font-size		:  20px ;
+    }
+
+h3
+   {
+	color			:  #376FAD ;
+	margin-top		:  6px ;
+	margin-bottom		:  6px ;
+	font-size		:  18px ;
+    }
+
+.h1
+   {
+	margin-left		:  16px ;
+    }
+
+.h2
+   {
+	margin-left		:  32px ;
+    }
+
+.h3
+   {
+	margin-left		:  48px ;
+    }
+
+.code 
+   {
+	font-family		:  'Lucida Console', 'Courier New' ;
+	font-size		:  12px ;
+	white-space		:  pre ;
+	text-align		:  left ;
+	border			:  1px solid #376FAD ;
+	border-radius		:  3px ;
+	padding			:  4px 8px ;
+	width			:  700px ;
+    }
+
+ol.summary
+   {
+	padding-left		:  0px ;
+	margin-top		:  2px ;
+	color			:  #376FAD ;
+    }
+
+ol.summary ol
+   {
+	padding-left		:  16px ;
+    }
+
+.internal-link
+   {
+	color			:  #376FAD ;
+	font-family		:  'Palatino Linotype', Arial ;
+	text-decoration		:  none ;
+	font-weight		:  bolder ;
+    }
+
+.internal-link:hover
+   {
+	text-decoration		:  underline ;
+	cursor			:  pointer ;
+    }
+
+.page
+   {
+
+    }
+
+</style>
+
+</head>
+<body>
+	<h1>Preamble</h1>
+	The following document provides a comprehensive reference of the <b>CLParser</b> class.
+	<br /><br />
+
+	<h1>Summary</h1>
+
+	<div class="h1">
+		<ol class="summary">
+			<li>
+				<a href="#introduction" class="internal-link" title="Introduction">Introduction</a>
+				<ol>
+					<li><a href="#introduction-features" class="internal-link" title="Overall features">Features</a></li>
+					<li><a href="#introduction-installation" class="internal-link" title="Installation instructions">Installation</a></li>
+					<li><a href="#introduction-getting-started" class="internal-link" title="Getting started">Getting started</a></li>
+					<li><a href="#introduction-short-example" class="internal-link" title="Short example of the capabilities of the CLParser class">A short example</a></li>
+					<li><a href="#introduction-defining-parameters" class="internal-link" title="Defining additional parameters">Defining additional parameters</a></li>
+				</ol>
+			</li>
+			<li>
+				<a href="#parameters-reference" class="internal-link" title="A complete list of the parameter types that can be specified in a CLParser Xml definition, with the description of their attributes">Parameter types reference</a>
+				<ol>
+					<a href="parameters-reference-common" class="internal-link" title="A list of Xml attributes common to all parameters">Common attributes</a>
+				</ol>
+			</li>
+		</ol>
+	</div>
+
+	<br />
+
+	<div class="page">
+		<h1 id="introduction">1. Introduction</h1>
+		<div class="h1">
+			The <b>CLParser</b> (Command-Line Parser) package is yet-another command-line arguments parser.<br />
+			<br />
+			If you are involved into developing multiple PHP scripts that are to be run as batch commands, command-line arguments parsing may become a real issue 
+			when you want this repetitive task to be reliable and easy to implement.<br />
+			<br />
+			This package has been designed so that it will relieve you from the burden of parsing and verifying the values of command-line arguments, by implementing 
+			a vast amount of argument types and restrictions to be applied to the user-supplied values.<br />
+			<br />
+			Don't feel yourself confused by the number of class files that make up this package ; you should never have to understand the few thousands of lines of code 
+			that make it up to use it, since a real focus has been put on making its usage really simple.<br />
+			<br />
+
+			<h2 id="introduction-features">1.1 Features</h2>
+			<div class="h2">
+				The **CLParser** package provides 
+			</div>
+			<br />
+
+			<h2 id="introduction-installation">1.2 Installation</h2>
+			<div class="h2">
+				Installation is fairly simple :
+
+				<ul>
+					<li>Copy the file <b>CL.php</b> and the <b>CL/</b> directory somewhere in your preferred include directory</li>
+					<li>Include file <b>CL.php</b> in your PHP scripts</li>
+				</ul>
+			</div>
+			<br />
+
+			<h2 id="introduction-getting-started">1.3 Getting started</h2>
+			<div class="h2">
+				Developing a batch PHP script using the <b>CLParser</b> package for parsing its command-line arguments is fairly straightforward ; 
+				it requires only a few steps that will quickly become familiar to you as your script development tasks will grow in quantity :<br />
+
+				<ol>
+					<li>
+						Include the file <b>CL.php</b> in your script ; it will in turn include everything needed to perform command-line parsing
+					</li>
+					<li>
+						Define your command-line syntax through a string containing Xml tags. These definitions will provide information such as parameter names, types, 
+						potential restrictions on their values, whether they are required or not, and so on.
+					</li>
+					<li>
+						Instantiate a <b>CLParser</b> object, providing the definitions coming from step 2.
+					</li>
+					<li>
+						Use your instance to retrieve individual parameter values.
+					</li>
+				</ol>
+
+				By using the <b>CLParser</b> class, you will have access to features that are handled internally by the package, such as displaying command-line help, 
+				having access to a bunch of standard parameters, and much more.
+
+			</div>
+			<br />
+
+			<h2 id="introduction-short-example">1.4 A short example</h2>
+			<div class="h2">
+				Consider the following example script (let's name it <i>example.php</i>), which has a single parameter named <i>string_value</i> 
+				(note that there is an alias to this parameter, called <i>sv</i>) :<br />
+				<br />
+
+				<div class="code" id="getting-started-example">
+#!/usr/bin/php
+// Step 1 : include the main file, CL.php
+require ( 'path/to/CL.php' ) ;
+
+// Step 2 : Define the specifications of your command line
+$definitions 	=  &lt;&lt;&lt;END
+&lt;command&gt;
+	&lt;usage&gt;
+		A script that displays the value of its -string_value argument.
+	&lt;/usage&gt;
+	
+	&lt;string name="string_value, sv" default="default string value"&gt;
+		A string value.
+	&lt;/string&gt;
+&lt;/command&gt;				
+END;
+
+// Step 3 : Instantiate a CLParser object, providing the above definitions
+$cl 	=  new CLParser ( $definitions ) ;
+
+// Step 4 : Retrieve and use the supplied parameter values the way you like
+echo "The value of the string_value parameter is : " . $cl -&gt; string_value . "\n" ;
+				</div>
+				<br />
+
+				You may have noticed that there is a <i>$definitions</i> variable, containing XML data. The XML format used for this is pretty simple :
+
+				<ul>
+					<li>The root node is always <b>&lt;command&gt;</b></li>
+					<li>
+						This root node contains several child items ; the above example specifies the following :
+						<ul>
+							<li><b>&lt;usage&gt;</b> node : specifies a more or less short text that gives a brief description of what your script is really doing</li>
+							<li><b>&lt;string&gt;</b> node : defines a parameter of type <i>string</i>. 
+								Its name is <i>string_value</i> and it has an alias named <i>sv</i>. 
+								You can specify as many parameter names or aliases as you like within a single parameter definition, 
+								as long as they are unique within your Xml definitions. Note that a default value has been specified for this parameter 
+								(<i>"default string value"</i>). 
+								Since this parameter definition is not marked as <i>required</i>, not supplying a value for this parameter on the command line 
+								will automatically assign the default value to your parameter, as if it had actually been specified when invoking the script.
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+				Many other parameter types are available : booleans, integers, floats, emails, keywords, bitsets, ip addresses, etc. <br />
+				<br />
+
+				One of the first things you could try now is invoking the script without any parameter :<br />
+				<br />
+
+				<div class="code">
+$ php example.php
+				</div>
+				<br />
+
+				Or, if you're running Unix, if file *example.php* has the execute permission and if the directory that contains it is in your PATH, simply type :<br />
+				<br />
+
+				<div class="code">
+$ example.php
+				</div>
+				<br />
+
+				which will output the default value of the <i>-string_value</i> parameter :<br />
+				<br />
+
+				<div class="code">
+The value of the string_value parameter is : default string value
+				</div>
+				<br />
+
+				Now, to run your script specifying your own value for the <i>string_value</i> parameter, specify it the way you would for most Unix commands, 
+				by prepending a minus sign to its name :<br />
+				<br />
+
+				<div class="code">
+$ example.php -string_value "Hello world"
+The value of the string_value parameter is : Hello world
+				</div>
+				<br />
+
+				Of course, you can use any alias defined together with this parameter :<br />
+				<br />
+
+				<div class="code">
+$ example.php -sv "Hello world, again"
+The value of the string_value parameter is : Hello world, again
+				</div>
+				<br />
+
+				<b>A note for Windows users :</b><br />
+				Unless you define a new executable file extension using the <b>ASSOC</b> and <b>FTYPE</b> commands, add it to your <b>PATHEXT</b> 
+				environment variable and rename the example scripts to use this extension, you won't be able to directly execute the example scripts. 
+				You will have to invoke each script through <b>PHP.EXE</b>, such as in the following example :<br />
+				<br />
+
+				<div class="code">
+C:\> php example.php -sv "Hello world, again"
+				</div>
+				<br />
+			</div>
+			<br />
+
+			<h2 id="introduction-defining-parameters">1.5 Defining additional parameters</h2>
+			<div class="h2">
+				Adding new parameters to your script is as simple as adding new tags to your <b>CLParser</b> command definitions. The following example
+				adds 3 parameters to the command definitions found in the <a href="#getting-started-example" class="internal-link">Getting started example</a>
+				(for simplicity reason, only the contents of the <i>$definitions</i> variable will be listed below).<br />
+				<br />
+
+				<div class="code">
+&lt;command&gt;
+	&lt;usage&gt;
+		A script that displays the value of its -string_value argument.
+	&lt;/usage&gt;
+	
+	&lt;string name="string_value, sv" default="default string value"&gt;
+		A string value.
+	&lt;/string&gt;
+	
+	&lt;flag name="flag_value, fv"&gt;
+		A flag value.
+	&lt;/string&gt;
+	
+	&lt;integer name="integer_value, iv" min-value="1" max-value="100" default="1"&gt;
+		An integer value between 1 and 100.
+	&lt;/string&gt;
+
+	&lt;ip-address name="ip_address, ia"&gt;
+		An Ip address.
+	&lt;/string&gt;	
+&lt;/command&gt;				
+				</div>
+				<br />
+
+				The parameters that have been added are the following (assume that we are using our <a href="#getting-started-example" class="internal-link">Getting started example</a> script) :
+
+				<ul>
+					<li>
+						<i>flag_value</i> (with an alias, <i>fv</i>). The value of this parameter can be retrieved using the following code :<br />
+						<br />
+						<div class="code">
+$flag_value	=  $cl -> flag_value ;	// or you can also use its alias : $flag_value = $cl -> fv ;
+						</div>
+						<br />
+
+						The <b>$flag_value</b> variable will be <i>true</i> if the user specified the <i>-flag_value</i> parameter on the command line, and false otherwise.<br />
+						<br />
+					</li>
+					<li>
+						<i>integer_value</i> (with an alias, <i>iv</i>). The value of this parameter must be in the range [1..100] and will default to 1 if it has not been
+						specified on the command line. It can be retrieved using the following code :<br />
+						<br />
+						<div class="code">
+$integer_value	=  $cl -> integer_value ;
+						</div>
+						<br />
+
+						The <b>$integer_value</b> variable will be the one specified by the user on the command line, or 1 otherwise. Note that an exception
+						(of class <b>CLException</b>) will be thrown if the user specified a value outside the range [1..100].<br />
+						Since it's a numeric value, you can specify a mathematical expression as the parameter value :<br />
+						<br />
+						<div class="code">
+$ example.php -integer_value 8*5
+						</div>
+						<br />
+
+					</li>
+					<li>
+						<i>ip_address</i> (with an alias, <i>ia</i>). The value of this parameter can be retrieved using the following code :<br />
+						<br />
+						<div class="code">
+$ip_address	=  $cl -> ip_address ;
+						</div>
+						<br />
+
+						However, if you do a <i>print_r ( $ip_address )</i>, you will notice that the value that the <b>CLParser</b> object returned is not a
+						scalar value, but an array :<br />
+						<br />
+
+						<div class="code">
+Array
+(
+    [ip-address] => 127.0.0.1
+    [ip-version] => 4
+    [ip-bytes] => Array
+        (
+            [0] => 127
+            [1] => 0
+            [2] => 0
+            [3] => 1
+        )
+
+    [ip] => 2130706433
+)						
+						</div>
+						<br />
+
+						The <b>CLParser</b> class avoided the script developer to parse the ip address by himself and returned an array containing several information
+						such as the supplied ip address, the ip address version (4 or 6), the individual bytes found in the ip address and, for the case of IPV4 addresses,
+						its integer representation.<br />
+						<br />
+						Although you will get a scalar value with most of parameter types, some of them will return an array with already parsed data.<br />
+						<br />
+
+						You can have a look at the <a href="#parameters-reference" class="internal-link">Parameter types reference</a> section for a complete description
+						of the various parameter types the <b>CLParser</b> class can handle.
+
+						<br />
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<h1 id="parameters-reference">2. Parameter types reference</h1>
+		<div class="h1">
+			As you might have guessed from the above introduction, making your script ready for automatic command-line arguments parsing only requires you to instantiate an object
+			of class <b>CLParser</b>, passing Xml contents containing the <b>&lt;command&gt;</b> root node to the class constructor.<br />
+			<br />
+
+			Adding new command-line parameters to your script simply consists in adding Xml tags of the appropriate type to your definitions ; for example,
+			<b>&lt;string&gt;</b> for strings, <b>&lt;integer&gt;</b> for integer values, <b>&lt;file&gt;</b> for filenames, and so on. <br />
+			<br />
+
+			You will find here a complete reference about the parameter declarations that you can put in your <b>CLParser</b> definitions, with the following information :
+			<ul>
+				<li>A description of the parameter type (how to use it, when and why)</li>
+				<li>The list of Xml attributes that you can specify in your declaration</li>
+				<li>Some command-line examples that will explain how the user who runs your script can specify the appropriate values</li>
+			</ul>
+			<br />
+
+
+		</div>
+	</div>
+
+</body>
+</html>

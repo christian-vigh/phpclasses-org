@@ -240,14 +240,6 @@ The string to be used for line breaks. The default is PHP\_EOL.
 
 Name of the file whose text contents have been extracted.
 
-### HashedOwnerPassword ###
-
-A 32-byte string used in determining whether a valid owner password was specified.
-
-### HashedUserPassword ###
-
-A 32-byte string used in determining whether a valid user password was specified.
-
 ### ID, ID2 ###
 
 A pair of unique ids generated for the document. The value of **ID** is used for decrypting password-protected documents.
@@ -321,6 +313,10 @@ will be rendered as :
 
 - *PDFOPT\_NONE* : Default value. No special processing flags apply.
 
+### OwnerEncryptionKey ###
+
+A 32-byte string used in determining whether a valid owner password was specified.
+
 ### OwnerPassword ###
 
 Owner password to be specified if the PDF file is password-protected.
@@ -350,6 +346,10 @@ A string containing the whole text extracted from the underlying pdf file. Note 
 ### Title ###
 
 Document title, as specified in the author information object.
+
+### UserEncryptionKey ###
+
+A 32-byte string used in determining whether a valid user password was specified.
 
 ### UserPassword ###
 

@@ -40,6 +40,7 @@
     <Folder Include="CLParser\Examples\" />
     <Folder Include="CLParser\Examples\00.readme\" />
     <Folder Include="CLParser\Examples\01.general\" />
+    <Folder Include="CLParser\Help\" />
     <Folder Include="DbStringStore\data\" />
     <Folder Include="IniFile\" />
     <Folder Include="DbVariableStore\" />
@@ -190,7 +191,6 @@
     <Content Include="CLParser\CL\Data\ColorNames.txt" />
     <Content Include="CLParser\CL\Types\Boolean.phpclass" />
     <Content Include="CLParser\CL\Types\Color.phpclass" />
-    <Content Include="CLParser\CL\Types\Command.phpclass" />
     <Content Include="CLParser\CL\Types\CommandLine.phpclass" />
     <Content Include="CLParser\CL\Types\DateTime.phpclass" />
     <Content Include="CLParser\CL\Types\File.phpclass" />
@@ -207,8 +207,11 @@
     <Content Include="CLParser\CL\Types\Standard.phpclass" />
     <Content Include="CLParser\CL\Types\String.phpclass" />
     <Content Include="CLParser\CL\Types\Types.ini" />
+    <Content Include="CLParser\CL\Utilities\AsciiReport.phpclass" />
     <Content Include="CLParser\CL\Utilities\Colors.phpclass" />
+    <Content Include="CLParser\CL\Utilities\Console.phpclass" />
     <Content Include="CLParser\CL\Utilities\Convert.phpclass" />
+    <Content Include="CLParser\CL\Utilities\Debug.phpclass" />
     <Content Include="CLParser\CL\Utilities\Encoder.phpclass" />
     <Content Include="CLParser\CL\Utilities\Formatting.phpclass" />
     <Content Include="CLParser\CL\Utilities\GenericWrapper.phpclass" />
@@ -219,9 +222,12 @@
     <Content Include="CLParser\CL\Utilities\SimpleXML.phpclass" />
     <Content Include="CLParser\CL\Utilities\String.phpclass" />
     <Content Include="CLParser\CL\Utilities\Vector.phpclass" />
+    <Content Include="CLParser\Examples\dotest.phs" />
     <Content Include="CLParser\Examples\README.md" />
+    <Content Include="CLParser\Help\Help.html" />
     <Content Include="CLParser\LICENSE" />
     <Content Include="CLParser\NOTICE" />
+    <Content Include="CLParser\README.md" />
     <Content Include="DbBufferedOperation\DbBufferedInsert.php" />
     <Content Include="DbBufferedOperation\DbBufferedLoadFile.php" />
     <Content Include="DbBufferedOperation\DbBufferedOperation.php" />

@@ -51,10 +51,10 @@
 		The <i>How ?</i> requires more attention from you : you must be aware that profiling some code adds significant overhead during execution.<br />
 		As an example, consider the following when you're using the <b>xdebug</b> extension :
 		<ul>
-			<li>Simply enabling the <b>xdebug</b> extension in your <i>php.ini</i> file makes your code run slower by a factor of 20.</li>
-			<li>Enabling the <b>xdebug</b> extension to profile your code makes it run slower by another factor of 20.</li>
+			<li>Simply enabling the <b>xdebug</b> extension in your <i>php.ini</i> file without enabling profiling can make your code run slower.</li>
+			<li>Enabling the <b>xdebug</b> extension to profile your code makes it run slower by another factor of 20 to 40.</li>
 		</ul>
-		yes, you read it : profiling your code makes it run slower by a factor of 20*20 = 400 ! (of course, these may not be exactly factors of 20 and 20 : it 
+		yes, you read it : profiling your code can make it run slower by a factor of 40 ! (of course, this may not exactly be 40 : it 
 		depends on your code and your execution environment, so just consider these numbers as an order of magnitude).<br /><br />
 		Given that, if your real-world data contains several millions of items, don't even think about using a profiler on them ! <br /><br />
 		What I would suggest in such situations is the following :
@@ -155,8 +155,8 @@
 		you with consistent execution times from one execution to another.<br /><br />
 		Of course, due to the amount of overhead implied when profiling a program, I suggest that you start with runs that last only a few seconds (without profiling) ;
 		otherwise you would lose significant time in the <i>profile -> analyze -> optimize -> profile</i> loop.<br /><br />
-		Once your optimization task is complete, I suggest that you perform a last try with a data set that makes your program run during, say, tenths of seconds
-		(without profiling), just in the case you did not cover all the optimization issues that could have been hidden with smaller data sets.
+		Once your optimization task is complete, I suggest that you perform a last try with a data set that makes your program run during, say, several seconds or minutes
+		(without enabling profiling), just in the case you did not cover all the optimization issues that could have been hidden with smaller data sets.
 
 		<h3>Estimating your operating system overhead</h3>
 		You can easily measure operating system overhead using the Unix <i>time</i> command ; Windows platforms users will have to use the tools provided

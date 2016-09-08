@@ -37,7 +37,7 @@ h3
 
 .h1
    {
-	margin-left		:  16px ;
+	margin-left		:  24px ;
     }
 
 .h2
@@ -47,7 +47,7 @@ h3
 
 .h3
    {
-	margin-left		:  48px ;
+	margin-left		:  40px ;
     }
 
 .code 
@@ -62,14 +62,14 @@ h3
 	width			:  700px ;
     }
 
-ol.summary
+ol.summary, ul.summary
    {
 	padding-left		:  0px ;
 	margin-top		:  2px ;
 	color			:  #376FAD ;
     }
 
-ol.summary ol
+ol.summary ol, ul.summary ul
    {
 	padding-left		:  16px ;
     }
@@ -93,6 +93,65 @@ ol.summary ol
 
     }
 
+table.parameter-overview
+   {
+	margin-bottom		:  12px ;
+	margin-top		:  12px ;
+	border			:  1px solid #0055AA ;
+	border-collapse		:  collapse ;
+    }
+
+table.parameter-overview tr
+   {
+	border-bottom		:  1px solid #0055AA ;
+    }
+
+table.parameter-overview th
+   {
+	padding			:  3px 6px ;
+	text-align		:  center ;
+	background-color	:  #376FAD ;
+	color			:  #FFFFFF ;
+    }
+
+table.parameter-overview td
+   {
+	padding			:  3px 6px ;
+	text-align		:  left ;
+	color			:  #376FAD ;
+    }
+
+table.parameter-overview td.left 
+   {
+	border-right		:  1px solid #0055AA ;
+	font-style		:  italic ;
+    }
+
+table.parameter-overview td.middle
+   {
+	border-right		:  1px solid #0055AA ;
+    }
+
+table.parameter-overview td.right
+   {
+	min-width		:  300px ;
+    }
+
+table.parameter-overview th.left 
+   {
+	border-right		:  1px solid #FFFFFF ;
+    }
+
+table.parameter-overview th.middle
+   {
+	border-right		:  1px solid #FFFFFF ;
+    }
+
+table.parameter-overview th.right
+   {
+    }
+
+
 </style>
 
 </head>
@@ -104,30 +163,45 @@ ol.summary ol
 	<h1>Summary</h1>
 
 	<div class="h1">
-		<ol class="summary">
+		<ul class="summary">
 			<li>
 				<a href="#introduction" class="internal-link" title="Introduction">Introduction</a>
-				<ol>
+				<ul>
 					<li><a href="#introduction-features" class="internal-link" title="Overall features">Features</a></li>
 					<li><a href="#introduction-installation" class="internal-link" title="Installation instructions">Installation</a></li>
 					<li><a href="#introduction-getting-started" class="internal-link" title="Getting started">Getting started</a></li>
 					<li><a href="#introduction-short-example" class="internal-link" title="Short example of the capabilities of the CLParser class">A short example</a></li>
 					<li><a href="#introduction-defining-parameters" class="internal-link" title="Defining additional parameters">Defining additional parameters</a></li>
-				</ol>
+				</ul>
 			</li>
 			<li>
 				<a href="#parameters-reference" class="internal-link" title="A complete list of the parameter types that can be specified in a CLParser Xml definition, with the description of their attributes">Parameter types reference</a>
-				<ol>
-					<a href="parameters-reference-common" class="internal-link" title="A list of Xml attributes common to all parameters">Common attributes</a>
-				</ol>
+				<ul>
+					<li><a href="#parameters-reference-attribute-types" class="internal-link" title="List of all the possible attribute types">Parameter attributes types</a></li>
+					<li><a href="#parameters-reference-synopsis" class="internal-link" title="Explanation of the synopsis tables found in parameter attribute descriptions">Parameter attributes synopsis</a></li>
+					<li><a href="#parameters-reference-common" class="internal-link" title="A list of Xml attributes common to all parameters">Common parameter attributes</a></li>
+					<li><a href="#parameters-reference-types" class="internal-link" title="A list of Xml attributes common to all parameters">Common parameter attributes</a></li>
+				</ul>
 			</li>
-		</ol>
+			<li>
+				<a href="#command-language-reference" class="internal-link" title="All the tags that can be supplied in a command-line definition">Xml command definition language reference</a>
+				<ul>
+				</ul>
+			</li>
+			<li>
+				<a href="#commandline-reference" class="internal-link" title="How parameters can be specified on the command line">Command-line usage reference</a>
+				<ul>
+					<li><a href="#commandline-reference-reserved" class="internal-link" title="Reserved parameter names">Reserved parameter names</a></li>
+					<li><a href="#commandline-reference-extra" class="internal-link" title="Special parameter names">Special parameter names</a></li>
+				</ul>
+			</li>
+		</ul>
 	</div>
 
 	<br />
 
 	<div class="page">
-		<h1 id="introduction">1. Introduction</h1>
+		<h1 id="introduction">Introduction</h1>
 		<div class="h1">
 			The <b>CLParser</b> (Command-Line Parser) package is yet-another command-line arguments parser.<br />
 			<br />
@@ -141,13 +215,22 @@ ol.summary ol
 			that make it up to use it, since a real focus has been put on making its usage really simple.<br />
 			<br />
 
-			<h2 id="introduction-features">1.1 Features</h2>
+			<h2 id="introduction-features">Features</h2>
 			<div class="h2">
-				The **CLParser** package provides 
+				The <b>CLParser</b> package provides the following features :
+
+				<ul>
+					<li>An xml-based language for defining command-line parameters</li>
+					<li>The possibility to include help contents at the command and parameter levels</li>
+					<li>Dozens of parameter types that can be defined for your script's command line</li>
+					<li>Automatic parsing and validation of user-supplied command line parameters</li>
+					<li>Automatic support of predefined parameters</li>
+					<li>A simple API for retrieving parameter values</li>
+				</ul>
 			</div>
 			<br />
 
-			<h2 id="introduction-installation">1.2 Installation</h2>
+			<h2 id="introduction-installation">Installation</h2>
 			<div class="h2">
 				Installation is fairly simple :
 
@@ -158,7 +241,7 @@ ol.summary ol
 			</div>
 			<br />
 
-			<h2 id="introduction-getting-started">1.3 Getting started</h2>
+			<h2 id="introduction-getting-started">Getting started</h2>
 			<div class="h2">
 				Developing a batch PHP script using the <b>CLParser</b> package for parsing its command-line arguments is fairly straightforward ; 
 				it requires only a few steps that will quickly become familiar to you as your script development tasks will grow in quantity :<br />
@@ -185,7 +268,7 @@ ol.summary ol
 			</div>
 			<br />
 
-			<h2 id="introduction-short-example">1.4 A short example</h2>
+			<h2 id="introduction-short-example">A short example</h2>
 			<div class="h2">
 				Consider the following example script (let's name it <i>example.php</i>), which has a single parameter named <i>string_value</i> 
 				(note that there is an alias to this parameter, called <i>sv</i>) :<br />
@@ -296,7 +379,7 @@ C:\> php example.php -sv "Hello world, again"
 			</div>
 			<br />
 
-			<h2 id="introduction-defining-parameters">1.5 Defining additional parameters</h2>
+			<h2 id="introduction-defining-parameters">Defining additional parameters</h2>
 			<div class="h2">
 				Adding new parameters to your script is as simple as adding new tags to your <b>CLParser</b> command definitions. The following example
 				adds 3 parameters to the command definitions found in the <a href="#getting-started-example" class="internal-link">Getting started example</a>
@@ -407,10 +490,10 @@ Array
 			</div>
 		</div>
 
-		<h1 id="parameters-reference">2. Parameter types reference</h1>
+		<h1 id="parameters-reference">Parameter types reference</h1>
 		<div class="h1">
 			As you might have guessed from the above introduction, making your script ready for automatic command-line arguments parsing only requires you to instantiate an object
-			of class <b>CLParser</b>, passing Xml contents containing the <b>&lt;command&gt;</b> root node to the class constructor.<br />
+			of class <b>CLParser</b> and passing the Xml contents containing the <b>&lt;command&gt;</b> root node to the class constructor.<br />
 			<br />
 
 			Adding new command-line parameters to your script simply consists in adding Xml tags of the appropriate type to your definitions ; for example,
@@ -424,8 +507,974 @@ Array
 				<li>Some command-line examples that will explain how the user who runs your script can specify the appropriate values</li>
 			</ul>
 			<br />
+			All the examples in this section assume that they are put in a script called <i>example.php</i>, which will be run using the following command :<br />
+			<br />
+
+			<div class="code">
+<i>php example.php</i> [example script arguments]
+			</div>
+			<br />
+
+			Moreover, it is assumed that a typical example script provides command-line parameter definitions in a variable named <i>$definitions</i>, and that
+			an instance of the <b>CLParser</b> class has been assigned to a variable named <i>$cl</i>, as in the following example :<br />
+			<br />
+
+			<div class="code">
+&lt;?php
+	require ( 'CL.php' ) ;
+
+	$definitions	=  &lt;&lt;&lt;END
+		&lt;command&gt;
+			<i>some definitions here...</i>
+		&lt;/command&gt;
+END ;
+
+	$cl		=  new CLParser ( $definitions ) ;
+			</div>
+			<br />
+
+			By default, all command-line arguments must be prefixed by the "-" (minus or dash) character.<br />
+			<br />
+			Your script must also include the file <b>CL.php</b>, which is bundled with this package.<br />
+			<br />
+
+			<h2 id="parameters-reference-attribute-types">Parameter attribute types</h2>
+
+			<div class="h2">
+				When specifying parameter definitions, you will have to provide some Xml attributes as strings.
+				The most evident Xml attribute that you will have to provide is the name of your parameter, specified as a comma-separated list of names and aliases.<br />
+				<br />
+				Although every xml attribute value is specified as a string, its syntax between quotes must obey to what the <b>CLParser</b> package expects.
+				For example, the value of the <i>name=</i> parameter must be a list of 1 to <i>n</i> parameter names, separated by a comma. Some attributes, such as
+				<i>min-value</i>, must represent an integer or floating-point value.<br />
+				<br />
+				Don't confuse <i>parameter attribute types</i> with <i>command-line parameter types</i> : the former are used in parameter definitions as xml attributes,
+				while the latter are the parameter definitions themselves.<br />
+				<br />
+				The following example will you understand the difference between the two notions :
+				<br />
+
+				<div class="code">
+&lt;command&gt;
+	&lt;string name="string_value, sv" defaut="hello world"&gt;
+&lt;/command&gt;
+				</div>
+				<br />
+				In the above example, <b>&lt;string&gt;</b> starts the definition of a parameter type. <b>name</b> is an attribute of the command-line parameter
+				defined by the <b>&lt;string&gt;</b> tag, and it expects a list of comma-separated identifiers. <b>default</b> is another attribute of the
+				command-line parameter defined by the <b>&lt;string&gt;</b> tag, which expects as value any string accepted by the parameter being defined.<br />
+
+				<br />
+				The table below lists the possible xml attribute value types that you will find in the following sections, which provide documentation for each 
+				command-line parameter type.<br />
+
+				<table class="parameter-overview">
+					<tr>
+						<th class="left">Attribute type</th>
+						<th class="middle">Description</th>
+						<th class="right">Example value</th>
+					</tr>
+					<tr>
+						<td class="left">any</td>
+						<td class="middle">Any kind of string value</td>
+						<td class="right">default="hello world"</td>
+					</tr>
+					<tr>
+						<td class="left">boolean</td>
+						<td class="middle">
+							A boolean parameter. Boolean values can be specified in many different forms :
+							<ul>
+								<li><i>true</i> : "true", "1", "yes", "on"</li>
+								<li><i>false</i> : "false", "0", "no", "off"</li>
+							</ul>
+						</td>
+						<td class="right">required="true"</td>
+					</tr>
+					<tr>
+						<td class="left">character</td>
+						<td class="middle">A single character value</td>
+						<td class="right">&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="left">float</td>
+						<td class="middle">A float value</td>
+						<td class="right">&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="left">keyword</td>
+						<td class="middle">A keyword from a list of authorized keywords</td>
+						<td class="right">&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="left">keyword list</td>
+						<td class="middle">A list of comma-separated keywords, from a list of authorized keywords</td>
+						<td class="right">&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="left">list</td>
+						<td class="middle">A list of comma-separated identifiers</td>
+						<td class="right">name="string_value, sv"</td>
+					</tr>
+					<tr>
+						<td class="left">integer</td>
+						<td class="middle">An integer value</td>
+						<td class="right">&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="left">range</td>
+						<td class="middle">A range of values, specified as : low..high</td>
+						<td class="right">&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="left">string</td>
+						<td class="middle">Any kind of string value. Equivalent of the "any" attribute value type.</td>
+						<td class="right">default="hello world"</td>
+					</tr>
+					<tr>
+						<td class="left">unsigned float</td>
+						<td class="middle">A float value greater than or equal to 0</td>
+						<td class="right">&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="left">unsigned integer</td>
+						<td class="middle">An integer value greater than or equal to 0</td>
+						<td class="right">&nbsp;</td>
+					</tr>
+				</table>
+			</div>
+			<br />
+
+			<h2 id="parameters-reference-table">Parameter attributes synopsis</h2>
+
+			<div class="h2">
+				All the parameter attributes documentation provided in the following sections include a <i>synopsis</i> table, which gives the following information :
+
+				<table class="parameter-overview">
+					<tr>
+						<td class="left">Name</td>
+						<td class="right">Attribute name and aliases</td>
+					</tr>
+					<tr>
+						<td class="left">Type</td>
+						<td class="right">
+							Attribute type. See the
+							<a href="#parameters-reference-types" class="internal-link">Parameter attribute types</a> section for more information about the 
+							various value types that can be specified as attribute values.
+						</td>
+					</tr>
+					<tr>
+						<td class="left">Member</td>
+						<td class="right">
+							Corresponding member name, in the <b>CLAbstractParameter</b> object returned by the following code :<br />
+							<div class="code">
+$cl	=  new CLParser ( $definitions ) ;
+print_r ( $cl [ 'name of your parameter' ] ) ;
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="left">Required</td>
+						<td class="right">Specifies whether the attribute is required or not.</td>
+					</tr>
+				</table>
+
+			</div>
+			<br />
+
+			<h2 id="parameters-reference-common">Common parameter attributes</h2>
+
+			<div class="h2">
+				The following section describes the Xml attributes that are common to all parameter types, except otherwise stated in the parameter type documentation.<br />
+				<br />
+				Each parameter attribute can have several aliases, which will be listed in the documentation below.<br />
+				<br />
+
+				<h3 id="parameters-reference-common-arguments"><i>arguments</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">arguments, args, arg</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">range</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">MinArguments, MaxArguments</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					The <i>arguments</i> parameter attribute specifies how many values can be supplied after the name of a command-line parameter.
+					Normally, all parameters accept only one value but you can extend this limit ;
+					the following example defines a <i>-string_value</i> parameter that can accept up to 5 values :<br />
+					<br />
+
+					<div class="code">
+&lt;?php
+	require ( 'CL.php' ) ;
+
+	$definitions	=  &lt;&lt;&lt;END
+		&lt;command&gt;
+			&lt;string name="string_value, sv" arguments="1..5"&gt;
+				Help for the string_value parameter.
+			&lt;/string&gt;
+		&lt;/command&gt;
+END;
+
+	$cl		=  new CLParser ( $definitions ) ;
+	echo "String values are : " ; print_r ( $cl -> string_value ) ;
+					</div>
+
+					Note that the <b>$cl -> string_value</b> property is now an array of values reflecting what the caller specified on the command line.<br />
+					<br />
+					The special notation "*" means an unlimited number of values, as in the following example : <br />
+					<br />
+					
+					<div class="code">
+arguments="1..*"
+					</div>
+					<br />
+
+					This attribute is a shortcut for the <a href="#parameters-reference-common-min-arguments" class="internal-link">min-arguments</a> and 
+					<a href="#parameters-reference-common-max-arguments" class="internal-link">max-arguments</a> attributes.<br />
+					<br />
+					If the <a href="#parameters-reference-common-multiple" class="internal-link">multiple</a> attribute has been set to true, the limits imposed
+					by the <i>arguments</i> or <i>min-arguments/max-arguments</i> attributes apply. <br />
+					<br />
+					If the number of values specified on the command line for a given parameter exceeds the maximum allowed, then the extra values will be considered
+					either as a parameter name or as a positional parameter ; in this case, the exception that will be thrown will talk about either an incorrect
+					parameter name or about the fact that unnamed parameters are not allowed on the command line.<br />
+					However, if your command definitions are such that positional parameters are authorized, then your extra values will be recognized as positional
+					parameters.<br />
+				</div>
+				<br />
+
+				<h3 id="parameters-reference-common-default"><i>default</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">default, default-value</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">string</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">DefaultValue</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					The xml attribute named <i>default</i> is used to specify a default value for a given parameter, which will be available 
+					even if the user did not specify this parameter on the command line :<br />
+					<br />
+
+					The following example will display the string "hello world" if the user did not specify a value for the <i>-string_value</i> parameter
+					during script execution :<br />
+					<br />
+
+					<div class="code">
+&lt;?php
+	require ( 'CL.php' ) ;
+
+	$definitions	=  &lt;&lt;&lt;END
+		&lt;command&gt;
+			&lt;string name="string_value, sv" default="hello world"&gt;
+				Help for the string_value parameter.
+			&lt;/string&gt;
+		&lt;/command&gt;
+END;
+
+	$cl		=  new CLParser ( $definitions ) ;
+	echo "String value is : " . $cl -> string_value ;
+					</div>
+				</div>
+				<br />
+
+				<h3 id="parameters-reference-common-help-group"><i>help-group</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">help-group, help-groups, help-topic, help-topics, topic, topics</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">list</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">HelpTopics</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					Allows you to associate a parameter with a help topic. Help topics are a way to group parameter together when displaying help using
+					the reserved <i>-help</i> option.<br />
+					<br />
+
+					The topic(s) referenced by this attribute must have been defined at the &lt;command&gt; tag level, using the &lt;help-group&gt; tag or one of
+					its aliases.<br />
+					<br />
+
+					The following example shows a script defining two help groups (or topics) : the first one is called <i>strings</i> and includes only the
+					<i>-string_value parameter</i> ; the second one is called <i>integers</i> and includes the <i>-integer_value1</i> and <i>integer_value2</i>
+					parameters :<br />
+					<br />
+
+					<div class="code">
+&lt;?php
+	require ( 'CL.php' ) ;
+
+	$definitions	=  &lt;&lt;&lt;END
+		&lt;command&gt;
+			&lt;topic name="strings, string, str"&gt;
+				General help for parameters belonging to the "strings" topic.
+			&lt;/topic&gt;
+
+			&lt;topic name="integers, integer, int"&gt;
+				General help for parameters belonging to the "integers" topic.
+			&lt;/topic&gt;
 
 
+			&lt;string name="string_value, sv" topic="strings"&gt;
+				Help for the -string_value parameter.
+			&lt;/string&gt;
+			&lt;integer name="integer_value1, iv1" topic="integers"&gt;
+				Help for the -integer_value1 parameter.
+			&lt;/integer&gt;
+			&lt;integer name="integer_value2, iv2" topic="integers"&gt;
+				Help for the -integer_value2 parameter.
+			&lt;/integer&gt;
+		&lt;/command&gt;
+END;
+
+	$cl		=  new CLParser ( $definitions ) ;
+	echo "Value for the -string_value parameter : " ; print_r ( $cl -> string_value ) ;
+					</div>
+					<br />
+
+					Running this script with the <i>-help</i> parameter will display the following help text :<br />
+					<br />
+
+					<div class="code">
+Usage : help-group [-string_value string] [-integer_value1 integer] [-integer_value2 integer]
+
+
+        [-string_value string] (-sv) :
+                Help for the -string_value parameter.
+
+        [-integer_value1 integer] (-iv1) :
+                Help for the -integer_value1 parameter.
+
+        [-integer_value2 integer] (-iv2) :
+                Help for the -integer_value2 parameter.
+
+        <b>Available help topics : integers, strings</b>
+					</div>
+					<br />
+
+					Notice the extra line listing the available help topics. If you want further information about the availbale topics, then you can run the script with the
+					<i>-topics</i> reserved parameter ; the output will be the following : <br />
+					<br />
+
+					<div class="code">
+$ php example.php -topics
+Available help topics -
+integers, integer, int : General help for parameters belonging to the "integers" topic.
+strings, string, str   : General help for parameters belonging to the "strings" topic.
+					</div>
+					<br />		
+					
+					Now you can display command line usage for a particular topic, by specifying the topic name or one of its aliases after the 
+					reserved <i>-help</i> parameter :<br />
+					<br />
+
+					<div class="code">
+$ php example.php -help integers
+Usage : help-group [-string_value string] [-integer_value1 integer] [-integer_value2 integer]
+
+
+        [-integer_value1 integer] (-iv1) :
+                Help for the -integer_value1 parameter.
+
+        [-integer_value2 integer] (-iv2) :
+                Help for the -integer_value2 parameter.
+					</div>
+
+				</div>
+				<br />
+
+				<h3 id="parameters-reference-common-help-text"><i>help-text</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">help-text, help</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">string</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">HelpText</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					The <i>help-text</i> attribute is an alternative for specifying help contents for a parameter ; the examples below are strictly equivalent :<br />
+					<br />
+
+					<div class="code">
+&lt;string name="string_value, sv" help-text="Help text for the -string_value parameter" /&gt;
+					</div>
+					<br />
+
+					<div class="code">
+&lt;string name="string_value, sv"&gt;
+	Help text for the -string_value parameter
+&lt;/string&gt;
+					</div>
+					<br />
+
+					The <i>help-text</i> attribute has the precedence over the parameter node's contents.
+
+				</div>
+				<br />
+
+				<h3 id="parameters-reference-common-hidden"><i>hidden</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">hidden</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">boolean</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">Hidden</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					The <i>hidden</i> parameter attribute indicates whether the parameter help should be displayed for this parameter when running the script with the
+					<i>-help</i> argument.<br />
+					<br />
+					Parameter help is always displayed by default, unless you set the <i>hidden</i> attribute to <i>false</i><br />
+					<br />
+
+					The following example script defines two parameters ; one of them, <i>integer_value</i> is hidden :<br />
+					<br />
+
+					<div class="code">
+&lt;?php
+	require ( 'CL.php' ) ;
+
+	$definitions	=  &lt;&lt;&lt;END
+		&lt;command&gt;
+			&lt;string name="string_value, sv" &gt;
+				Help for the string_value parameter.
+			&lt;/string&gt;
+			&lt;integer name="integer_value, iv" <b>hidden="true"</b> default="1"&gt;
+				Help for the hidden integer_value parameter.
+			&lt;/integer&gt;
+		&lt;/command&gt;
+END;
+
+	$cl		=  new CLParser ( $definitions ) ;
+	echo "Value of the -string_value parameter  : {$cl -> string_value}\n" ;
+	echo "Value of the -integer_value parameter : {$cl -> integer_value}\n" ;
+					</div>
+					<br />
+					Running your script with the <i>-help</i> parameter will display the following :<br />
+					<br />
+
+					<div class="code">
+<b>$ php example.php -help</b>
+Usage : example [-string_value string]
+
+
+        [-string_value string] (-sv) :
+                Help for the string_value parameter.
+					</div>
+					<br />
+
+
+					If you want to display help for hidden parameters, just run your script with the special extra parameter <i>--hidden</i> :<br />
+					<br />
+
+
+					<div class="code">
+<b>$ php example.php -help --hidden</b>
+Usage : example [-string_value string] [-integer_value integer]
+
+
+        [-string_value string] (-sv) :
+                Help for the string_value parameter.
+
+        [-integer_value integer] (-iv) :
+                Help for the hidden integer_value parameter.
+                Default value : "1".
+
+					</div>
+					<br />
+				</div>
+
+				<h3 id="parameters-reference-common-max-arguments"><i>max-arguments</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">max-arguments, max-args</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">unsigned integer</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">MaxArguments</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					Specifies the maximum number of arguments for a particular parameter. See the
+					<a href="parameters-reference-common-arguments" class="internal-link">arguments</a> attribute for a more detailed explanation.
+					<br />
+					If the <a href="#parameters-reference-common-multiple" class="internal-link">multiple</a> attribute has been set to true, the limits imposed
+					by the <i>arguments</i> or <i>min-arguments/max-arguments</i> attributes apply. <br />
+					<br />
+					The special value "*" indicates an unlimited number of arguments.<br />
+				</div>
+
+				<h3 id="parameters-reference-common-min-arguments"><i>min-arguments</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">min-arguments, min-args</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">unsigned integer</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">MinArguments</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					Specifies the minimum number of arguments for a particular parameter. See the
+					<a href="parameters-reference-common-arguments" class="internal-link">arguments</a> attribute for a more detailed explanation.
+					<br />
+					If the <a href="#parameters-reference-common-multiple" class="internal-link">multiple</a> attribute has been set to true, the limits imposed
+					by the <i>arguments</i> or <i>min-arguments/max-arguments</i> attributes apply. <br />
+				</div>
+
+				<h3 id="parameters-reference-common-multiple"><i>multiple</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">multiple</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">boolean</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">MultipleAllowed</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					Normally, a parameter can only be specified once on the command line. Specifying it more than once will cause an exception to be thrown.<br />
+					<br />
+
+					The <i>multiple</i> attribute allows you to specify the same parameter on the command line multiple times.<br />
+					<br />
+
+					The following example shows a script having a <i>-string_value</i> parameter with its <i>multiple</i> attribute set to true (note that 
+					the <b>$cl -> string_value</b> member is now an array of values, not a scalar value) :<br />
+					<br />
+
+					<div class="code">
+&lt;?php
+	require ( 'CL.php' ) ;
+
+	$definitions	=  &lt;&lt;&lt;END
+		&lt;command&gt;
+			&lt;string name="string_value, sv" multiple="true"&gt;
+				Help for the string_value parameter.
+			&lt;/string&gt;
+		&lt;/command&gt;
+END;
+
+	$cl		=  new CLParser ( $definitions ) ;
+	echo "Value for the -string_value parameter : " ; print_r ( $cl -> string_value ) ;
+					</div>
+					<br />
+
+					The limits fixed by the <a href="#parameters-reference-common-arguments" class="internal-link">arguments</a> attribute (or <i>min-arguments</i> and 
+					<i>max-arguments</i>) apply when the <i>multiple</i> attribute is set to true.
+				</div>
+				<br />
+
+				<h3 id="parameters-reference-common-name"><i>name</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">name, names, alias or aliases</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">list</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">Name</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">yes</td>
+						</tr>
+					</table>
+
+					Each command-line parameter must have a name, followed by a comma-separated list of optional aliases.
+					Don't put the switch character (which defaults to "-") before each parameter name or alias.<br />
+					<br />
+					Each parameter name and alias <b>must</b> be unique within the whole command definition, otherwise a <b>CLException</b>
+					exception will be thrown.<br />
+					<br />
+
+					The following example defines a parameter named <i>string_value</i>, which has an alias named <i>sv</i>. Both of them
+					can be specified on the command line using either the <i>-string_value</i> parameter or its <i>-sv</i> alias :<br />
+					<br />
+
+					<div class="code">
+&lt;command&gt;
+	&lt;string name="string_value, sv"&gt;
+		A string value that must be supplied on the command line.
+	&lt;/string&gt;
+&lt;/command&gt;
+					</div>
+					<br />
+				</div>
+
+				<h3 id="parameters-reference-common-required"><i>required</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">required</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">boolean</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">Required</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					The xml attribute named <i>required</i> is used to indicate that the related parameter definition is a required command-line parameter.<br />
+					<br />
+
+					The following example will throw a <b>CLParameter</b> exception if the <i>-string_value</i> parameter has not been specified on the command line :<br />
+					<br />
+
+					<div class="code">
+&lt;?php
+	require ( 'CL.php' ) ;
+
+	$definitions	=  &lt;&lt;&lt;END
+		&lt;command&gt;
+			&lt;string name="string_value, sv" required="true"&gt;
+				Help for the string_value parameter.
+			&lt;/string&gt;
+		&lt;/command&gt;
+END;
+
+	$cl		=  new CLParser ( $definitions ) ;
+					</div>
+				</div>
+				<br />
+
+				<h3 id="parameters-reference-common-usage"><i>usage</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">usage, usage-string</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">string</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">UsageString</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					Normally, the usage string of a parameter is built dynamically, either for its short version (when displaying command-line usage)
+					or for its long version (when displaying parameter help).<br />
+					<br />
+					This attribute allows to override both versions and define a custom usage string. The short and long usage strings for a parameter are shown
+					in the help output below, in bold blue and green respectively :<br />
+					<br />
+
+					<div class="code">
+Usage : default <b>[-string_value string]</b>
+        Example script.
+
+        <b><span style="color: #00FF00">[-string_value string] (-sv)</span></b> :
+                Help for the string_value parameter.
+					</div>
+				</div>
+				<br />
+
+				<h3 id="parameters-reference-common-value-text"><i>value-text</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">value-text, text</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">string</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">ValueLabel</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					The kind of value displayed in usage text is based on the parameter type ; for example, the usage text displayed below
+					shows that there is a parameter called <i>-string_value</i>, who expects a parameter of type <i>string</i> :<br />
+					<br />
+
+					<div class="code">
+Usage : default <b>[-string_value string]</b>
+        Example script.
+					</div>
+					<br />
+
+					However, you may want to provide your user with a more meaningful clue for the parameter type (say "english noun") ; in this case, you
+					will define your command line like this :<br />
+					<br />
+
+					<div class="code">
+lt;?php
+	require ( 'CL.php' ) ;
+
+	$definitions	=  &lt;&lt;&lt;END
+		&lt;command&gt;
+			&lt;string name="string_value, sv" value-text="english noun"&gt;
+				Help for the string_value parameter.
+			&lt;/string&gt;
+		&lt;/command&gt;
+END;
+					</div>
+					<br />
+
+					Then, when running your script by providing the reserved <i>-usage</i> parameter, you will see the following instead :<br />
+					<br />
+
+					<div class="code">
+Usage : default <b>[-string_value english noun]</b>
+        Example script.
+					</div>
+					<br />
+
+				</div>
+				<br />
+
+				<h3 id="parameters-reference-common-validation-regex"><i>validation-regex</i> attribute</h3>
+
+				<div class="h3">
+					<table class="parameter-overview">
+						<tr>
+							<th colspan="2">Synopsis</th>
+						</tr>
+						<tr>
+							<td class="left">Attribute name</td>
+							<td class="right">validation-regex, validation-expression, validation-expr</td>
+						</tr>
+						<tr>
+							<td class="left">Type</td>
+							<td class="right">string</td>
+						</tr>
+						<tr>
+							<td class="left">Member</td>
+							<td class="right">ValidationRegex</td>
+						</tr>
+						<tr>
+							<td class="left">Required</td>
+							<td class="right">no</td>
+						</tr>
+					</table>
+
+					The <i>validation-regex</i> attribute specifies a regular expression to check the command-line value specified by the user.
+					Delimiters are optional ; if not specified, a slash (/) is assumed. Note also that in the absence of regular expression
+					delimiters, you will not be able to provide regular expression options for pattern matching.<br />
+					<br />
+					The following example defines two parameters :
+					<ul>
+						<li><i>-string_value1</i>, which accepts a value containing only lowercase letters. Note that the specified regular expression
+							does not specify delimiters.</li>
+						<li><i>-string_value2</i>, which accepts a value starting with a letter, followed by any number of letters and digits</li>
+					</ul>
+
+					<div class="code">
+&lt;?php
+	require ( 'CL.php' ) ;
+
+	$definitions	=  &lt;&lt;&lt;END
+		&lt;command&gt;
+			&lt;string name="string_value1, sv1" validation-regex="[a-z]+"&gt;
+				A parameter that accepts values containing lowercase letters only.
+			&lt;/string&gt;
+			&lt;string name="string_value2, sv2" validation-regex="/[a-z][a-z0-9]*/ix"&gt;
+				A parameter that accepts values containing letters and digits, 
+				and starting with a letter.
+			&lt;/string&gt;
+		&lt;/command&gt;
+END;
+
+	$cl		=  new CLParser ( $definitions ) ;
+	echo "Value of -string_value1 : {$cl -> string_value1}\n" ;
+	echo "Value of -string_value2 : {$cl -> string_value2}\n" ;
+					</div>
+				</div>
+				<br />
+
+			</div>
+
+			<h2 id="parameters-reference-types">Parameter types</h2>
+
+			<div class="h2">
+				<i>Under construction</i>
+			</div>
+		</div>
+
+		<h1 id="command-language-reference">Xml command language definition reference</h1>
+		<div class="h1">
+			<i>Under construction</i>
+		</div>
+
+		<h1 id="commandline-reference">Command-line usage reference</h1>
+		<div class="h1">
+
+			<h2 id="commandline-reference-reserved">Reserved parameter names</h2>
+
+			<div class="h2">
+				<i>Under construction</i>
+			</div>
+
+			<h2 id="commandline-reference-extra">Special parameter names</h2>
+
+			<div class="h2">
+				<i>Under construction</i>
+			</div>
 		</div>
 	</div>
 

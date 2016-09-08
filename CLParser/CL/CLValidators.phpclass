@@ -23,7 +23,13 @@
  ***************************************************************************************************/
 namespace 	CL ;
 
+require_utility ( 'String.phpclass' ) ;
+
 use	CL\CLException ;
+use	CL\Utilities\Path ;
+use	CL\Utilities\String ;
+use	CL\Utilities\Formatting ;
+use	CL\Utilities\Convert ;
 
 /*==================================================================================================
 
@@ -75,12 +81,22 @@ class  CLRegexValidator  extends  CLAbstractValidator
 			$result 	=  array ( ) ;
 
 			foreach  ( $value  as  $item )
-				$result [] =  String::NormalizeRegex ( $value, true ) ;
-
-			return ( $result ) ;
+			   {
+				if  ( String::IsRegex ( $item ) )
+					$result		=  $item ;
+				else
+					$result []	=  String::NormalizeRegex ( $item, true ) ;
+			    }
   	   	    }
    		else
-			return ( String::NormalizeRegex ( $value, true ) ) ;
+		   {
+			if  ( String::IsRegex ( $value ) )
+				$result		=  $value ;
+			else
+				$result		=  String::NormalizeRegex ( $value, true ) ;
+		    }
+
+		return ( $result ) ;
   	    }
     }
 

@@ -1623,7 +1623,14 @@ class  CLAbstractParameter
 		$result 	=  "" ;
 		$aliases 	=  array ( ) ;
 
-		if  ( $this -> Named )
+		if  ( $this -> UsageString )
+		   {
+			$result =  $this -> UsageString ;
+
+			if  ( ! $this -> Required )
+				$result		=  '[' . $result . ']' ;
+		    }
+		else if  ( $this -> Named )
 		   {
 			if  ( $short )
 				$aliases [] = $this -> GetUsageParameterName ( ) ;
@@ -1929,11 +1936,6 @@ class  CLAbstractParameter
     		// Analyze child tags
     		foreach  ( $array [ 'children' ]  as  $child )
     			$this -> ProcessChildTag ( $child ) ;
-
-		// Build the usage string
-		if  ( ! $this -> UsageString )
-			$this -> UsageString = $this -> GetUsageString ( false ) ;
-
 	   }
 
 

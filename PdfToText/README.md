@@ -71,7 +71,20 @@ However, all of that will not guarantee that it will work in every situation ; s
 
 		christian.vigh@wuthering-bytes.com
 
+# OTHER LINKS #
+
+This class can also be found here :
+
+[http://www.phpclasses.org/package/9732-PHP-Extract-text-contents-from-PDF-files.html](http://www.phpclasses.org/package/9732-PHP-Extract-text-contents-from-PDF-files.html "http://www.phpclasses.org/package/9732-PHP-Extract-text-contents-from-PDF-files.html")
   
+and here :
+
+[http://www.pdftotext.eu](http://www.pdftotext.eu "http://www.pdftotext.eu")
+
+and also here :
+
+[https://github.com/christian-vigh-phpclasses/PdfToText](https://github.com/christian-vigh-phpclasses/PdfToText "https://github.com/christian-vigh-phpclasses/PdfToText")
+
 # REFERENCE #
 
 ## METHODS ##
@@ -232,6 +245,10 @@ One of the *PDFCRYPT\_\** constants.
 
 This value is set to *PDFCRYPT\_NONE if the PDF file is not password-protected.
 
+### EncryptMetadata ###
+
+A flag coming from a password-protected file that says is the document metadata is also encrypted.
+
 ### EOL ###
 
 The string to be used for line breaks. The default is PHP\_EOL.
@@ -248,7 +265,7 @@ The second id is not clearly described in the Pdf specifications.
 
 ### Images ###
 
-An array of **PdfImage** objects.
+An array of objects inheriting from the **PdfImage** class. Currently, only the **PdfJpegIMage** class is implemented.
 
 The class currently supports the following properties :
 

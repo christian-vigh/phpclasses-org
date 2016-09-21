@@ -173,7 +173,9 @@
     <Compile Include="Registry\Registry.class.php" />
     <Compile Include="DbVariableStore\DbVariableStore.class.php" />
     <Compile Include="RtfTools\examples\beautifier\beautifier.php" />
+    <Compile Include="RtfTools\examples\beautifier\beautifier_perf.php" />
     <Compile Include="RtfTools\examples\beautifier\create_samples.php" />
+    <Compile Include="RtfTools\examples\merger\merger.php" />
     <Compile Include="RtfTools\examples\templater\templater.php" />
     <Compile Include="RtfTools\examples\texter\texter.php" />
     <Compile Include="SearchableFile\examples\multistrpos.php" />
@@ -355,6 +357,7 @@
     <Content Include="RtfTools\examples\merger\sample3.rtf" />
     <Content Include="RtfTools\examples\merger\sample4.rtf" />
     <Content Include="RtfTools\examples\README.md" />
+    <Content Include="RtfTools\examples\templater\sample.rtf" />
     <Content Include="RtfTools\examples\templater\template.rtf" />
     <Content Include="RtfTools\examples\texter\sample.rtf" />
     <Content Include="RtfTools\LICENSE" />

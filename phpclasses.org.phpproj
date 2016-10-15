@@ -7,10 +7,10 @@
     <ProjectGuid>{c0a9e223-7b1c-4eaa-a50f-c79e011cfbf6}</ProjectGuid>
     <OutputType>Console</OutputType>
     <OutputPath>.</OutputPath>
-    <RootNamespace>phpclasses</RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>PPP/examples/expand.php</StartupFile>
     <ProjectHome />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -78,6 +78,8 @@
     <Folder Include="PdfToText\images\" />
     <Folder Include="phpclasses-example-db\" />
     <Folder Include="phpclasses-example-db\Data\" />
+    <Folder Include="PPP\" />
+    <Folder Include="PPP\examples\" />
     <Folder Include="RandomOrg\" />
     <Folder Include="RandomOrg\examples\" />
     <Folder Include="RtfTools\" />
@@ -156,6 +158,9 @@
     <Compile Include="PdfToText\examples\example03\example.php" />
     <Compile Include="PdfToText\examples\image-extraction\example.php" />
     <Compile Include="phpclasses-example-db\Data\utilities.inc.php" />
+    <Compile Include="PPP\examples\expand.php" />
+    <Compile Include="PPP\examples\expandprog.php" />
+    <Compile Include="PPP\examples\include.php" />
     <Compile Include="RandomAccessFile\example-with-variable-header.php" />
     <Compile Include="RandomAccessFile\example-with-fixed-header.php" />
     <Compile Include="RandomAccessFile\example.php" />
@@ -333,6 +338,13 @@
     <Content Include="phpclasses-example-db\Data\fusers.txt" />
     <Content Include="phpclasses-example-db\Data\musers.txt" />
     <Content Include="phpclasses-example-db\Data\users_v0.php" />
+    <Content Include="PPP\examples\expand.txt" />
+    <Content Include="PPP\examples\expandprog.txt" />
+    <Content Include="PPP\examples\include.1.txt" />
+    <Content Include="PPP\examples\include.2.txt" />
+    <Content Include="PPP\examples\include.txt" />
+    <Content Include="PPP\PPP.phpclass" />
+    <Content Include="PPP\README.md" />
     <Content Include="RandomAccessFile\LICENSE" />
     <Content Include="RandomAccessFile\NOTICE" />
     <Content Include="RandomAccessFile\random-with-fixed-header.dat" />

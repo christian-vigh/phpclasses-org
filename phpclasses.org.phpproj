@@ -24,6 +24,7 @@
     <Folder Include="ApiLayer\Sources\" />
     <Folder Include="ArrayHelpers\" />
     <Folder Include="ArrayHelpers\examples\" />
+    <Folder Include="Articles\RtfTools\" />
     <Folder Include="Articles\PdfToText\" />
     <Folder Include="Articles\PdfToText\images\" />
     <Folder Include="Articles\performance\" />
@@ -145,6 +146,31 @@
     <Folder Include="SearchableFile\examples\" />
     <Folder Include="SearchableFile\PSRless\" />
     <Folder Include="SshSession\" />
+    <Folder Include="WMI\" />
+    <Folder Include="WMI\.git\" />
+    <Folder Include="WMI\.git\hooks\" />
+    <Folder Include="WMI\.git\info\" />
+    <Folder Include="WMI\.git\logs\" />
+    <Folder Include="WMI\.git\logs\refs\" />
+    <Folder Include="WMI\.git\logs\refs\heads\" />
+    <Folder Include="WMI\.git\logs\refs\remotes\" />
+    <Folder Include="WMI\.git\logs\refs\remotes\origin\" />
+    <Folder Include="WMI\.git\objects\" />
+    <Folder Include="WMI\.git\objects\00\" />
+    <Folder Include="WMI\.git\objects\15\" />
+    <Folder Include="WMI\.git\objects\23\" />
+    <Folder Include="WMI\.git\objects\52\" />
+    <Folder Include="WMI\.git\objects\96\" />
+    <Folder Include="WMI\.git\objects\b9\" />
+    <Folder Include="WMI\.git\objects\d8\" />
+    <Folder Include="WMI\.git\objects\e3\" />
+    <Folder Include="WMI\.git\objects\info\" />
+    <Folder Include="WMI\.git\objects\pack\" />
+    <Folder Include="WMI\.git\refs\" />
+    <Folder Include="WMI\.git\refs\heads\" />
+    <Folder Include="WMI\.git\refs\remotes\" />
+    <Folder Include="WMI\.git\refs\remotes\origin\" />
+    <Folder Include="WMI\.git\refs\tags\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiLayer\Examples\get_mail.php" />
@@ -239,6 +265,7 @@
     <Compile Include="SshSession\example.inc.php" />
     <Compile Include="SshSession\example.key.php" />
     <Compile Include="SshSession\example.password.php" />
+    <Compile Include="WMI\example.php" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApiLayer\LICENSE" />
@@ -256,6 +283,7 @@
     <Content Include="Articles\performance\perf01.html" />
     <Content Include="Articles\regex\regex01.html" />
     <Content Include="Articles\regex\regex02.html" />
+    <Content Include="Articles\RtfTools\Rtf01.html" />
     <Content Include="AssociativeArray\AssociativeArray.phpclass" />
     <Content Include="AssociativeArray\LICENSE" />
     <Content Include="AssociativeArray\NOTICE" />
@@ -520,6 +548,36 @@
     <Content Include="SshSession\README.examples.md" />
     <Content Include="SshSession\README.md" />
     <Content Include="SshSession\Session.phpclass" />
+    <Content Include="WMI\.git\COMMIT_EDITMSG" />
+    <Content Include="WMI\.git\config" />
+    <Content Include="WMI\.git\description" />
+    <Content Include="WMI\.git\HEAD" />
+    <Content Include="WMI\.git\hooks\applypatch-msg.sample" />
+    <Content Include="WMI\.git\hooks\commit-msg.sample" />
+    <Content Include="WMI\.git\hooks\post-update.sample" />
+    <Content Include="WMI\.git\hooks\pre-applypatch.sample" />
+    <Content Include="WMI\.git\hooks\pre-commit.sample" />
+    <Content Include="WMI\.git\hooks\pre-push.sample" />
+    <Content Include="WMI\.git\hooks\pre-rebase.sample" />
+    <Content Include="WMI\.git\hooks\prepare-commit-msg.sample" />
+    <Content Include="WMI\.git\hooks\update.sample" />
+    <Content Include="WMI\.git\index" />
+    <Content Include="WMI\.git\info\exclude" />
+    <Content Include="WMI\.git\logs\HEAD" />
+    <Content Include="WMI\.git\logs\refs\heads\master" />
+    <Content Include="WMI\.git\logs\refs\remotes\origin\master" />
+    <Content Include="WMI\.git\objects\00\d3b9e419a1b2825fff5414c6c2fe40a4e2e005" />
+    <Content Include="WMI\.git\objects\15\52f278caee4df87237a09c133df8ddffb8f47b" />
+    <Content Include="WMI\.git\objects\23\b4f68b34d80e569b2d57d899839c9fd4bb2ae9" />
+    <Content Include="WMI\.git\objects\52\bc9ec60079693fb6998ce5ed4587ae5f0a1cdf" />
+    <Content Include="WMI\.git\objects\96\a79b9386ef96d1a35af75d4c5b66ab93bccf9f" />
+    <Content Include="WMI\.git\objects\b9\906d636f22166f7106ab1593d813542940efb0" />
+    <Content Include="WMI\.git\objects\d8\6edaf8b598e848641c4bd876debf0608054fae" />
+    <Content Include="WMI\.git\objects\e3\dee82eec25aa89e444ac720b1c2957372c5dd8" />
+    <Content Include="WMI\.git\refs\heads\master" />
+    <Content Include="WMI\.git\refs\remotes\origin\master" />
+    <Content Include="WMI\README.md" />
+    <Content Include="WMI\Wmi.phpclass" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\DEVSENSE\PHP Tools\VS$(VisualStudioVersion)\Devsense.PHP.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

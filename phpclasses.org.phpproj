@@ -90,6 +90,8 @@
     <Folder Include="Minifiers\examples\css\" />
     <Folder Include="Minifiers\examples\js\" />
     <Folder Include="Minifiers\examples\php\" />
+    <Folder Include="SequentialOrderedFile\" />
+    <Folder Include="Path\" />
     <Folder Include="PdfToText\" />
     <Folder Include="PdfToText\contributions\" />
     <Folder Include="PdfToText\examples\" />
@@ -145,6 +147,7 @@
     <Folder Include="Regex\" />
     <Folder Include="SearchableFile\examples\" />
     <Folder Include="SearchableFile\PSRless\" />
+    <Folder Include="SequentialOrderedFile\data\" />
     <Folder Include="SshSession\" />
     <Folder Include="WMI\" />
     <Folder Include="WMI\.git\" />
@@ -226,6 +229,8 @@
     <Compile Include="Minifiers\examples\css\example.php" />
     <Compile Include="Minifiers\examples\js\example.php" />
     <Compile Include="Minifiers\examples\php\example.php" />
+    <Compile Include="Path\example.find.php" />
+    <Compile Include="Path\example.realpath.php" />
     <Compile Include="PdfToText\contributions\pdf2text.php" />
     <Compile Include="PdfToText\examples\example01\example.php" />
     <Compile Include="PdfToText\examples\example02\example.php" />
@@ -284,6 +289,7 @@
     <Content Include="Articles\regex\regex01.html" />
     <Content Include="Articles\regex\regex02.html" />
     <Content Include="Articles\RtfTools\Rtf01.html" />
+    <Content Include="Articles\RtfTools\SimpleWordpadDocument.png" />
     <Content Include="AssociativeArray\AssociativeArray.phpclass" />
     <Content Include="AssociativeArray\LICENSE" />
     <Content Include="AssociativeArray\NOTICE" />
@@ -416,6 +422,9 @@
     <Content Include="Minifiers\NOTICE" />
     <Content Include="Minifiers\PhpMinifier.phpclass" />
     <Content Include="Minifiers\README.md" />
+    <Content Include="Path\Path.phpclass" />
+    <Content Include="Path\README.md" />
+    <Content Include="PdfToText\Path.phpclass" />
     <Content Include="PdfToText\CREDITS.md" />
     <Content Include="PdfToText\examples\example01\README.md" />
     <Content Include="PdfToText\examples\example01\sample.pdf" />
@@ -540,6 +549,7 @@
     <Content Include="SearchableFile\PSRless\SearchableFile.phpclass" />
     <Content Include="SearchableFile\README.md" />
     <Content Include="SearchableFile\SearchableFile.phpclass" />
+    <Content Include="SequentialOrderedFile\SequentialOrderedFile.phpclass" />
     <Content Include="SshSession\Authentication.phpclass" />
     <Content Include="SshSession\Connection.phpclass" />
     <Content Include="SshSession\FileSystem.phpclass" />

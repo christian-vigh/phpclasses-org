@@ -318,6 +318,35 @@ The parameters are the following :
 - *$user* (string) : When not null, created subdirectories will be owned by the specified user.
 - *$group* (string) : When not null, created subdirectories will belong to the specified group.
 
+## NextUniqueFilename ##
+
+	$filename	=  Path::NextUniqueFilename ( $file_specifier, $specifier = 's' ) ;
+
+Generates a unique filename based on the specified *$file_specifier* parameter. The unicity of the filename is determined by a unique integer id, which will replace the *sprintf()*-like format specified in *$file_specifier*.
+
+The following example :
+
+	$filename 	=  Path::NextUniqueFilename ( 'file.%s.txt' ) ;
+
+will return "file.1.txt" if the current directory (ie, the one for file "file.*.txt") does not contain any filename having this naming scheme.
+
+If the directory already contains several files having this naming scheme, say "file.1.txt" through "file.99.txt", then the next call to NextUniqueFilename() will return "file.100.txt".
+
+If not format specifier has been found in the $*file_specifier* string, then ".%s" will be appended to the supplied value ; so, the following call :
+
+	$filename 	=  Path::NextUniqueFilename ( 'file.txt' ) ;
+
+will return "file.txt.1" if no files matched the mask "file.txt.*".
+
+The *$specifier* parameter allows you to specify a letter other than "s" for a format specifier.
+
+Format specifiers can include any width options, such as for *sprintf()* ; the following example :
+
+	$filename 	=  Path::NextUniqueFilename ( 'file.%04s.txt' ) ;
+
+will return "file.0001.txt".
+	
+
 ## PushDirectory ##
 
 	Path::PushDirectory ( $directory = false ) ;

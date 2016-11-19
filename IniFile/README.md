@@ -23,6 +23,7 @@ Parameters defined before the very first section name in the .ini file are put i
 The IniFile class can :
 
 - Read .ini files into memory
+- Allow .ini file setting values to reference variables defined in a variable store (see [http://www.phpclasses.org/package/10048-PHP-A-class-to-store-variable-names-and-values-and-pr.html](http://www.phpclasses.org/package/10048-PHP-A-class-to-store-variable-names-and-values-and-pr.html "http://www.phpclasses.org/package/10048-PHP-A-class-to-store-variable-names-and-values-and-pr.html")
 - Retrieve the list of sections defined in the .ini file
 - Retrieve the keys defined within a section
 - Retrieve key values
@@ -414,12 +415,6 @@ This property determines the string used to separate key names from their values
 
 ### METHODS ###
 
-#### $status = $inifile -> IsDirty ( ) ####
-
-Returns true if the in-memory .ini file contents have been modified, false otherwise.
-
-Note that the IniFile class has no way to tell whether you modified key values using references or not. If you want to rely on the **IsDirty()** method, then use the **SetKey()** method to assign new values to keys.
-
 #### $contents = $inifile -> AsString ( ) ####
 
 Returns the .ini file contents as a string.
@@ -428,6 +423,33 @@ The following are equivalent :
 
 	$contents 	=  $inifile -> AsString ( ) ;
 	$contents 	=  ( string ) $inifile ;
+
+#### $status = $inifile -> IsDirty ( ) ####
+
+Returns true if the in-memory .ini file contents have been modified, false otherwise.
+
+Note that the IniFile class has no way to tell whether you modified key values using references or not. If you want to rely on the **IsDirty()** method, then use the **SetKey()** method to assign new values to keys.
+
+### $inifile -> SetVariableStore ( [$section | $store | $array | $options]... ) ###
+
+Defines a variable store for value expansion using the specified parameters (see the **VariableStore** class here : [http://www.phpclasses.org/package/10048-PHP-A-class-to-store-variable-names-and-values-and-pr.html](http://www.phpclasses.org/package/10048-PHP-A-class-to-store-variable-names-and-values-and-pr.html "http://www.phpclasses.org/package/10048-PHP-A-class-to-store-variable-names-and-values-and-pr.html")).
+
+The parameter list is highly polymorphic and can contain any combination of the	following values, which are only named for convenience purpose :
+
+- *$store* (VariableStore object) : 	A variable store object that contains variable definitions.
+
+- *$section* (string) : 	The name of a section in this .ini file that contains variable definitions.
+
+- *$array* (array or AssociativeArray) : An associative array of variable name/value pairs.
+
+- *$options* (integer) : Options to use for the VariableStore object creation. The default value for 	this parameter is VariableStore::OPTION\_DEFAULT.
+
+Variables specified in multiple *$section*, *$array* and *$store* parameters are merged into the final variable store object. Variables with the same name will be overridden.
+
+Multiple *$options* parameters are merged.
+
+If no arguments are specified, then any existing variable store will be cancelled.
+
 
 ## INI FILE STRUCTURE MANIPULATION ##
 

@@ -19,6 +19,9 @@
 	 ***/
 	require ( 'IniFile.class.php' ) ;
 
+	if  ( php_sapi_name ( )  !=  'cli' )
+		echo "<pre>" ;
+
 	// Instanciate an IniFile object for file example.ini
 	$inifile 	=  IniFile::LoadFromFile ( 'example.ini' ) ;
 
@@ -43,3 +46,6 @@
 	// of the Save() method ; since we have called the SetKey() method to modify parameters, the
 	// .ini file contents have been flagged as 'dirty' and will automatically be saved.
 	$inifile -> Save ( true, 'example.out.ini' ) ;
+
+	echo ( "example.ini file saved to example.out.ini, after changing the 'LastUpdate' and 'Status' settings of the [Results] section." ) ;
+	echo ( "You can either edit this 'example.out.ini' file, or run the Unix diff command on both files to see the difference." ) ;

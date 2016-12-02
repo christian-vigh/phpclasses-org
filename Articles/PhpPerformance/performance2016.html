@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+	<style>
+		h1, h2, h3, h4, h5 {
+			color: #113452;
+		}
+
+		.code {
+			word-wrap: break-word;
+			background: none repeat scroll 0% 0% #F6F6F6;
+			padding: 4px;
+		}
+	</style>
+
+</head>
+<body>
+
+	<h2>Contents</h2>
+
+	<i>Click on a link below to jump to the section of your interest.</i>
+
+	<h3>
+		<a href="#introduction">Introduction</a>
+	</h3>
+
+	<h3>
+		<a href="#php-performance-evaluation">Php performance evaluation</a>
+	</h3>
+
+	<h3>
+		<a href="#benchmark-results">Results of pure CPU benchmarks</a>
+	</h3>
+
+	<h3>
+		<a href="#performance-evolution">A brief history of performance improvements in PHP</a>
+	</h3>
+
+	<h3>
+		<a href="#conclusion">Conclusion</a>
+	</h3>
+
+	<h3>
+		<a href="#benchmarking-process">Annex : How we benchmarked</a>
+	</h3>
+
+	<br />
+	<center><img src="phplogo.png" /></center>
+	<br />
+
+	<h2 id="introduction">Introduction</h2>
+
+		<p>
+			Since its creation in 1994 by Rasmus Lerdorf, the PHP language has gone through many evolutions and improvements. While the first
+			releases were simply external CGI programs, new features were continuously introduced as the years went by, either through extensions which brought
+			many additional functions in domains as various as network communications, parsing, caching and database support ; but the language
+			itself also evolved, bringing its own set of improvements. This includes support for object-oriented constructs, such as classes, interfaces,
+			traits, closures, and much more...
+		</p>
+		<p>
+			Adding new features, however, is not engouh. 
+			As the language grew in popularity, there were more and more demands from the Php community to provide better performance, scalability and less
+			memory usage.
+		</p>
+		<p>
+			The Php development team has for years devoted tremendous efforts to address these demands. And we can say that, today, the results outperform
+			what we could expect when the first release of Php 5 was launched in July 2004. 
+		</p>
+		<p>
+			The various evolutions from Php 5.0 to Php 5.6 brought of course their own set of evolutions regarding performance, doubling the speed of your
+			scripts in most situations. 
+		</p>
+		<p>	
+			But a major breakthrough has been made with the initial release of Php 7.0.0 in December 2015 ; the version 7.1, announced in December, 1st 2016
+			also brings its own set of enhancements.
+		</p>
+		<p>
+			And more to come ! with a really promising new version currently under heavy development, managed by Dmitry Stogov. 
+			Whatever the name used for this version (Php 7.2 or Php 8 - we will refer to it
+			as Php 8 in this article), the key feature that has been introduced talks about Just-In-Time (JIT) compiling, a technique to translate code
+			into another format, such as machine code, just before running it. JIT is supposed to make your programs run faster ; and we will see that
+			it is not just a promise...
+		</p>
+		<p>
+			This article covers the results of selected benchmarks, from the very first release of PHP 5 up to the version 8 of PHP, currently under development (versions prior
+			to PHP 5 are not included here).
+		</p>
+
+	<h2 id="php-performance-evaluation">Php performance evaluation</h2>
+
+		<p>
+			We first selected pure-CPU benchmarks, which are listed below :
+		</p>
+		<ul>
+			<li>
+				<b>bench.php</b>, available in the <i>php-src/Zend</i> folder of the PHP sources distribution 
+				(<a href="https://github.com/php/php-src/blob/master/Zend/bench.php" target="_blank">https://github.com/php/php-src/blob/master/Zend/bench.php</a> )
+			</li>
+			<li>
+				<b>micro_bench.php</b>, also available in the <i>php-src/Zend</i> folder of the PHP sources distribution
+				(<a href="https://github.com/php/php-src/blob/master/Zend/micro_bench.php" target="_blank">https://github.com/php/php-src/blob/master/Zend/micro_bench.php</a> )
+			</li>
+			<li>
+				<b>mandelbrot.php</b>, available here : <a href="https://gist.githubusercontent.com/dstogov/12323ad13d3240aee8f1/raw/37fed3beb7e666b70e199bcf361af541b3c30d2d/b.php"
+						target="_blank">https://gist.githubusercontent.com/dstogov/12323ad13d3240aee8f1/raw/37fed3beb7e666b70e199bcf361af541b3c30d2d/b.php</a>.
+			</li>
+		</ul>
+
+		<p>
+			We decided not to show the results of ALL the PHP releases that were published since version 5.0.0 ; rather, we selected only the latest release of
+			each minor version, which gives the following list of candidates :
+		</p>
+		<ul>
+			<li>5.0.5</li>
+			<li>5.1.6</li>
+			<li>5.2.17</li>
+			<li>5.3.29</li>
+			<li>5.4.45</li>
+			<li>5.5.38</li>
+			<li>5.6.28</li>
+			<li>7.0.13</li>
+			<li>7.1.0</li>
+			<li>the version currently under development, PHP 8 (<a href="https://github.com/zendtech/php-src" target="_blank">https://github.com/zendtech/php-src</a>)</li>
+		</ul>
+		<p>
+			Of course, we wanted to get sure, so we ran ALL the intermediate versions on the same benchmarks (eg, 5.3.0 to 5.3.29). The results were eloquent :
+			the major enhancements in terms of performance have not been brought by intermediate releases, but by changes in minor or major version numbers
+			(for example, going from PHP 5.4 to PHP 5.5, or from PHP 5.6 to PHP 7). Intermediate releases did not show any noticeable performance improvements. This means that
+			the same script should run more or less at the same speed, wether you are using PHP 5.4.0 or PHP 5.4.45.
+		</p>
+		<p>
+			You can have a look at the <a href="#benchmarking-process">Benchmarking process</a> section for a detailed explanation on how the host system was setup,
+			how individual benchmarks were run, and how the timing results were interpreted.
+		</p>
+
+	<h2 id="benchmark-results">Results of pure CPU benchmarks</h2>
+
+		<p>
+			The section here gives the benchmark results per PHP version (lines) and benchmarks (columns).
+		</p>
+		<p>
+			Each benchmark column contains 3 values :
+		</p>
+		<ul>
+			<li>
+				<i>Time</i> : execution time, in seconds and milliseconds.
+			</li>
+			<li>
+				<i>% rel. gain</i> : Gain, in execution time, relatively to the previous version. In the table below for example, the
+				value of <i>% rel. gain</i> for <b>bench.php</b> and version 5.3.29 is 31.89%, meaning that the script ran 31.89% faster than
+				with version 5.2.17.
+			</li>
+			<li>
+				<i>abs. gain</i> : Indicates how much faster the script runs, when compared to PHP 5.0. If you have a look at the intersection
+				of this column for <b>bench.php</b> and version 8 for example, you will notice that version 8 is more than 41 times faster than PHP 5.0 
+				for this particular benchmark !
+			</li>
+		</ul>
+		<p>
+			Results of the pure CPU benchmarks are shown below :
+		</p>
+
+		<div style="margin-left: 32px">
+		<table border="1" rules="all">
+			<tr>
+				<th rowspan="2" style="font-weight: bold; text-align: center; vertical-align: middle; padding-left: 6px; padding-right: 6px">PHP version</th>
+				<th colspan="3" style="font-weight: bold; text-align: center">bench.php</th>
+				<th colspan="3" style="font-weight: bold; text-align: center">micro_bench.php</th>
+				<th colspan="3" style="font-weight: bold; text-align: center">mandelbrot.php</th>
+			</tr>
+			<tr>
+				<th style="font-weight: normal; font-size: 12px; padding: 2px; width: 64px">time</th>
+				<th style="font-weight: normal; font-size: 12px; padding: 2px; width: 64px">% rel. gain</th>
+				<th style="font-weight: normal; font-size: 12px; padding: 2px; width: 64px">abs. gain</th>
+				<th style="font-weight: normal; font-size: 12px; padding: 2px; width: 64px">time</th>
+				<th style="font-weight: normal; font-size: 12px; padding: 2px; width: 64px">% rel. gain</th>
+				<th style="font-weight: normal; font-size: 12px; padding: 2px; width: 64px">abs. gain</th>
+				<th style="font-weight: normal; font-size: 12px; padding: 2px; width: 64px">time</th>
+				<th style="font-weight: normal; font-size: 12px; padding: 2px; width: 64px">% rel. gain</th>
+				<th style="font-weight: normal; font-size: 12px; padding: 2px; width: 64px">abs. gain</th>
+			</tr>
+			<tr>
+				<td style="padding: 4px">5.0.5</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">8.650s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right"><sup style="color:red">(1)</sup> <i>failed</i></td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">2.628s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right"></td>
+				<td style="padding: 4px; font-size: 14px; text-align: right"></td>
+			</tr>
+			<tr>
+				<td style="padding: 4px">5.1.6</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">3.718s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">57.02%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">2.327</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right"><sup style="color:red">(1)</sup> <i>failed</i></td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.895s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">65.94%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">2.936</td>
+			</tr>
+			<tr>
+				<td style="padding: 4px">5.2.17</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">3.838s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-3.23%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">2.254</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right"><sup style="color:red">(1)</sup> <i>failed</i></td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.876s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">2.12%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">3.000</td>
+			</tr>
+			<tr>
+				<td style="padding: 4px">5.3.29</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">2.614s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">31.89%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">3.309</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">19.469s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.713s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">18.61%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">3.686</td>
+			</tr>
+			<tr>
+				<td style="padding: 4px">5.4.45</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">2.056s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">21.35%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">4.207</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">10.300s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">47.10%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right"><sup style="color:red">(2)</sup> 1.890</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.344s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">51.75%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">7.640</td>
+			</tr>
+			<tr>
+				<td style="padding: 4px">5.5.38</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">1.995s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">2.97%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">4.336</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">10.456s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-1.51%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">1.862</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.315s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">8.43%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">8.343</td>
+			</tr>
+			<tr>
+				<td style="padding: 4px">5.6.28</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">1.798s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">9.87%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">4.811</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">10.243s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">2.04%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">1.901</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.328s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-4.13%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">8.012</td>
+			</tr>
+			<tr>
+				<td style="padding: 4px">7.0.13</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.670s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">62.74%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">12.910</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">4.056s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">60.40%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">4.800</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.172s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">47.56%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">15.279</td>
+			</tr>
+			<tr>
+				<td style="padding: 4px">7.1RC6</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.459s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">31.49%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">18.845</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">3.383s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">16.59%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">5.755</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.187s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">-8.72%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">14.053</td>
+			</tr>
+			<tr>
+				<td style="padding: 4px">8</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.208s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">54.68%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">41.587</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">2.185s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">35.41%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">8.910</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.186s</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">0.53%</td>
+				<td style="padding: 4px; font-size: 14px; text-align: right">14.129</td>
+			</tr>
+		</table>
+		</div>
+
+		<p>
+			It would be difficult to put a definite conclusion after analyzing the results shown in the above table,
+			except by saying that PHP is becoming faster and faster ! however, we can make a few comments about performance evolutions
+			in various versions :
+		</p>
+		<ul>
+			<li>
+				PHP 5.1 more than doubled the performance of PHP 5.0
+			</li>
+			<li>
+				Versions 5.2 and 5.3 brought their own set of performance enhancements, but they were not as striking as the 
+				ones version 5.1 carried.
+			</li>
+			<li>
+				The next big performance improvements come with version 5.4.
+			</li>
+			<li>
+				The opcache extension came bundled with versions 5.5 and 5.6 ; this can explain some small performance enhancements
+				in our benchmarks, due to faster code loading. However, opcache won't really show its strengths for scripts executed
+				in CLI mode.
+			</li>
+			<li>
+				PHP 7.0 is a major breakthrough in terms of performance ; the Zend Engine has been completely redesigned, and we can
+				see here the results of this work.
+			</li>
+			<li>
+				PHP 8 introduces yet another major breakthrough, thanks to JIT
+				It can give blazingly fast enhancements to your existing code, but in certain cases, you may notice no more than a few 
+				percents improvement in speed ; and in the worst cases, it can even add a slight overhead.
+				But remember that this feature is currently under development...
+			</li>
+		</ul>
+
+		<p>
+			This section only addressed three pure CPU benchmarks ; it won't give you a complete overview of PHP performance and won't tell you
+			how PHP will behave in production environments, but we think they will give you some useful hints about the improvements you may expect
+			regarding certain parts of your code.
+		</p>
+
+		<p>
+			<sup style="color:red">(1)</sup>
+			<span style="font-style: italic; font-size:12px">
+				The benchmark could not be run on versions prior to 5.3, because it uses object features that were not yet implemented.
+			</span>
+			<br />
+			<sup style="color:red">(2)</sup>
+			<span style="font-style: italic; font-size:12px">
+				The results in this column are a little bit biased, because the benchmark needs at least PHP 5.3 to run.
+				Take them as purely informational, since they cannot be compared with PHP 5.0 performance.
+			</span>
+		</p>
+
+	<h2 id="performance-evolution">A brief history of performance improvements in PHP</h2>
+
+		<p>
+			PHP 5 brought over PHP 4 a significant improvement : the Zend Engine, which is at the heart of the interpreter, has completely been
+			redesigned (Zend Engine 2), making room for future enhancements. We will not cover the differences between PHP 4 and PHP 5 here,
+			but give a brief overview of what happened after PHP 5.0.
+		</p>
+
+		<p>
+			The following sections list the areas of improvements that occurred in successive PHP versions. Note that only the modifications affecting the
+			core of PHP are	listed here ; for a more complete description, have a look at the PHP change logs 
+			(<a href="http://php.net/ChangeLog-5.php" target="_blank">http://php.net/ChangeLog-5.php</a> and
+			<a href="http://php.net/ChangeLog-7.php" target="_blank">http://php.net/ChangeLog-7.php</a>)
+		</p>
+
+		<h3>PHP 5.1</h3>
+
+		<ul>
+			<li>General compilation and execution of scripts improved</li>
+			<li>Faster switch() statement handling</li>
+			<li>Faster array functions</li>
+			<li>Faster variable fetches</li>
+			<li>Faster magic method invocations</li>
+			<li>Cache for the realpath() function</li>
+		</ul>
+
+		<h3>PHP 5.2</h3>
+
+		<ul>
+			<li>Optimized array/HashTable copying</li>
+			<li>Optimized require_once() and include_once() statements</li>
+			<li>Improved Zend memory manager</li>
+			<li>Small optimization on specific internal functions</li>
+			<li>Improved compilation of HEREDOCS and compilation of interpolated strings</li>
+		</ul>
+
+		<h3>PHP 5.3</h3>
+
+		<ul>
+			<li>Improved PHP runtime speed and memory usage</li>
+			<li>Faster language parsing</li>
+			<li>Improved PHP binary size and code startup</li>
+			<li>Improved Zend Engine stack implementation</li>
+		</ul>
+
+		<h3>PHP 5.4</h3>
+
+		<ul>
+			<li>Various optimizations to the Zend Engine, in terms of memory usage and speed</li>
+			<li>Improved the output layer</li>
+			<li>Improved ternary operator performance when using arrays</li>
+		</ul>
+
+		<h3>PHP 5.5</h3>
+
+		<ul>
+			<li>opcache extension</li>
+			<li>Zend Engine : better stack handling and optimized access to VM variables</li>
+			<li>Other misc. optimizations to the Zend Engine</li>
+		</ul>
+
+		<h3>PHP 5.6</h3>
+
+		<ul>
+			<li>Zend engine optimizations</li>
+			<li>Optimized empty string handling, minimizing the need to allocate new empty values</li>
+		</ul>
+
+		<h3>PHP 7.0</h3>
+		
+		<p>
+			Most of the improvements listed here are related to the Zend Engine :
+		</p>
+
+		<ul>
+			<li>Improved overall performance : PHP 7.0.0 is twice as fast as PHP 5.6</li>
+			<li>Significantly reduced memory usage</li>
+			<li>Improved __call() and __callStatic() functions</li>
+			<li>Improved string concatenation</li>
+			<li>Improved character searching in strings</li>
+		</ul>
+
+		<h3>PHP 7.1</h3>
+
+		<p>Not available at this time</p>
+
+		<h3>PHP 8</h3>
+
+		<ul>
+			<li>Just-In-Time compiling</li>
+			<li>Other features not available at this time</li>
+		</ul>
+		
+	<h2 id="conclusion">Conclusion</h2>
+
+	<p>
+		The goal of this article was to give you an overview of the performances shown by the various versions of PHP, starting from 
+		5.0 up to the latest version currently under development, using a set of known benchmarks.
+	</p>
+	<p>
+		It also provided you with a list of performance improvement areas addressed by each successive PHP version.
+	</p>
+	<p>
+		This article will be updated as new PHP releases are announced, and new benchmark results will be added in the future.
+	</p>
+	<p>
+		If you have any question or find inaccuracies, please feel free to post a comment here !
+	</p>
+	<p>
+		Meanwhile, share this article with other developers that have interest in PHP performance.
+	</p>
+
+
+	<h2 id="benchmarking-process">Annex : How we benchmarked</h2>
+
+		<p>
+			Benchmarking goes a little bit farther than simply running the Unix <i>time</i> command to time a script's execution.
+			This is why we went through the following steps :
+		</p>
+
+		<h3>Setting up the system</h3>
+
+		<p>
+			We first set up a dedicated system having the following characteristics :
+		</p>
+		<ul>
+			<li>
+				A VPS with 1 vcore running at 2.4GHz, 2Gb of RAM and two SSD drives, one hosting the operating system, the other one
+				used for storing the various PHP sources, binaries and reports output
+			</li>
+			<li>
+				Debian Wheezy operating system, version 3.2.82-1
+			</li>
+			<li>
+				Gnu C compiler version 4.9.2-10 (Debian Jessie distribution)
+			</li>
+		</ul>
+		<p>
+			Although the system came bundled with Gnu C compiler version 4.7.2, upgrading to a more recent version was required :
+			PHP version 8 must be compiled with Gnu C >= 4.8.
+		</p>
+
+		<h3>Compiling the source code</h3>
+
+		<p>
+			The <i>configure</i> script has been run using the following options before building the complete distributions :
+		</p>
+		<pre class="code">
+--prefix=/usr/local/php 
+--disable-debug
+--disable-phpdbg
+--enable-mysqlnd
+--enable-bcmath
+--with-bz2=/usr
+--enable-calendar
+--with-curl
+--enable-exif
+--enable-fpm
+--with-freetype-dir
+--enable-ftp
+--with-gd
+--enable-gd-jis-conv
+--enable-gd-native-ttf
+--with-gettext=/usr
+--with-gmp
+--with-iconv
+--enable-intl
+--with-jpeg-dir
+--enable-mbstring
+--with-mcrypt
+--with-openssl
+--enable-pcntl
+--with-pdo-mysql=mysqlnd
+--with-png-dir
+--with-recode=/usr
+--enable-shmop
+--enable-soap
+--enable-sockets
+--enable-sysvmsg
+--enable-sysvsem
+--enable-sysvshm
+--enable-wddx
+--with-xmlrpc
+--with-xsl
+--with-zlib=/usr
+--enable-zip
+--with-mysqli=mysqlnd
+		</pre>
+		<p>
+			Of course, as we were compiling older versions, some of the options above needed to be disabled or
+			replaced by others and not all extensions were available or could be compiled.
+		</p>
+
+		<h3>Running the benchmarks</h3>
+
+		Each benchmark has been run using the PHP CLI (Command-Line Interface) executable through a special-purpose run script that follows the steps below :
+
+		<ol>
+			<li>
+				Modify the script on-the-fly to time script execution from the inside, using the <i>microtime()</i> function ; after this modification,
+				the benchmarked script would look like :
+
+				<pre class="code">
+&lt;?php
+	$__start__	=  microtime ( true ) ;
+	/***
+		original benchmark script code here
+	 ***/
+	fprintf ( STDERR, microtime ( true ) - $__start__ ) ;
+ ?&gt;
+				</pre>
+				<p>
+					This approach has been chosen to provide a consistent way of timing a script from the inside, without altering its behavior.
+				</p>
+			</li>
+			<li>
+				Perform 2 dry runs to ensure that both the PHP executable and benchmark script contents are in the operating system cache
+			</li>
+			<li>
+				Run the script 5 times and extract the min, max and average run times, as reported by the script. 
+				This article shows the average run time only, which we call "script run time".
+			</li>
+		</ol>
+
+		<p>
+			The php.ini settings used are listed below :
+		</p>
+		<pre class="code">
+engine = On
+short_open_tag = Off
+realpath_cache_size = 2M
+max_execution_time = 86400
+memory_limit = 1024M
+error_reporting = 0
+display_errors = 0
+display_startup_errors = 0
+log_errors = 0
+default_charset = "UTF-8"
+
+[opcache]
+zend_extension=opcache.so
+opcache.enable=1
+opcache.enable_cli=1
+opcache.optimization_level=-1
+opcache.fast_shutdown=1
+opcache.validate_timestamps=1
+opcache.revalidate_freq=60
+opcache.use_cwd=1
+opcache.max_accelerated_files=100000
+opcache.max_wasted_percentage=5
+opcache.memory_consumption=128
+opcache.consistency_checks=0
+opcache.huge_code_pages=1
+
+// PHP 8 only
+opcache.jit=35
+opcache.jit_buffer_size=32M
+
+		</pre>
+
+		<h3>Interpreting the results</h3>
+
+		<p>
+			Execution has been timed using the Unix <i>time</i> command ; a sample output looks like this :
+		</p>
+
+		<pre class="code">
+$ time php bench.php
+real: 0m1.96s
+user: 0m1.912s
+sys: 0m0.044s
+$ 
+		</pre>
+		<p>
+			The first value, <i>real:</i>, is the time elapsed between the invocation of the command and is termination (until you get back to the shell prompt).
+		</p>
+		<p>
+			The second value, <i>user:</i>, accounts for the time spent in user code (in our case, this is the time spent in the php executable).
+		</p>
+		<p>
+			The last value, <i>sys:</i>, accounts for the time spent in Operating System (kernel) code. This value should be minimal but can be much larger
+			than that if your code is accessing slow-latency devices, for example. A heavily loaded operating system can also unduly affect the value reported
+			here.
+		</p>
+
+		<p>
+			On idle systems usually, the quantity <i>(user+sys)</i> should be very near from <i>real</i>. This is the case in our example above : <i>user+sys</i> = 1.956s, and 
+			<i>real</i> is 1.960s. The difference of 0.004s does not belong to our process : it simply means that this extra time was taken by the Operating System to perform various
+			tasks, such as scheduling other processes. 
+		</p>
+
+		<p>
+			The same script was executed on a heavily-loaded system compiling 3 different PHP versions in parallel :
+		</p>
+
+		<pre class="code">
+$ time php bench.php
+real: 0m7.812s
+user: 0m2.02s
+sys: 0m0.101s
+$ 
+		</pre>
+
+		<p>
+			Here we clearly see that this heavy load had a significant impact on elapsed time (and maybe on system time as well).
+		</p>
+		<p>
+			This is why we retained in this benchmark an additional value, the Operating System <i>overhead</i>, which is the difference between the elapsed
+			time and the (user + system) times. 
+		</p>
+		<p>
+			During our pure-CPU benchmarking activity, we ensured that this value, for more than 99% of the time, was strictly less that 100 milliseconds, even
+			when running scripts that took dozens of seconds to complete.
+		</p>
+
+
+</body>
+</html>

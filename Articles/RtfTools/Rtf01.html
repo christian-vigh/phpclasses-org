@@ -1,0 +1,379 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<style>
+	h1, h2, h3, h4, h5 {
+		color: #113452;
+	}
+
+	.code {
+		word-wrap: break-word;
+		background: none repeat scroll 0% 0% #F6F6F6;
+		padding: 4px;
+	}
+</style>
+
+</head>
+<body>
+
+<h1>Introduction</h1>
+
+<p>
+	This article is the first of a series that will cover the RTF file format, and explain how you can use the 
+	<a href="http://www.phpclasses.org/package/9709-PHP-Parse-and-generate-RTF-documents-using-templates.html" target="_blank">RtfTools</a> package classes
+	 to perform various kinds of RTF document processing.
+</p>
+
+	<h2>A bit of history</h2>
+	<p>
+		The <b>Rich Text Format</b> (RTF) is a Microsoft proprietary file format, whose specifications were first published in 1987.
+		It was originally intended to facilitate document interchange between different Microsoft products over different platforms, but gradually gained some
+		form of popularity among software editors. The reason was simple : the Microsoft Word .DOC binary format specifications remained unpublished until 1997, where they became 
+		temporarily available under certain conditions (see <a href="https://en.wikipedia.org/wiki/Doc_(computing)" target="_blank">https://en.wikipedia.org/wiki/Doc_(computing)</a>). 
+	</p>
+	<p>
+		This lack of transparency regarding the .DOC file format led software editors to see RTF as an alternative for supporting documents created with Microsoft Word and thus, to
+		provide their end-users with better interoperability.
+	</p>
+	<p>
+		The RTF format evolved until its latest version 1.9.1 in March 2008 
+		(see the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=DD422B8D-FF06-4207-B476-6B5396A18A2B&displaylang=en" target="_blank">Rtf 1.9.1 specifications</a>).
+	</p>		
+
+	<h2>Why caring about the RTF file format ?</h2>
+	<p>
+		And why caring about programming in Cobol, Fortran or RPG ? simply because there is an installed base of companies that still have to deal with it ! this is part of their
+		history and, as a professional, you may have to deal with such environments. 
+	</p>
+	<p>
+		Of course, chosing RTF as the preferred document interchange format across different platforms and/or systems would not be my preferred choice, unless 
+		I have to face with strong technical constraints coming from the IT environment, or from a strong company history, or both.
+	</p>
+	<p>
+		On the other hand, the RTF file format is really easy to parse and is human-readable (although in this particular case, "human-readability" may sometimes become a highly 
+		subjective topic). <br />
+		From a syntactic point of view at least, it is easy to read and it is easy to generate ; so, sometimes, it may be a good and cheap compromise...
+	</p>
+	<p>
+		Moreover, parsing Rtf documents does not require you to use a complex framework of C/C++/<i>put your favorite language(s) here</i> objects/libraries, as this is the case for PDF files.
+		Creating an Rtf parser requires only a few dozen lines of code.
+	</p>
+
+	<h2>What you will find here</h2>
+	<p>
+		This series of articles focuses on the RTF document structure.
+	</p>
+	<p>
+		They will not explain how to create RTF contents such as headers, footers, tables and embedded images ; rather, they will focus on what you need to know if, one day, you have to read 
+		RTF documents and try to extract some useful information from them.
+		They will also explain how the <a href="http://www.phpclasses.org/package/9709-PHP-Parse-and-generate-RTF-documents-using-templates.html" target="_blank">RtfTools</a> 
+		package classes can be used to address some of your needs when it comes to processing Rtf files.
+	</p>
+	<p>
+		This first article will introduce you to the Rtf file format, providing you with the basic information you will need in order to understand an Rtf document when viewing it in a text editor,
+		or when processing it through a script.
+	</p>
+
+<br />
+<h1 id="rtf-by-example">The Rtf file format by example</h1>
+
+<p>
+	Maybe the simplest way to introduce the Rtf file format is to create the simplest possible document using the simplest word processing software, then have a look at the generated Rtf data. 
+	We have chosen the Microsoft Wordpad application for that. This small application, bundled with all versions of the Microsoft Windows operating system, has the great advantage of generating very
+	simple Rtf output. Of course, it lacks many of the most common features that modern word processors offer, but it is ideal for our purpose.
+</p>
+<p>
+	The screenshot below shows a <i>Wordpad</i> document containing some very simple text, without any formatting :
+</p>
+<p>
+	<img src="SimpleWordpadDocument.png" />
+</p>
+<p>
+	<i>(for those of you who are familiar with the Windows API, the <i>Wordpad</i> application uses the <i>RichTextEdit</i> control for all its operations)</i>
+</p>
+<p>
+	We used a few characters that are definitely common, such as angle quotes, curly braces and backslashes. We will see later that such so common characters require some
+	interpretation when translated into Rtf format ; but first, let's have a look at the Rtf file generated by <i>Wordpad</i> ; after saving the document and reopening it
+	using some text editor such as <i>Notepad</i> or <i>Notepad++</i>, we will get the following output (the text coming from the original document above has been highlighted in red) :
+</p>
+<pre class="code">
+	{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1036{\fonttbl{\f0\fnil\fcharset0 Arial;}{\f1\fnil\fcharset0 Calibri;}}
+	{\*\generator Riched20 10.0.10586}\viewkind4\uc1 
+	\pard\fs26<span style="color: red; font-weight: bold">\'ab</span>\f1\fs22\lang12 <span style="color: red; font-weight: bold">Hello world</span>\f0\fs26\lang1036<span style="color: red; font-weight: bold">\'bb</span>\par
+	\f1\fs22\lang12 <span style="color: red; font-weight: bold">Special characters :</span> \<span style="color: red; font-weight: bold">{</span> \<span style="color: red; font-weight: bold">}</span> \<span style="color: red; font-weight: bold">\</span> \par
+	}	
+</pre>
+<p>
+	What could we say from the above ? at first glance, we can notice a few things :
+</p>
+<ul>
+	<li>
+		Rtf data can be enclosed within curly braces ; in fact, the whole document itself is enclosed within curly braces ! these are known as <i>groups</i> in the Rtf specifications, and can be 
+		indefinitely nested.
+	</li>
+	<li>
+		Lots of data start with a backslash, followed by a keyword (<i>\rtf1, \ansicpg1252</i>, etc.). All those items are referred to as <i>Control words</i> in the Rtf specifications.
+		They generally provide document formatting information, such as <span style="color: #0000FF">\pard</span>, which resets paragrah formatting parameters to
+		their default values, or <span style="color: #0000FF">\ansicpg1252</span>, which defines the code page to be used throughout the document.<br />
+		They are also referred as <i>tags</i> in the <a href="http://www.phpclasses.org/package/9709-PHP-Parse-and-generate-RTF-documents-using-templates.html" target="_blank">RtfTools</a> 
+		documentation.
+	</li>
+	<li>
+		Our original text still appears here, at least partly. The angle brackets, for example, have been replaced with the special constructs 
+		<span style="color: red; font-weight: bold">\'ab</span> and
+		<span style="color: red; font-weight: bold">\'bb</span>, which give the hexadecimal equivalent of the angle brackets in the current codepage. Such constructs
+		are referred to as <i>Control symbols</i> in the Rtf specifications, and as <i>escaped character symbols</i> in the <i>RtfTools</i> documentation.
+	</li>
+	<li>
+		And our special characters (curly braces and backslashes) are themselves prefixed with a backslash : they are <i>escaped</i>, because they have a special meaning 
+		as Rtf syntactic elements.<br />
+		Such elements are still referred as <i>Control symbols</i> in the Rtf specifications, but the <i>RtfTools</i> packages makes a further distinction and calls them
+		<i>Escaped expressions</i>.
+	</li>
+</ul>
+<p>
+	There are other notions that cannot be simply deduced from the above data : for example, an Rtf document has a <i>header</i> part ; line breaks are completely optional ; and other
+	specificities that this series of articles will explain in greater detail.
+</p>
+
+<h1>Overview of the Rtf file format - Elements of syntax</h1>
+
+<p>
+	Rtf documents usually contain data encoded in 7-bits ASCII, consisting of groups, control words, control symbols and plain text. Line breaks (CRLFs) can be present in the document,
+	but they have no other purpose than providing a better readability of the Rtf raw data : they will never be included in the document text.
+</p>
+<p>
+	The following sections describe the various components that can be found in an Rtf document ; they provide the official terms used in the Microsoft Rtf Specification, as well as
+	their equivalent in the <i>RtfTools</i> package, where more detailed distinctions have been made for better clarity.
+</p>
+
+	<h2>Control words</h2>
+	<p>
+		A control word can be regarded as an instruction that affects the way characters are displayed, or modifies the settings of a page, section or paragraph.
+		Control words can also define elements that can be later referred to from inside the document contents ; they include for example footnotes, which are not displayed
+		at the place they are defined in the Rtf document, but are rather generally referenced from within the document contents.<br />
+		Such control words are called <i>Destination control words</i> in the Rtf specifications. The <i>RtfTools</i> package simply calls both forms as <i>Control words</i>.
+	</p>
+	<p>
+		A <i>control word</i> has the following syntax :
+	</p>
+	<ul>
+		<li>
+			It always starts with a backslash
+		</li>
+		<li>
+			It is followed by the name of the control word itself, which is a set of alphabetic characters. Note that names are case-sensitive.
+		</li>
+		<li>
+			It can be followed by an optional integer value, which can be negative.
+		</li>
+	</ul>
+	<p>
+		Examples :
+	</p>
+	<ul>
+		<li>
+			<b>\pard</b> : the control word <i>pard</i>, which resets a paragraph to its default values.
+		</li>
+		<li>
+			<b>\ansicpg1252</b> : the control word <i>ansicpg</i>, followed by the integer parameter <i>1252</i> (defines the codepage to be used throughout the document,
+			unless otherwise stated).
+		</li>
+		<li>
+			<b>\margl-200</b> : the control word <i>margl</i>, which defines the width of the left margin to be <i>-200</i> twips.
+		</li>
+	</ul>
+	<p>
+		A control word ends when a character that cannot be part of the control word itself has been encountered. Such characters are :
+	</p>
+	<ul>
+		<li>A backslash</li>
+		<li>An opening or closing brace</li>
+		<li>A space or a line break</li>
+	</ul>
+	<p>
+		If the control word is followed by a space, then the space is considered to be part of the control word itself, not part of the document text contents.
+		This may come from an effort to improve the readability of Rtf contents !
+	</p>
+	<p>
+		Note however that if a control word is followed by two or more spaces, then :
+	</p>
+	<ul>
+		<li>The first space will be part of the control word</li>
+		<li>The second and subsequent spaces will be part of the document contents</li>
+	</ul>
+	<p>
+		Control words can also be prefixed by the control symbol <b>\*</b>, such as in : <b>\*\background</b>. The Rtf specifications state that it is used for <i>destination</i>
+		control words.
+	</p>
+	<p>
+		The basic purpose of such a construct is to tell an Rtf processor that it should ignore the control word if it does not recognize it (furthermore, the control word will not be
+		included in the output if the Rtf processor is capable of writing back Rtf documents).
+	</p>
+	<p>
+		The <i>RtfTools</i> documentation refers to both <i>Control words</i> and <i>Destination control words</i> using the same term : <i>Control words</i>. 
+	</p>
+
+	<h2>Groups</h2>
+	<p>
+		Groups start with with an opening brace (<b>{</b>) and end with a closing brace ((<b>}</b>). Inside a group, any paragraph or character-formatting properties can be specified,
+		along with the document text they apply to. Grouping is also used for <i>destination</i> control words, such as fonts, styles, footnotes, headers and footers, etc.
+	</p>
+	<p>
+		Groups can be nested ; when applied to text formatting, you can think of them as a way to push the current section/paragraph/character formatting options onto a stack before
+		temporarily modifying some local settings. The opening brace of a group will push such settings ; the contents of the nested group will define some specific settings,
+		such as font weight, font size, text color ; then the closing brace will restore the settings that have been pushed when encountering the opening brace.
+	</p>
+	<p>
+		The following example will output the string <i>"Hello "</i> in bold, <i>"gentle "</i> as normal text, and <i>"World !"</i> in bold again (the <b>\pard</b> control word 
+		inside the nested group resets paragraph settings to their defaults) :
+	</p>
+
+	<pre class="code">
+	{\b Hello {\pard gentle } world !}
+	</pre>
+
+	<p>
+		(the next article will describe the meaning of each space in the above Rtf contents - the ones being part of the control words, and the ones being part of the document text)
+	</p>
+
+	<h2>Control symbols</h2>
+	<p>
+		<i>Control symbols</i>, like control words, start with a backslash character, which is followed by a non-alphanumeric character. Unlike <i>Control words</i>, Control
+		symbols are never followed by an optional space. If a space is present after a control symbol, it will be considered to be part of the document contents.
+	</p>
+	<p>
+		Although the Microsoft Rtf Specifications do not 
+		make any distinction between the various kinds of control symbols, the <i>RtfTools</i> package divides them into three categories, which are described below.
+	</p>
+
+		<h3>Escaped expression (or Escaped symbol)</h3>
+		<p>
+			The basic syntactic elements of an Rtf file consist in only three characters : opening brace (<b>{</b>), closing brace (<b>}</b>) and backslash (<b>\</b>). With only these
+			three characters, you should be able to parse any Rtf document (in the case of the backslash, of course, you will need some additional effort to parse what follows - a control
+			word or a control symbol).
+		</p>
+		<p>
+			But what happens if you are using such characters in the document's contents ? the answer is simple : they need to be <i>escaped</i>. This process of escaping 
+			is handled automatically by your Rtf document processor (remember our example and the comments following in the <a href="#rtf-by-example">Rtf by example</a> paragraph ?).
+		</p>
+		<p>
+			Normally, you should find only the following escaped symbols in an Rtf document :
+		</p>
+		<ul>
+			<li><span style="color: #0000BB; font-weight: bold">\{</span></li>
+			<li><span style="color: #0000BB; font-weight: bold">\}</span></li>
+			<li><span style="color: #0000BB; font-weight: bold">\\</span></li>
+		</ul>
+		<p>
+			However, the <i>RtfTools</i> package will correctly handle escaped symbols where the character following the backslash 
+			is neither a quote (escaped characters) nor a control symbol character
+			(see below).
+		</p>
+
+		<h3>Escaped character</h3>
+		<p>
+			An escaped character is presented with a backslash followed by an apostrophe (ASCII character 0x27) and two hexadecimal digits ;
+			it allows for specifying an 8-bits character using the hexadecimal notation, such as in following example, which will map to the Euro character
+			(&euro;) in certain codepages :
+		</p>
+		<pre class="code">
+	<span style="color: #0000BB; font-weight: bold">\'80</span>
+		</pre>
+
+		<h3>Control symbol</h3>
+		<p>
+			A <i>Control symbol</i> (as the <i>RtfTools</i> package recognizes it) is neither an escaped expression nor an escaped character, which can be 
+			handled at a lexical analysis level.
+		</p>
+		<p>
+			Control symbols carry some extra meaning that is intended for Rtf viewer software ;  they are therefore handled separately. You will find below
+			a list of the currently recognized control symbols :
+		</p>
+		<ul>
+			<li><span style="color: #0000BB; font-weight: bold">\~</span> : non-breaking space.</li>
+			<li><span style="color: #0000BB; font-weight: bold">\-</span> : optional hyphen.</li>
+			<li><span style="color: #0000BB; font-weight: bold">\_</span> : non-breaking hyphen.</li>
+			<li><span style="color: #0000BB; font-weight: bold">\:</span> : specifies a subentry in an index entry.</li>
+			<li><span style="color: #0000BB; font-weight: bold">\|</span> : Formula character (Used by Word 5.1 for the Macintosh as the beginning delimiter 
+					for a string of formula typesetting commands ; probably not used anymore !).</li>
+		</ul>
+		<p>
+			The Rtf specifications also include the <span style="color: #0000BB; font-weight: bold">\*</span> control symbol, which is used
+			to mark a destination control symbol whose text should be ignored if not understood by the RTF reader. The <i>RtfTools</i> package, however,
+			considers that a sequence such as :
+		</p>
+		<pre class="code">
+	<span style="color: #0000BB; font-weight: bold">\*\background</span>
+		</pre>
+		<p>
+			is a <i>control word</i> ("background") with a special attribute saying that it is <i>special</i>, due to the presence of the
+			<span style="color: #0000BB; font-weight: bold">\*</span> control symbol just before it.
+		</p>
+
+<h1>Conclusion</h1>
+<p>
+	This article covered a part of the Rtf file format, introducing the basic notions that will allow you to become familiar with raw Rtf contents, at least
+	from a syntactic point of view.
+</p>
+<p>
+	It also described the basic entities that form Rtf contents : control words, control symbols, groups and destinations, along with their counterparts in the <i>RtfTools</i> package.
+</p>
+<p>
+	The next article of this series will describe how an Rtf document is structured : header, body, fonts, styles, color tables and so on. It will also present some syntactic elements
+	that were not discussed here and that may require some additional "intelligence" from a lexical parser. These include the handling of optional spaces after control words, and special control
+	words such as the <span style="color: #0000BB; font-weight: bold">\bin</span> or <span style="color: #0000BB; font-weight: bold">\pict</span>, which require some specific processing.
+</p>
+
+<h1>Useful links</h1>
+	<p>
+		You will find below some useful documents from Microsoft about the Rich Text Format :
+	</p>
+	<ul>
+		<li>
+			<a href="/downloads/documentation/Word2007RTFSpec9.docx" title="Rich Text Format Specification 1.9.1" target="_blank">Microsoft Rich Text Format (RTF) specification version 1.9.1 (march 2008)</a>
+			<br />
+			<div style="padding-left: 32px; padding-bottom: 12px; display: inline-block">
+				The latest, complete RTF specifications from Microsoft.
+			</div>
+		</li>
+	</ul>
+
+	<p>And some useful links collected from elsewhere :</p>
+
+	<ul>
+		<li>
+			<a href="http://search.cpan.org/~sburke/RTF-Writer-1.11/lib/RTF/Cookbook.pod" title="Rtf Cookbook from Sean M. Burke" target="_blank">Rtf Pocket Guide</a>.
+			<br />
+			<div style="padding-left: 32px; padding-bottom: 12px; display: inline-block">
+				A small cookbook about the Rtf language, by
+				<a href="https://en.wikipedia.org/wiki/Sean_M._Burke" target="_blank">Sean M. Burke</a> ;
+				it will not help you to become a specialist, but it will rapidly give you an overview of what's happening inside...<br />
+				Sean M. Burke is the author of the
+				<a href="https://www.amazon.com/RTF-Pocket-Guide-Sean-Burke/dp/0596004753/ref=sr_1_1?ie=UTF8&qid=1474467187&sr=8-1&keywords=rtf+pocket+guide"
+				   target="_blank">Rtf Pocket Guide</a>, which is an ideal complement to the Microsoft RTF specifications, and gives useful information on how
+				to generate Rtf code such as tables, paragraph formatting, etc.<br />
+				If you have to deal with Rtf files generation, then this small book is a must-have, because it gives concrete examples that you will never find
+				in the Microsoft specifications. And you won't need heavy tools to test the examples : <i>Notepad</i> for writing Rtf contents, and <i>Wordpad</i>
+				for displaying them...
+			</div>
+		</li>
+		<li>
+			<a href="http://interglacial.com/rtf/" target="_blank">Rich Text Format</a>
+			<br />
+			<div style="padding-left: 32px; padding-bottom: 12px; display: inline-block">
+				The page of Sean M. Burke's website giving additional information and links about the Rtf file format.
+			</div>
+		</li>
+		<li>
+			<a href="https://en.wikipedia.org/wiki/Rich_Text_Format" title="Rich Text Format on Wikipedia" target="_blank">Wikipedia page</a>
+			<br />
+			<div style="padding-left: 32px; padding-bottom: 12px; display: inline-block">
+				A comprehensive article on Wikipedia about the RTF file format.
+			</div>
+		</li>
+	</ul>
+
+</body>
+</html>

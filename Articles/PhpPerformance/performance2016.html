@@ -76,14 +76,16 @@
 			also brings its own set of enhancements.
 		</p>
 		<p>
-			And more to come ! with a really promising new version currently under heavy development, managed by Dmitry Stogov. 
-			Whatever the name used for this version (Php 7.2 or Php 8 - we will refer to it
-			as Php 8 in this article), the key feature that has been introduced talks about Just-In-Time (JIT) compiling, a technique to translate code
+			And more to come ! with a really promising new version currently under heavy development, managed by Dmitry Stogov and based on PHP 7.1.
+			It did not receive an official name yet, but has been labelled internally as "experimental JIT branch" by the PHP team.
+		</p>
+		<p>
+			The key feature that has been introduced talks about Just-In-Time (JIT) compiling, a technique to translate code
 			into another format, such as machine code, just before running it. JIT is supposed to make your programs run faster ; and we will see that
 			it is not just a promise...
 		</p>
 		<p>
-			This article covers the results of selected benchmarks, from the very first release of PHP 5 up to the version 8 of PHP, currently under development (versions prior
+			This article covers the results of selected benchmarks, from the very first release of PHP 5 up to the experimental JIT branch of PHP, currently under development (versions prior
 			to PHP 5 are not included here).
 		</p>
 
@@ -121,7 +123,7 @@
 			<li>5.6.28</li>
 			<li>7.0.13</li>
 			<li>7.1.0</li>
-			<li>the version currently under development, PHP 8 (<a href="https://github.com/zendtech/php-src" target="_blank">https://github.com/zendtech/php-src</a>)</li>
+			<li>the Experimental JIT branch (<a href="https://github.com/zendtech/php-src" target="_blank">https://github.com/zendtech/php-src</a>) currently under development</li>
 		</ul>
 		<p>
 			Of course, we wanted to get sure, so we ran ALL the intermediate versions on the same benchmarks (eg, 5.3.0 to 5.3.29). The results were eloquent :
@@ -153,7 +155,7 @@
 			</li>
 			<li>
 				<i>abs. gain</i> : Indicates how much faster the script runs, when compared to PHP 5.0. If you have a look at the intersection
-				of this column for <b>bench.php</b> and version 8 for example, you will notice that version 8 is more than 41 times faster than PHP 5.0 
+				of this column for <b>bench.php</b> and experimental JIT branch for example, you will notice that version 8 is more than 41 times faster than PHP 5.0 
 				for this particular benchmark !
 			</li>
 		</ul>
@@ -289,7 +291,7 @@
 				<td style="padding: 4px; font-size: 14px; text-align: right">14.053</td>
 			</tr>
 			<tr>
-				<td style="padding: 4px">8</td>
+				<td style="padding: 4px">Experimental JIT branch</td>
 				<td style="padding: 4px; font-size: 14px; text-align: right">0.208s</td>
 				<td style="padding: 4px; font-size: 14px; text-align: right">54.68%</td>
 				<td style="padding: 4px; font-size: 14px; text-align: right">41.587</td>
@@ -304,9 +306,8 @@
 		</div>
 
 		<p>
-			It would be difficult to put a definite conclusion after analyzing the results shown in the above table,
-			except by saying that PHP is becoming faster and faster ! however, we can make a few comments about performance evolutions
-			in various versions :
+			Of course, these were pure-CPU benchmarks ; they don't cover all the aspects of PHP performance, and they may not be representative
+			of real-word situations. However, the results are significant enough to justify a few comments :
 		</p>
 		<ul>
 			<li>
@@ -329,7 +330,11 @@
 				see here the results of this work.
 			</li>
 			<li>
-				PHP 8 introduces yet another major breakthrough, thanks to JIT
+				PHP 7.1 introduced bytecode optimizations in the <i>opcache</i> extension. This explains once again the gain in performance
+				shown in the above table, when compared to 7.0.
+			</li>
+			<li>
+				The Experimental JIT branch introduces yet another major breakthrough, thanks to JIT
 				It can give blazingly fast enhancements to your existing code, but in certain cases, you may notice no more than a few 
 				percents improvement in speed ; and in the worst cases, it can even add a slight overhead.
 				But remember that this feature is currently under development...
@@ -439,9 +444,11 @@
 
 		<h3>PHP 7.1</h3>
 
-		<p>Not available at this time</p>
+		<ul>
+			<li>New bytecode optimizer integrated with opcache</li>
+		</ul>
 
-		<h3>PHP 8</h3>
+		<h3>Experimental JIT branch</h3>
 
 		<ul>
 			<li>Just-In-Time compiling</li>
@@ -494,7 +501,7 @@
 		</ul>
 		<p>
 			Although the system came bundled with Gnu C compiler version 4.7.2, upgrading to a more recent version was required :
-			PHP version 8 must be compiled with Gnu C >= 4.8.
+			the experimental JIT branch must be compiled with Gnu C >= 4.8.
 		</p>
 
 		<h3>Compiling the source code</h3>

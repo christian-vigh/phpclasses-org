@@ -89,8 +89,10 @@
     <Folder Include="Minifiers\.git\refs\tags\" />
     <Folder Include="Minifiers\examples\" />
     <Folder Include="Minifiers\examples\css\" />
+    <Folder Include="Minifiers\examples\html\" />
     <Folder Include="Minifiers\examples\js\" />
     <Folder Include="Minifiers\examples\php\" />
+    <Folder Include="PdfToText\CIDTables\" />
     <Folder Include="PhpUtilities\" />
     <Folder Include="PhpUtilities\examples\" />
     <Folder Include="VariableStore\" />
@@ -153,6 +155,7 @@
     <Folder Include="SearchableFile\examples\" />
     <Folder Include="SearchableFile\PSRless\" />
     <Folder Include="SshSession\" />
+    <Folder Include="VariableStore\examples\" />
     <Folder Include="WMI\" />
     <Folder Include="WMI\.git\" />
     <Folder Include="WMI\.git\hooks\" />
@@ -232,6 +235,7 @@
     <Compile Include="Mail\examples\textonly.php" />
     <Compile Include="Mail\Regex.class.php" />
     <Compile Include="Minifiers\examples\css\example.php" />
+    <Compile Include="Minifiers\examples\html\example.php" />
     <Compile Include="Minifiers\examples\js\example.php" />
     <Compile Include="Minifiers\examples\php\example.php" />
     <Compile Include="Path\example.find.php" />
@@ -279,6 +283,10 @@
     <Compile Include="SshSession\example.inc.php" />
     <Compile Include="SshSession\example.key.php" />
     <Compile Include="SshSession\example.password.php" />
+    <Compile Include="VariableStore\examples\define.php" />
+    <Compile Include="VariableStore\examples\env.php" />
+    <Compile Include="VariableStore\examples\init.php" />
+    <Compile Include="VariableStore\examples\toarray.php" />
     <Compile Include="WMI\example.php" />
   </ItemGroup>
   <ItemGroup>
@@ -295,7 +303,10 @@
     <Content Include="Articles\PdfToText\images\SamplePdfFile.png" />
     <Content Include="Articles\PdfToText\PdfToText.html" />
     <Content Include="Articles\performance\perf01.html" />
+    <Content Include="Articles\PhpPerformance\Benchmark results.xls" />
     <Content Include="Articles\PhpPerformance\performance2016.html" />
+    <Content Include="Articles\PhpPerformance\phplogo.png" />
+    <Content Include="Articles\PhpPerformance\phplogo.psd" />
     <Content Include="Articles\regex\regex01.html" />
     <Content Include="Articles\regex\regex02.html" />
     <Content Include="Articles\RtfTools\Rtf02.html" />
@@ -428,8 +439,10 @@
     <Content Include="Minifiers\.git\info\exclude" />
     <Content Include="Minifiers\CssMinifier.phpclass" />
     <Content Include="Minifiers\examples\css\example.css" />
+    <Content Include="Minifiers\examples\html\example.html" />
     <Content Include="Minifiers\examples\js\example.js" />
     <Content Include="Minifiers\examples\php\example.phpclass" />
+    <Content Include="Minifiers\HtmlMinifier.phpclass" />
     <Content Include="Minifiers\JavascriptMinifier.phpclass" />
     <Content Include="Minifiers\LICENSE" />
     <Content Include="Minifiers\Minifier.phpclass" />
@@ -438,6 +451,7 @@
     <Content Include="Minifiers\README.md" />
     <Content Include="Path\Path.phpclass" />
     <Content Include="Path\README.md" />
+    <Content Include="PdfToText\CIDTables\IDENTITY-H.cid" />
     <Content Include="PdfToText\Path.phpclass" />
     <Content Include="PdfToText\CREDITS.md" />
     <Content Include="PdfToText\examples\example01\README.md" />
@@ -477,6 +491,7 @@
     <Content Include="PhpSettings\README.md" />
     <Content Include="PhpUtilities\examples\evaluateexpression.ini" />
     <Content Include="PhpUtilities\PhpUtilities.phpclass" />
+    <Content Include="PhpUtilities\README.md" />
     <Content Include="PPP\examples\expand.txt" />
     <Content Include="PPP\examples\expandprog.txt" />
     <Content Include="PPP\examples\include.1.txt" />
@@ -584,6 +599,7 @@
     <Content Include="SshSession\README.md" />
     <Content Include="SshSession\Session.phpclass" />
     <Content Include="VariableStore\AssociativeArray.phpclass" />
+    <Content Include="VariableStore\README.md" />
     <Content Include="VariableStore\Variables.phpclass" />
     <Content Include="WMI\.git\COMMIT_EDITMSG" />
     <Content Include="WMI\.git\config" />

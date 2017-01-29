@@ -44,6 +44,7 @@
     <Folder Include="CLParser\Examples\01.general\" />
     <Folder Include="CLParser\Examples\common\" />
     <Folder Include="CLParser\Help\" />
+    <Folder Include="ColorTools\" />
     <Folder Include="DbStringStore\data\" />
     <Folder Include="IniFile\" />
     <Folder Include="DbVariableStore\" />
@@ -218,6 +219,7 @@
     <Compile Include="CLParser\Examples\common\hidden.php" />
     <Compile Include="CLParser\Examples\examples.inc.php" />
     <Compile Include="CLParser\CL.php" />
+    <Compile Include="ColorTools\example.php" />
     <Compile Include="DbBufferedOperation\benchmark.php" />
     <Compile Include="DbStringStore\DbStringStore.php" />
     <Compile Include="DbStringStore\DbTable.php" />
@@ -369,6 +371,8 @@
     <Content Include="CLParser\LICENSE" />
     <Content Include="CLParser\NOTICE" />
     <Content Include="CLParser\README.md" />
+    <Content Include="ColorTools\ColorNames.txt" />
+    <Content Include="ColorTools\Colors.phpclass" />
     <Content Include="DbBufferedOperation\DbBufferedInsert.php" />
     <Content Include="DbBufferedOperation\DbBufferedLoadFile.php" />
     <Content Include="DbBufferedOperation\DbBufferedOperation.php" />

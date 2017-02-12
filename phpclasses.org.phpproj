@@ -456,7 +456,6 @@
     <Content Include="Path\Path.phpclass" />
     <Content Include="Path\README.md" />
     <Content Include="PdfToText\CIDTables\IDENTITY-H.cid" />
-    <Content Include="PdfToText\Path.phpclass" />
     <Content Include="PdfToText\CREDITS.md" />
     <Content Include="PdfToText\examples\example01\README.md" />
     <Content Include="PdfToText\examples\example01\sample.pdf" />

@@ -93,6 +93,7 @@
     <Folder Include="Minifiers\examples\html\" />
     <Folder Include="Minifiers\examples\js\" />
     <Folder Include="Minifiers\examples\php\" />
+    <Folder Include="BitString\" />
     <Folder Include="PdfToText\CIDTables\" />
     <Folder Include="PhpUtilities\" />
     <Folder Include="PhpUtilities\examples\" />
@@ -202,6 +203,7 @@
     <Compile Include="AsynchronousCommand\examples\askforinput.php" />
     <Compile Include="AsynchronousCommand\examples\example.find.php" />
     <Compile Include="AsynchronousCommand\examples\example.input.php" />
+    <Compile Include="BitString\example.php" />
     <Compile Include="CircularBuffer\example.php" />
     <Compile Include="CLParser\Examples\00.readme\example.php" />
     <Compile Include="CLParser\Examples\01.general\example.php" />
@@ -322,6 +324,9 @@
     <Content Include="AsynchronousCommand\LICENSE" />
     <Content Include="AsynchronousCommand\NOTICE" />
     <Content Include="AsynchronousCommand\README.md" />
+    <Content Include="BitString\BitString.phpclass" />
+    <Content Include="BitString\LICENSE" />
+    <Content Include="BitString\NOTICE" />
     <Content Include="CircularBuffer\CircularBuffer.phpclass" />
     <Content Include="CircularBuffer\LICENSE" />
     <Content Include="CircularBuffer\NOTICE" />

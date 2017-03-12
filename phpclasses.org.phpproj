@@ -327,6 +327,7 @@
     <Content Include="BitString\BitString.phpclass" />
     <Content Include="BitString\LICENSE" />
     <Content Include="BitString\NOTICE" />
+    <Content Include="BitString\README.md" />
     <Content Include="CircularBuffer\CircularBuffer.phpclass" />
     <Content Include="CircularBuffer\LICENSE" />
     <Content Include="CircularBuffer\NOTICE" />

@@ -88,6 +88,9 @@
     [Version : 1.0.15]	[Date : 2015/11/26]	[Author : CV]
 	. Added the GetIntegerKey() method.
 
+    [Version : 1.0.16]	[Date : 2017/04/07]	[Author : CV]
+	. Added the GetListKey() method.
+
  ***************************************************************************************************/
 require_once ( 'Variables.phpclass' ) ;
 
@@ -1223,6 +1226,59 @@ class  IniFile		// extends  Object
 	/*-------------------------------------------------------------------------------------------
 
 	    NAME
+		GetIntegerKey - Gets an integer key value.
+	 
+	    PROTOTYPE
+		$value = $inifile -> GetIntegerKey ( $section, $key, $default = null, $min = null, $max = null ) ;
+
+	    DESCRIPTION
+	    	Gets an integer key from the specified section.
+
+	    PARAMETERS
+	    	$section (string) -
+	    		Section name.
+
+    		$key (string) -
+    			Key name.
+	  
+	 	$default (integer) -
+	 		Default value if the key does not exist.
+
+		$min, $max (integer) -
+			Min and max allowed values for this key.
+
+	    RETURN VALUE
+	    	The integer value, or $default if the key does not exist.
+	 	An invalid boolean value will generate an error.
+	  
+	    NOTES
+	 	The GetxxxKey functions do not return a reference to the underlying value. The SetKey()
+	 	method must be used to modify the value, if needed.
+
+	 --------------------------------------------------------------------------------------------*/
+	public function  GetIntegerKey ( $section, $key, $default = null, $min = null, $max = null )
+	   {
+		$value		=  $this -> GetKey ( $section, $key, $default ) ;
+
+		if  ( $value  ===  null )
+			return ( null ) ;
+
+		if  ( ! is_numeric ( $value ) )
+			error ( new \Thrak\System\RuntimeException ( "Invalid integer value \"$value\" for the \"$key\" value of the [$section] section." ) ) ;
+
+		if  ( $min  !=  null  &&  $value  <  $min ) 
+			error ( new \Thrak\System\RuntimeException ( "Integer value \"$value\" for the \"$key\" value of the [$section] section must be greater or equal to $min." ) ) ;
+
+		if  ( $max  !=  null  &&  $value  >  $max ) 
+			error ( new \Thrak\System\RuntimeException ( "Integer value \"$value\" for the \"$key\" value of the [$section] section must be less than or equal to $max." ) ) ;
+
+		return ( ( integer ) $value ) ;
+	    }
+	
+	
+	/*-------------------------------------------------------------------------------------------
+
+	    NAME
 		GetKey - Gets a key value.
 
 	    PROTOTYPE
@@ -1287,6 +1343,66 @@ class  IniFile		// extends  Object
 		    }
 		
     		return $false ;
+	    }
+
+
+	/*--------------------------------------------------------------------------------------------------------------
+	
+	    NAME
+	        GetListKey - Retrieves a key value as a list.
+	
+	    PROTOTYPE
+	        $array		=  $inifile -> GetListKey ( $section, $key, $default = null, $separator = '[\s,]' ) ;
+	
+	    DESCRIPTION
+	        Sometimes, a key value is specified as a series of values separated by a delimiter. For example :
+
+			Aliases		=  alias1, alias2, ..., aliasn
+
+		This method retrieves the key value and transforms it into an array, using the specified separator. In
+		the above example, it would return an array having the following entries :
+
+			[ 'alias1', 'alias2', ..., 'aliasn' ]
+	
+	    PARAMETERS
+	    	$section (string) -
+	    		Section name.
+
+    		$key (string) -
+    			Key name.
+	  
+	 	$default (any) -
+	 		Default value if the key does not exist.
+
+		$separator (string) -
+			A (part of) regular expression that is used with the preg_split() function to separate elements.
+	
+	    RETURN VALUE
+	        An array of individual elements coming from the key value, or false if the value is empty.
+	
+	    NOTES
+	        After splitting, empty values are ignored and will not be returned in the result.
+	
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  GetListKey ( $section, $key, $default = null, $separator = '[\s,]' )
+	   {
+		$value		=  $this -> GetKey ( $section, $key, $default ) ;
+
+		if  ( $value )
+		   {
+			$items		=  preg_split ( "/$separator/x", $value ) ;
+			$result		=  [] ;
+
+			foreach  ( $items  as  $item )
+			   {
+				if  ( $item ) 
+					$result []	=  trim ( $item ) ;
+			    }
+
+			return ( $result ) ;
+		    }
+		else
+			return ( false ) ;
 	    }
 
 

@@ -1,0 +1,431 @@
+<?php
+/**************************************************************************************************************
+
+    NAME
+        AssociativeArray.phpclass
+
+    DESCRIPTION
+        Implements a case_insensitive associative array.
+
+    AUTHOR
+        Christian Vigh, 11/2014.
+
+    HISTORY
+    [Version : 1.0]    [Date : 2014/11/02]     [Author : CV]
+        Initial version.
+
+    [Version : 1.0.1]  [Date : 2014/11/09]     [Author : CV]
+	 . Added a default value of empty array to the class constructor.
+ 
+    [Version : 1.0.2]  [Date : 2014/12/04]     [Author : CV]
+	. Added the ksort() method.
+ 
+    [Version : 1.0.3]  [Date : 2015/04/08]     [Author : CV]
+ 	. Added the pop() method.
+ 
+    [Version : 1.0.3]  [Date : 2015/04/08]     [Author : CV]
+	. Added the in_array(), iin_array(), in_subarray() and iin_subarray() methods.
+ 
+    [Version : 1.0.4]  [Date : 2015/05/13]     [Author : CV]
+	. Added the keyname() method.
+ 
+    [Version : 1.0.5]  [Date : 2015/06/13]     [Author : CV]
+	. Added the ReadOnly boolean property, which prevents further values to be added once the array has
+	  been initialized.
+ 
+    [Version : 1.0.6]  [Date : 2015/07/20]     [Author : CV]
+	. Changed the offsetSet() method which uselessly called __rebuild_keys() when an existing array
+	  item was assigned a value.
+ 
+    [Version : 2.0]	[Date : 2015/10/03]     [Author : CV]
+	. Completely restructured the stuff since it was developed "à la va-vite" to address an urgent need :
+	  - Renamed several internal properties
+	  - Removed the useless ReadOnly property : the original goal was not to enhance array management, but
+	    simply give associative array case-insensitiveness on their keys without affecting too much
+	    performance, so ReadOnly was useless in that scope.
+	  - To access array elements using case-insensitive keys, a separate array (now named "ArrayKeys") is 
+	    managed ; the new version only rebuilds it when needed (for example, when several new elements have
+	    been added THEN the value of one of them is retrieved).
+ 
+    [Version : 2.0.1]	[Date : 2015/12/28]     [Author : CV]
+	. __rebuild_keys() is now conditionnally called instead of being systematically invoked. This saves
+	  useless function calls.
+	. The offsetSet() and offsetUnset() methods now directly update the $DataKeys member instead of setting
+	  the $RebuildKeys flag saying that the next array access function should rebuild the keys first.
+  
+ **************************************************************************************************************/
+
+/*==============================================================================================================
+
+    AssociativeArray -
+        A class for handling associative arrays whose keys are case-insensitive.
+
+  ==============================================================================================================*/
+class  AssociativeArray		//extends		Object
+				implements	\ArrayAccess, \Countable, \IteratorAggregate
+   {
+	// Associative array whose items are to be accessed in a case-insensitive way
+	protected	$Data ;
+	// Lowercase version of associative array keys. Values are the case-sensitive original key.
+	protected	$DataKeys ;
+	// Set to true when $Datakeys needs to be rebuilt upon next read access
+	protected	$RebuildKeys		=  false ;	
+	
+	
+	/*==============================================================================================================
+	
+	    NAME
+	        Constructor
+	
+	    PROTOTYPE
+	        $aarray		=  new  AssociativeArray ( $array = [] ) ;
+	
+	    DESCRIPTION
+	        Builds an AssociativeArray object based on the supplied array argument.
+	
+	    PARAMETERS
+	        $array (array or object) -
+	                Either an array or an object implementing at least the ArrayAccess interface.
+	
+	  ==============================================================================================================*/
+	public function  __construct ( $array = [] )
+	   {
+		$this -> Data		=  $array ;
+		$this -> RebuildKeys	=  true ;
+
+		$this -> __rebuild_keys ( ) ;
+	    }
+	
+	
+	/*==============================================================================================================
+	
+	    __rebuild_keys -
+	        Rebuilds the list of lowercase array keys after a modification has occurred.
+	
+	  ==============================================================================================================*/
+	private function  __rebuild_keys ( )
+	   {	
+		if  ( $this -> RebuildKeys )
+		   {
+			$keys			=  [] ;
+
+			foreach  ( array_keys ( $this -> Data )  as  $key )
+				$keys [ strtolower ( $key ) ]	=  $key ;
+
+			$this -> DataKeys	=  $keys ;
+			$this -> RebuildKeys	=  false ;
+		    }
+	    }
+	
+	
+	/*==============================================================================================================
+	
+	    __get, __set -
+	        Allow access to array items as object properties.
+	
+	  ==============================================================================================================*/
+	public function  __get ( $member )
+	   {
+		if  ( $this -> RebuildKeys )
+			$this -> __rebuild_keys ( ) ;
+
+		$lcmember	=  strtolower ( $member ) ;
+		
+		if  ( isset ( $this -> DataKeys [ $lcmember ] ) )
+			return ( $this -> Data [ $this -> DataKeys [ $lcmember ] ] ) ;
+		else
+			throw ( new \Exception ( "Undefined property " . get_called_class ( ) . "::$member." ) ) ;
+	    }
+	
+	
+	public function  __set ( $member, $value )
+	   {
+		$lcmember	=  strtolower ( $member ) ;
+		
+		if  ( isset ( $this -> DataKeys [ $member ] ) )
+		   {
+			$this -> Data [ $this -> DataKeys [ $lcmember ] ]	=  $value ;
+			$this -> RebuildKeys					=  true ;
+		    }
+		else
+			throw ( new \Exception ( "Undefined property " . get_called_class ( ) . "::$member." ) ) ;
+	    }
+	
+
+	/*==============================================================================================================
+	
+	    ensure_exists -
+	        Ensures that, within this array, all the keys specified by the $required_keys array exist. If not, tries
+		to initialize them with one of the keys specified in the $default_keys array.
+		Returns the list of missing keys or an empty array.
+	
+	  ==============================================================================================================*/
+	public function  ensure_exists ( $required_keys, $default_keys )
+	   {
+		if  ( $this -> RebuildKeys )
+			$this -> __rebuild_keys ( ) ;
+
+		$missing_keys	=  [] ;
+		
+		foreach  ( $required_keys  as  $required_key )
+		   {
+			$required_lc_key	=  strtolower ( $required_key ) ;
+			
+			if  ( ! isset  ( $this -> DataKeys [ $required_lc_key ] ) )
+			   {
+				$found	=  false ;
+					
+				foreach  ( $default_keys  as  $default_key )
+				   {
+					$default_lc_key		=  strtolower ( $default_key ) ;
+					
+					if  ( isset ( $this -> DataKeys [ $default_lc_key ] ) )
+					   {
+						$this [ $required_key ]		=  $this [ $default_key ] ;
+						$found				=  true ;
+						break ;
+					    }
+				    }
+				
+				if  ( ! $found )
+					$missing_keys []	=  $required_key ;
+			    }
+		    }
+		
+		return ( $missing_keys ) ;
+	    }
+	
+	
+	/*==============================================================================================================
+	
+	    keyname -
+	        Returns the name of the key associated to the specified numeric index.
+	
+	  ==============================================================================================================*/
+	public function  keyname ( $index ) 
+	   {
+		if  ( $this -> RebuildKeys )
+			$this -> __rebuild_keys ( ) ;
+
+		if  ( is_numeric ( $index )  &&  $index  >=  0  &&  $index  <  count ( $this -> Data ) )
+		   {
+			$array	=  array_keys ( $this -> Data ) ;
+			
+			return  ( $array [ $index ] ) ;
+		    }
+		else
+			return ( false ) ;
+	    }
+	
+	
+	/*==============================================================================================================
+	
+	    in_array, iin_array, in_subarray, iin_subarray -
+	        Checks if the specified element is in this array. iin_array() is the case-insensitive version.
+		in_subarray() and iin_subarray() search subitems referenced by $subitem and return the array index of
+		the found subitem, or false.
+	
+	  ==============================================================================================================*/
+	public function  in_array ( $value )
+	   {
+		if  ( $this -> RebuildKeys )
+			$this -> __rebuild_keys ( ) ;
+
+		return  ( in_array ( $value, $this -> Data ) ) ;
+	    }
+	
+	
+	public function  iin_array ( $value )
+	   {
+		if  ( $this -> RebuildKeys )
+			$this -> __rebuild_keys ( ) ;
+
+		foreach  ( $this -> Data  as  $item )
+		   {
+			if  ( is_scalar ( $item )  &&  ! strcasecmp ( $item, $value ) )
+				return ( true ) ;
+		    }
+		
+		return ( false ) ;
+	    }
+	
+	
+	public function  in_subarray ( $key, $value )
+	   {
+		if  ( $this -> RebuildKeys )
+			$this -> __rebuild_keys ( ) ;
+
+		foreach  ( $this -> Data  as  $index => $item )
+		   {
+			if  ( isset  ( $item [ $key ] )  &&  is_array ( $item [ $key ] ) )
+			   {
+				if  ( in_array ( $value, $item [ $key ] ) )
+					return ( $index ) ;
+			    }
+		    }
+		    
+		return ( false ) ;
+	    }
+	
+	
+	public function  iin_subarray ( $key, $value )
+	   {
+		if  ( $this -> RebuildKeys )
+			$this -> __rebuild_keys ( ) ;
+
+		$index	=  0 ;
+		
+		foreach  ( $this -> Data  as  $index => $item )
+		   {
+			if  ( isset ( $item [ $key ] )  &&  is_array ( $item [ $key ] ) )
+			   {
+				foreach  ( $item [ $key ]  as  $subitem )
+				   {
+					if  ( is_scalar ( $subitem )  &&  ! strcasecmp ( $subitem, $value ) )
+						return ( $index ) ;
+				    }
+			    }
+			
+			$index ++ ;
+		    }
+		
+		return ( false ) ;
+	    }
+	
+	
+	/*==============================================================================================================
+	
+	    ksort -
+	        Sorts the array by its keys.
+	
+	  ==============================================================================================================*/
+	public function  ksort ( )
+	   {
+		ksort ( $this -> Data ) ;
+	    }
+	
+	
+	/*==============================================================================================================
+	
+	    pop -
+	        Pops the last element of the array.
+	
+	  ==============================================================================================================*/
+	public function  pop ( )
+	   {
+		array_pop ( $this -> DataKeys ) ;
+		array_pop ( $this -> Data ) ;
+	    }
+	
+	
+	/*==============================================================================================================
+	
+	    ToArray -
+	        Returns the real array representation of the class.
+	
+	  ==============================================================================================================*/
+	public function  &ToArray ( )
+	   { return $this -> Data ; }
+	
+	
+	/*==============================================================================================================
+	
+		Countable interface implementation.
+	
+	  ==============================================================================================================*/
+	public function  count ( )
+	   {
+		return ( count ( $this -> Data ) ) ; 
+	    }
+	
+	
+	/*==============================================================================================================
+	
+		IteratorAggregate interface implementation.
+	
+	  ==============================================================================================================*/
+	public function  getIterator ( )
+	   {
+		return ( new \ArrayIterator ( $this -> Data ) ) ; 
+	    }
+		
+	
+	/*==============================================================================================================
+	
+		ArrayAccess interface implementation.
+	
+	  ==============================================================================================================*/
+	
+	// offsetExists -
+	//	Checks if the specified offset exists.
+	public function  offsetExists ( $member )
+	   {
+		if  ( $this -> RebuildKeys )
+	  		$this -> __rebuild_keys ( ) ;
+
+		return ( isset ( $this -> DataKeys [ strtolower ( $member ) ] ) ) ; 
+	    }
+	
+	
+	// offsetGet -
+	//	Return the value at the specified offset or key.
+	public function  offsetGet ( $member )
+	   {
+		if  ( $this -> RebuildKeys )
+			$this -> __rebuild_keys ( ) ;
+
+		$lcmember	=  strtolower ( $member ) ;
+		
+		if  ( isset ( $this -> DataKeys [ $lcmember ] ) )
+		   {
+			$index		=  $this -> DataKeys [ $lcmember ] ;
+			
+			return ( $this -> Data [ $index ] ) ;
+		    }
+		else
+			throw ( new \OutOfRangeException ( "Undefined offset $member." ) ) ;
+	    }
+	
+	
+	// offsetSet -
+	//	Sets a value at the specified offset.
+	public function  offsetSet ( $member, $value )
+	   {
+		$lcmember	=  strtolower ( $member ) ;
+		
+		// $array [] = value construct : append the specified value to the existing array.
+		if  ( $member  ===  null )
+		   {
+			$this -> Data []	=  $value ;
+			$this -> RebuildKeys	=  true ;
+		    }
+		// Assignment to an existing array key : preserve its original case
+		else if  ( isset ( $this -> DataKeys [ $lcmember ] ) )
+		   {
+			$index		=  $this -> DataKeys [ $lcmember ] ;
+			
+			$this -> Data [ $index ]	=  $value ;
+		    }
+		// Assignment to a new key
+		else 
+		   {
+			$this -> Data [ $member ]			=  $value ;
+			$this -> DataKeys [ strtolower ( $member ) ]	=  $member ;
+		    }
+	    }
+	
+	
+	// offsetUnset -
+	//	Unsets the specified array key.
+	public function  offsetUnset ( $member )
+	   {
+		$lcmember	=  strtolower ( $member ) ;
+		
+		if  ( isset ( $this -> DataKeys [ $lcmember ] ) )
+		   {
+			$index			=  $this -> DataKeys [ $lcmember ] ;
+			unset ( $this -> Data [ $index ] ) ;
+			unset ( $this -> DataKeys [ strtolower ( $index ) ] ) ;
+		    }
+	    }
+    }

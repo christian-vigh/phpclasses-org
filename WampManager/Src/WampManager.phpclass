@@ -1,0 +1,503 @@
+<?php
+/**************************************************************************************************************
+
+    NAME
+        WampManager.phpclass
+
+    DESCRIPTION
+        An object for managing the Wamp manager.
+
+    AUTHOR
+        Christian Vigh, 11/2015.
+
+    HISTORY
+    [Version : 1.0]    [Date : 2015/11/13]     [Author : CV]
+        Initial version.
+
+ **************************************************************************************************************/
+
+/*==============================================================================================================
+
+        Some code to add the dependencies required by this package. They are bundled here in the
+	Dependencies directory for your own convenience ; however, these may not be the latest versions.
+
+  ==============================================================================================================*/
+$__this_dir__	=  dirname ( __FILE__ ) ;
+$__dep_dir__	=   $__this_dir__ . '/Dependencies' ;
+$__dep_list__	=  array ( 'LogicalDrives', 'WShell', 'Wmi', 'String', 'IniFile', 'Path' ) ;
+
+foreach  ( $__dep_list__ as  $__dep_item__ )
+   {
+	if  ( ! class_exists ( $__dep_item__ ) )
+		require_once ( $__dep_dir__ . '/' . $__dep_item__ . '.phpclass' ) ;
+    }
+
+// Other include files
+require_once ( $__this_dir__ . '/WampPackage.phpclass' ) ;
+require_once ( $__this_dir__ . '/WampPackages.phpclass' ) ;
+require_once ( $__this_dir__ . '/PhpPackage.phpclass' ) ;
+require_once ( $__this_dir__ . '/PhpPackages.phpclass' ) ;
+require_once ( $__this_dir__ . '/ApachePackage.phpclass' ) ;
+require_once ( $__this_dir__ . '/ApachePackages.phpclass' ) ;
+require_once ( $__this_dir__ . '/MySqlPackage.phpclass' ) ;
+require_once ( $__this_dir__ . '/MySqlPackages.phpclass' ) ;
+
+// Leave this room as clean as you wished it had been when entering
+unset ( $__this_dir__ ) ;
+unset ( $__dep_dir__  ) ;
+unset ( $__dep_item__ ) ;
+unset ( $__dep_list__ ) ;
+
+
+
+/*===========================================================================================
+
+	Wamp executable and configuration file names.
+
+  ===========================================================================================*/
+
+define ( 'WAMPMANAGER_EXECUTABLE'		,  'WampManager.exe' ) ;
+define ( 'WAMPMANAGER_CONFIGURATION'		,  'WampManager.conf' ) ;
+define ( 'WAMPMANAGER_LOCAL_CONFIGURATION'	,  'WampServer.conf' ) ;
+
+
+class	WampException		extends		Exception  {} ;
+
+
+/*===========================================================================================
+
+    WampManager class -
+	Provides facilities to control WampManager.
+
+  ===========================================================================================*/
+class  WampManager
+   {
+	// When a task or a service is being started or stopped, the Windows process or service list
+	// is polled every TASK_CHECK_INTERVAL milliseconds, until either one of the following happens :
+	// - The task or service has effectively started
+	// - TASK_CHECK_MAX retries have been performed. In this case, an exception will be thrown.
+	const	TASK_CHECK_MAX			=  500 ;
+	const	TASK_CHECK_INTERVAL		=  20 ;			// milliseconds
+
+	// Installation directory
+	public		$InstallationDirectory ;
+	// Log directory
+	public		$LogsDirectory ;
+	// WampManager configuration
+	public static	$WampManagerConfiguration ;
+	// Wamp packages
+	public		$PhpPackages ;
+	public		$MySqlPackages ;
+	public		$ApachePackages ;
+	// Wamp executable
+	public		$WampExecutable ;
+	// WShell and Wmi objects
+	public		$WShell ;
+	public		$Wmi ;
+	
+
+	/*--------------------------------------------------------------------------------------------------------------
+	 
+	    Constructor -
+	        Loads any needed information about current WAMP manager configuration.
+	 
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  __construct ( )
+	   {
+		// Instanciate a Shell and a Wmi object
+		$this -> WShell		=  new WShell ( ) ;
+		$this -> Wmi		=  new Wmi ( ) ;
+
+		// Try to locate installation directory
+		$this -> __locate_installation_directory ( ) ;
+
+		// Log directory - no parameter in the configuration allows to specify it, so assume that
+		// it is a "Logs" directory under Wamp installation directory
+		$this -> LogsDirectory	=  $this -> InstallationDirectory . '\\logs' ;
+
+		// Load the wampmanager configuration file
+		self::$WampManagerConfiguration	=  IniFile::LoadFromFile 
+		   ( 
+			$this -> InstallationDirectory . '\\' . WAMPMANAGER_CONFIGURATION,
+			IniFile::LOAD_EXISTING,
+			'=',
+			IniFile::OPTION_COMPATIBILITY_QUOTED_VALUES
+		    ) ;
+
+		// Collect the apache, mysql and php versions installed
+		$this -> PhpPackages	=  new PhpPackages	( $this ) ;
+		$this -> ApachePackages =  new ApachePackages	( $this ) ;
+		$this -> MySqlPackages	=  new MySqlPackages	( $this ) ;
+
+		// Other data
+		$this -> WampExecutable		=  $this -> InstallationDirectory . '\\' . WAMPMANAGER_EXECUTABLE ;
+	    }
+
+
+	/*--------------------------------------------------------------------------------------------------------------
+
+	    Getter -
+		Implements the following properties :
+		- Apache	:  returns an object describing the active Apache version.
+		- MySql		:  returns an object describing the active MySql version.
+		- Php		:  returns an object describing the active Php version.
+	 
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  __get ( $member )
+	   {
+		switch  ( strtolower ( $member ) )
+		   {
+			case	'apache'	:  return ( $this -> ApachePackages -> GetActivePackage ( ) ) ;
+			case	'mysql'		:  return ( $this -> MySqlPackages  -> GetActivePackage ( ) ) ;
+			case	'php'		:  return ( $this -> PhpPackages    -> GetActivePackage ( ) ) ;
+
+			default :
+				trigger_error ( "Undefined property \"$member\"." ) ;
+				return ( null ) ;
+		    }
+	    }
+
+
+	/*--------------------------------------------------------------------------------------------------------------
+	 
+	    AwaitTask, AwaitService -
+	        Waits for the specified task/service to be started.
+	 
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  AwaitTask ( $taskname, $started )
+	   {
+		$count		=  0 ;
+		$query		=  "SELECT * FROM Win32_Process WHERE name = '$taskname'" ;
+		$processes	=  $this -> Wmi -> Query ( $query ) ;
+
+		do
+		   {
+			if  ( count ( $processes ) )
+			   {
+				if  ( $started ) 
+					return ( $processes [0] -> ProcessId ) ;
+			    }
+			else
+			   {
+				if  ( ! $started )
+					return ( true ) ;
+			    }
+
+			$processes	=  $this -> Wmi -> Query ( $query ) ;
+			$count ++ ;
+
+		    }  while  ( $count  <  self::TASK_CHECK_MAX ) ;
+
+		throw ( new WampException ( "Timeout occurred when trying to start task \"$taskname\"." ) ) ;
+	    }
+
+
+	public function  AwaitService ( $servicename, $up )
+	   {
+		$count		=  0 ;
+		$query		=  "SELECT * FROM Win32_Service WHERE name = '$servicename'" ;
+		$services	=  $this -> Wmi -> Query ( $query ) ;
+
+		do
+		   {
+			if  ( count ( $services ) )
+			   {
+				$running	=  ! strcasecmp ( $services [0] -> State, 'Running' ) ;
+				
+				if  ( $up )
+				   {
+					if  ( $running )
+						return ( $services [0] -> ProcessId ) ;
+				    }
+				else
+				   {
+					if  ( ! $running )
+						return ( false ) ;
+				    }
+			    }
+
+			$services	=  $this -> Wmi -> Query ( $query ) ;
+			$count ++ ;
+
+		    }  while  ( $count  <  self::TASK_CHECK_MAX ) ;
+
+		throw ( new WampException ( "Timeout occurred when trying to start task \"$servicename\"." ) ) ;
+	    }
+
+
+	/*--------------------------------------------------------------------------------------------------------------
+	 
+	    ConfigurationChanged -
+	        Do its best to force Wampserver to reload its configuration.
+		The only viable way for the moment is to restart it.
+	 
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  ConfigurationChanged ( )
+	   {
+		self::$WampManagerConfiguration -> Save ( ) ;
+		$this -> Restart ( ) ;
+	    }
+
+
+	/*--------------------------------------------------------------------------------------------------------------
+	 
+	    GetConfigurationValue, SetConfigurationValue -
+	        Gets/sets a wampmanager.conf value.
+	 
+	 *-------------------------------------------------------------------------------------------------------------*/
+	private function  __check_configuration_value ( $section, $key )
+	   {
+		if  ( ! self::$WampManagerConfiguration -> IsSectionDefined ( $section ) ) 
+			throw ( new WampException ( "Section [$section] of file wampmanager.conf does not exist." ) ) ;
+
+		if  ( ! self::$WampManagerConfiguration -> IsKeyDefined ( $section, $key ) )
+			throw ( new WampException ( "Key \"$key\" of [$section] of file wampmanager.conf does not exist." ) ) ;
+	    }
+
+
+	public function  GetConfigurationValue ( $section, $key )
+	   {
+		$this -> __check_configuration_value ( $section, $key ) ;
+
+		return ( self::$WampManagerConfiguration -> GetKey ( $section, $key ) ) ;
+	    }
+
+
+	public function  SetConfigurationValue ( $section, $key, $value )
+	   {
+		$this -> __check_configuration_value ( $section, $key ) ;
+
+		return ( self::$WampManagerConfiguration -> SetKey ( $section, $key, $value ) ) ;
+	    }
+
+
+	/*--------------------------------------------------------------------------------------------------------------
+	 
+	    SaveConfiguration -
+	        Saves the wampmanager.conf file.
+	 
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  SaveConfiguration ( )
+	   {
+		self::$WampManagerConfiguration -> Save ( ) ;
+	    }
+
+
+	/*--------------------------------------------------------------------------------------------------------------
+	 
+	    Restart -
+	        Restarts the WampManager.
+	 
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  Restart ( $verbose = false )
+	   {
+		$existing_pid	=  $this -> Stop  ( $verbose ) ;
+		$new_pid	=  $this -> Start ( $verbose ) ;
+
+		return ( [ $new_pid, $existing_pid ] ) ;
+	    }
+
+
+	/*--------------------------------------------------------------------------------------------------------------
+	 
+	    Start -
+	        Starts the WampManager.
+	 
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  Start ( $verbose )
+	   {
+		$query		=  "SELECT * FROM Win32_Process WHERE name = '" . WAMPMANAGER_EXECUTABLE . "'" ;
+		$processes	=  $this -> Wmi -> Query ( $query ) ;
+
+		if  ( $processes ) 
+		   {
+			warning ( "WampManager is already running." ) ;
+			return ( false ) ;
+		    }
+
+		if  ( $verbose )
+			echo ( "Starting mysql service..." ) ;
+
+		$this -> MySql  -> Start ( ) ;
+
+		if  ( $verbose )  
+			output ( "done" ) ;
+
+		if  ( $verbose )  
+			echo ( "Starting apache service..." ) ;
+
+		$this -> Apache -> Start ( ) ;
+			
+		if  ( $verbose )  
+			output ( "done" ) ;
+
+		if  ( $verbose )  
+			echo ( "Waiting for " . WAMPMANAGER_EXECUTABLE . " to start..." ) ;
+
+		$this -> WShell -> Exec ( $this -> WampExecutable ) ;
+		$pid	=  $this -> AwaitTask ( WAMPMANAGER_EXECUTABLE, true ) ;
+
+		if  ( $verbose ) 
+			output ( "done" ) ;
+
+		return ( $pid ) ;
+	    }
+
+
+	/*--------------------------------------------------------------------------------------------------------------
+	 
+	    Stop -
+	        Stops the WampManager.
+	 
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  Stop ( $verbose )
+	   {
+		$query		=  "SELECT * FROM Win32_Process WHERE name = '" . WAMPMANAGER_EXECUTABLE . "'" ;
+		$processes	=  $this -> Wmi -> Query ( $query ) ;
+
+		if  ( $processes ) 
+		   {
+			$process	=  $processes [0] ;
+			$pid		=  $process -> ProcessId ;
+
+			if  ( $verbose )
+				echo ( "Stopping mysql service..." ) ;
+
+			$this -> MySql  -> Stop ( ) ;
+
+			if  ( $verbose )  
+				output ( "done" ) ;
+
+			if  ( $verbose )  
+				echo ( "Stopping apache service..." ) ;
+
+			$this -> Apache -> Stop ( ) ;
+			
+			if  ( $verbose )  
+				output ( "done" ) ;
+
+			if  ( $verbose )  
+				echo ( "Waiting for " . WAMPMANAGER_EXECUTABLE . " to exit..." ) ;
+
+			exec ( "TASKKILL /T /F /PID $pid 2>&1", $junk ) ;
+			$this -> AwaitTask ( WAMPMANAGER_EXECUTABLE, false ) ;
+
+			if  ( $verbose ) 
+				output ( "done" ) ;
+
+			return ( $pid ) ;
+		    }
+		else 
+			return ( false ) ;
+	    }
+	
+
+	/**************************************************************************************************************
+	 **************************************************************************************************************
+	 **************************************************************************************************************
+	 ******                                                                                                  ******
+	 ******                                                                                                  ******
+	 ******                                       PRIVATE METHODS                                            ******
+	 ******                                                                                                  ******
+	 ******                                                                                                  ******
+	 **************************************************************************************************************
+	 **************************************************************************************************************
+	 **************************************************************************************************************/
+
+	// __locate_installation_directory -
+	//	Tries to locate the wamp installation directory. Of course, defining a WAMPDIR environment variable
+	//	will help a lot...
+	private function  __locate_installation_directory ( )
+	   {
+		$dir	=  getenv ( "WAMPDIR" ) ;
+		$dirs	=  [] ;
+
+		if  ( $dir  ===  false )
+			$dirs	=  $this -> __search_installation_directories ( ) ;
+		else
+		   {
+			if  ( $this -> __validate_installation_directory ( $dir ) )
+				$dirs []	=  $dir ;
+		    }
+
+		$dircount	=  count ( $dirs ) ;
+
+		if  ( $dircount  ==  0 )
+			throw  ( new WampException ( "Wamp was not found on this system ; please define the WAMPDIR environment variable to point to " .
+				"a valid installation directory." ) ) ;
+		else if ( $dircount  >  1 )
+		   {
+			$message	=  "Wamp has been found in more than one directory :\n" ;
+
+			foreach  ( $dirs  as  $wampdir )
+				$message	.=  "\t- $wampdir\n" ;
+
+			$message	=  "Please define the WAMPDIR environment variable to specify the correct Wamp installation directory." ;
+
+			throw ( new WampException ( $message ) ) ;
+		    }
+
+		$this -> InstallationDirectory	=  $dirs [0] ;
+	    }
+
+
+	// __search_installation_directories -
+	//	Searches for a "wamp*" directory in every possible fixed drive.
+	private function  __search_installation_directories ( )
+	   {
+		$drives		=  new LogicalDrives ( ) ;
+		$result		=  [] ;
+
+		foreach  ( $drives  as  $drive )
+		   {
+			if  ( ! $drive -> IsLocalDisk ( ) )
+				continue ;
+
+			$files	= glob ( $drive -> Name . '\\*wamp*' ) ;
+			
+			foreach  ( $files  as  $file )
+			   {
+				if  ( ! is_dir ( $file ) )
+					continue ;
+				
+				if (  ! $this -> __validate_installation_directory ( $file ) )
+					continue ;
+
+				$result []	=  $file ;
+			    }
+		    }
+
+		return ( $result ) ;
+	    }
+
+
+	// __validate_installation_directory -
+	//	Verifies that the specified directory contains a valid wampmanager version, including apache, php and mysql.
+	//	At that point, we can only make assumptions on their respective executable filenames, since wampmanager.conf
+	//	has not yet been loaded.
+	private function  __validate_installation_directory ( $path )
+	   {
+		$checkings	=
+		   [
+			[ 'file' => 'wampmanager.conf'					],
+			[ 'file' => 'wampmanager.exe'					],
+			[ 'file' => 'bin/php/php*/php.exe'				],
+			[ 'file' => 'bin/mysql/mysql*/bin/mysqld.exe'			],
+			[ 'file' => 'bin/apache/apache*/bin/httpd.exe'			],
+			[ 'file' => 'bin/php/php*/' . WAMPMANAGER_LOCAL_CONFIGURATION	],
+			[ 'file' => 'bin/mysql/mysql*/wampserver.conf'			],
+			[ 'file' => 'bin/apache/apache*/wampserver.conf'		]
+		    ] ;
+
+		foreach  ( $checkings  as  $entry )
+		   {
+			$entry_path	=  $path . '/' . $entry [ 'file' ] ;
+			$files		=  glob ( $entry_path ) ;
+			
+			if  ( ! count ( $files ) )
+				return ( false ) ;
+		    }
+
+		return ( true ) ;
+	    }
+    }

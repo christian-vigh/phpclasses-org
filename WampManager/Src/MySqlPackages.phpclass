@@ -1,0 +1,38 @@
+<?php
+/**************************************************************************************************************
+ 
+     NAME
+         MysqlPackages.phpclass
+ 
+     DESCRIPTION
+         Loads information for all PHP packages installed on Wamp.
+ 
+     AUTHOR
+         Christian Vigh, 11/2015.
+ 
+     HISTORY
+     [Package : 1.0]    [Date : 2015/11/15]     [Author : CV]
+         Initial Package.
+ 
+  **************************************************************************************************************/
+
+
+/*==============================================================================================================
+
+    MysqlPackages class -
+        Holds the list of currently installed PHP Packages.
+
+  ==============================================================================================================*/
+class  MysqlPackages		extends   WampPackages
+   {
+	public function  __construct ( $parent )
+	   {
+		$this -> Section	=  'mysql' ;
+		$this -> VersionKey	=  'mysqlVersion' ;
+
+		parent::__construct ( 'MySql', 'MySqlPackage',
+					$parent, 
+					'bin/mysql', 'mysql',
+					$parent -> GetConfigurationValue ( 'mysql', 'mysqlversion' ) ) ;
+	    }
+    }

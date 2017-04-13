@@ -1,0 +1,160 @@
+<?php
+/**************************************************************************************************************
+
+    NAME
+        ApachePackage.php
+
+    DESCRIPTION
+        Implements a PHP package currently installed in Wamp.
+
+    AUTHOR
+        Christian Vigh, 11/2015.
+
+    HISTORY
+    [Package : 1.0]    [Date : 2015/11/15]     [Author : CV]
+        Initial Package.
+
+ **************************************************************************************************************/
+
+
+/*==============================================================================================================
+
+    ApachePackage class -
+        Holds configuration data for one installed PHP Package.
+
+  ==============================================================================================================*/
+class  ApachePackage		extends		WampService
+				implements	WampConfigurableModule
+   {
+	public function  __construct ( $name, $parent, $path, $version )
+	   {
+		parent::__construct 
+		   ( 
+			$name, $parent, $path, $version, 
+			$parent -> GetConfigurationValue ( 'service', 'serviceapache' ),
+			$parent -> GetConfigurationValue ( 'apache', 'apacheexedir' ),	
+			$parent -> GetConfigurationValue ( 'apache', 'apacheexefile' ),
+			$parent -> GetConfigurationValue ( 'apache', 'apacheconfdir' ),
+			$parent -> GetConfigurationValue ( 'apache', 'apacheconffile' )
+		    ) ;
+	    }
+
+
+	/*--------------------------------------------------------------------------------------------------------------
+	 
+	    GetConfigurationFiles -
+		Returns the list of Apache configuration files (including those that have been referenced by an 
+		Include directive).
+
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  GetConfigurationFiles ( )
+	   {
+		$conffiles	=  [ $this -> ConfigurationFile ] ;
+		$lines		=  file ( $this -> ConfigurationFile ) ;
+
+		foreach  ( $lines  as  $line )
+		   {
+			if  ( preg_match ( '/^ \s* include \s+ (?P<file> [^\s]+)/imsx', $line, $match ) )
+			   {
+				$file		=  $match [ 'file' ] ;
+				$dir		=  basename ( $this -> ConfigurationDirectory ) ;
+				$dirlen		=  strlen ( $dir ) ;
+
+				if  ( ! strncmp ( $file, "$dir/", $dirlen + 1 ) )
+					$file	=  substr ( $file, $dirlen + 1 ) ;
+
+				$conffiles []	=  $this -> GetAbsolutePath ( $file ) ;
+			    }
+		    }
+
+		return ( $conffiles ) ;
+	    }
+ 
+
+	/*--------------------------------------------------------------------------------------------------------------
+	 
+	    GetLogFiles -
+		Returns the list of Apache log files (included those specified by included configuration files).
+
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  GetLogFiles ( )
+	   {
+		$configuration_files	=  $this -> GetConfigurationFiles ( ) ;
+		$files			=  [] ;
+
+		foreach  ( $configuration_files  as  $configuration_file )
+		   {
+			$lines	=  file ( $configuration_file ) ;
+
+			foreach  ( $lines  as  $line )
+			   {
+				if  ( preg_match ( '/^ \s* ( CustomLog | ErrorLog ) \s+ " (?P<file> [^"]+)/imsx', $line, $match ) )
+					$files []	=  $match [ 'file' ] ;
+			    }
+		    }
+
+		return ( $files ) ;
+	    }
+
+
+	/*--------------------------------------------------------------------------------------------------------------
+	 
+		WampConfigurableModule interface implementation.
+
+	 *-------------------------------------------------------------------------------------------------------------*/
+
+	public function  GetModules ( )
+	   {
+		$lines		=  file ( $this -> ConfigurationFile ) ;
+		$modules	=  [] ;
+
+		foreach  ( $lines  as  $line )
+		   {
+			if  ( preg_match ( '/^ ( (?P<comment> \#) )? LoadModule \s+ (?P<name> [^\s]+) \s+ "? (?P<file> [^\s\#"]+) /imsx', $line, $match ) )
+			   {
+				$file		=  $match [ 'file' ] ;
+				$commented	=  ( isset ( $match [ 'comment' ] )  &&  $match [ 'comment' ]  ==  '#' ) ?  true : false ;
+
+				if  ( ! Path::IsAbsolute ( $file ) )
+					$file	=  Path::ToHost ( $this -> Path . "\\$file" ) ;
+
+				$file		=  Path::ToHost ( $file ) ;
+				$file_exists	=  file_exists ( $file ) ;
+
+				if  ( $file_exists )
+					$state	=  ( $commented ) ?  self::STATE_DISABLED : self::STATE_ENABLED ;
+				else
+					$state	=  ( $commented ) ?  self::STATE_DISABLED_MISSING : self::STATE_ENABLED_MISSING ;
+
+				$modules []	=  [ 'name' => $match [ 'name' ], 'file' => $file, 'state' => $state ] ;
+			    }
+		    }
+
+		usort
+		   (
+			$modules,
+			function  ( $a, $b )
+			   { return ( strcmp ( $a [ 'file' ], $b [ 'file' ] ) ) ; }
+		    ) ;
+
+		return ( $modules ) ;
+	    }
+
+
+ 	/*--------------------------------------------------------------------------------------------------------------
+	 
+		WampInstallableModule interface implementation.
+  
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public function  Install	( $service_name, $configuration_file ) 
+	   {
+		parent::Install ( $service_name, $configuration_file ) ;
+		throw ( new WampException ( "This function is not yet implemented." ) ) ; 
+	    }
+
+	public function  Uninstall	( $service_name )
+	   {
+		parent::Uninstall ( $service_name, $configuration_file ) ;
+		throw ( new WampException ( "This function is not yet implemented." ) ) ; 
+	    }
+   }

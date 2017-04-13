@@ -1,0 +1,38 @@
+<?php
+/**************************************************************************************************************
+ 
+     NAME
+         ApachePackages.phpclass
+ 
+     DESCRIPTION
+         Loads information for all PHP packages installed on Wamp.
+ 
+     AUTHOR
+         Christian Vigh, 11/2015.
+ 
+     HISTORY
+     [Package : 1.0]    [Date : 2015/11/15]     [Author : CV]
+         Initial Package.
+ 
+  **************************************************************************************************************/
+
+
+/*==============================================================================================================
+
+    ApachePackages class -
+        Holds the list of currently installed PHP Packages.
+
+  ==============================================================================================================*/
+class  ApachePackages		extends   WampPackages
+   {
+	public function  __construct ( $parent )
+	   {
+		$this -> Section	=  'apache' ;
+		$this -> VersionKey	=  'apacheVersion' ;
+
+		parent::__construct ( 'Apache', 'ApachePackage',
+					$parent, 
+					'bin/apache', 'apache',
+					$parent -> GetConfigurationValue (  'apache', 'apacheversion' ) ) ;
+	    }
+    }

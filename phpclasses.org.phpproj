@@ -94,6 +94,11 @@
     <Folder Include="Minifiers\examples\js\" />
     <Folder Include="Minifiers\examples\php\" />
     <Folder Include="BitString\" />
+    <Folder Include="PdfToText\FontMetrics\" />
+    <Folder Include="TiffTools\" />
+    <Folder Include="TiffTools\images\" />
+    <Folder Include="WampManager\Src\" />
+    <Folder Include="WShell\" />
     <Folder Include="PdfToText\CIDTables\" />
     <Folder Include="PhpUtilities\" />
     <Folder Include="PhpUtilities\examples\" />
@@ -110,8 +115,6 @@
     <Folder Include="PdfToText\examples\example03\" />
     <Folder Include="PdfToText\examples\image-extraction\" />
     <Folder Include="PdfToText\images\" />
-    <Folder Include="phpclasses-example-db\" />
-    <Folder Include="phpclasses-example-db\Data\" />
     <Folder Include="PPP\" />
     <Folder Include="PPP\examples\" />
     <Folder Include="ProcessList\" />
@@ -158,6 +161,8 @@
     <Folder Include="SearchableFile\PSRless\" />
     <Folder Include="SshSession\" />
     <Folder Include="VariableStore\examples\" />
+    <Folder Include="WampManager\" />
+    <Folder Include="WampManager\Src\Dependencies\" />
     <Folder Include="WMI\" />
     <Folder Include="WMI\.git\" />
     <Folder Include="WMI\.git\hooks\" />
@@ -249,7 +254,6 @@
     <Compile Include="PdfToText\examples\example02\example.php" />
     <Compile Include="PdfToText\examples\example03\example.php" />
     <Compile Include="PdfToText\examples\image-extraction\example.php" />
-    <Compile Include="phpclasses-example-db\Data\utilities.inc.php" />
     <Compile Include="PhpSettings\example.php" />
     <Compile Include="PhpUtilities\examples\evaluatetags.php" />
     <Compile Include="PhpUtilities\examples\evaluateexpression.php" />
@@ -287,11 +291,15 @@
     <Compile Include="SshSession\example.inc.php" />
     <Compile Include="SshSession\example.key.php" />
     <Compile Include="SshSession\example.password.php" />
+    <Compile Include="TiffTools\example.merge.php" />
+    <Compile Include="TiffTools\example.split.php" />
     <Compile Include="VariableStore\examples\define.php" />
     <Compile Include="VariableStore\examples\env.php" />
     <Compile Include="VariableStore\examples\init.php" />
     <Compile Include="VariableStore\examples\toarray.php" />
+    <Compile Include="WampManager\example.php" />
     <Compile Include="WMI\example.php" />
+    <Compile Include="WShell\example.php" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApiLayer\LICENSE" />
@@ -305,6 +313,7 @@
     <Content Include="ArrayHelpers\NOTICE" />
     <Content Include="ArrayHelpers\README.md" />
     <Content Include="Articles\PdfToText\images\SamplePdfFile.png" />
+    <Content Include="Articles\PdfToText\PdfToTextAnniversary.html" />
     <Content Include="Articles\PdfToText\PdfToText.html" />
     <Content Include="Articles\performance\perf01.html" />
     <Content Include="Articles\PhpPerformance\Benchmark results.xls" />
@@ -476,6 +485,20 @@
     <Content Include="PdfToText\examples\image-extraction\sample.pdf" />
     <Content Include="PdfToText\examples\image-extraction\sample.txt" />
     <Content Include="PdfToText\examples\README.md" />
+    <Content Include="PdfToText\FontMetrics\courier.fm" />
+    <Content Include="PdfToText\FontMetrics\courierb.fm" />
+    <Content Include="PdfToText\FontMetrics\courierbi.fm" />
+    <Content Include="PdfToText\FontMetrics\courieri.fm" />
+    <Content Include="PdfToText\FontMetrics\helvetica.fm" />
+    <Content Include="PdfToText\FontMetrics\helveticab.fm" />
+    <Content Include="PdfToText\FontMetrics\helveticabi.fm" />
+    <Content Include="PdfToText\FontMetrics\helveticai.fm" />
+    <Content Include="PdfToText\FontMetrics\symbol.fm" />
+    <Content Include="PdfToText\FontMetrics\times.fm" />
+    <Content Include="PdfToText\FontMetrics\timesb.fm" />
+    <Content Include="PdfToText\FontMetrics\timesbi.fm" />
+    <Content Include="PdfToText\FontMetrics\timesi.fm" />
+    <Content Include="PdfToText\FontMetrics\zapfdingbats.fm" />
     <Content Include="PdfToText\HISTORY.txt" />
     <Content Include="PdfToText\images\SamplePdfFile.png" />
     <Content Include="PdfToText\LICENSE" />
@@ -483,12 +506,6 @@
     <Content Include="PdfToText\PdfToText.phpclass" />
     <Content Include="PdfToText\examples\example02\sample.pdf" />
     <Content Include="PdfToText\README.md" />
-    <Content Include="phpclasses-example-db\Data\addresses.txt" />
-    <Content Include="phpclasses-example-db\Data\companies.txt" />
-    <Content Include="phpclasses-example-db\Data\fusers.txt" />
-    <Content Include="phpclasses-example-db\Data\musers.txt" />
-    <Content Include="phpclasses-example-db\Data\users_v0.php" />
-    <Content Include="phpclasses-example-db\users_v0.sql" />
     <Content Include="PhpSettings\Data\mapsettings.phs" />
     <Content Include="PhpSettings\Data\settings-20161106.csv" />
     <Content Include="PhpSettings\Data\settings-20161106.txt" />
@@ -607,9 +624,34 @@
     <Content Include="SshSession\README.examples.md" />
     <Content Include="SshSession\README.md" />
     <Content Include="SshSession\Session.phpclass" />
+    <Content Include="TiffTools\images\Hello.tif" />
+    <Content Include="TiffTools\images\multipage.tif" />
+    <Content Include="TiffTools\README.md" />
+    <Content Include="TiffTools\TiffBase.phpclass" />
+    <Content Include="TiffTools\TiffMerger.phpclass" />
+    <Content Include="TiffTools\TiffSplitter.phpclass" />
     <Content Include="VariableStore\AssociativeArray.phpclass" />
     <Content Include="VariableStore\README.md" />
     <Content Include="VariableStore\Variables.phpclass" />
+    <Content Include="WampManager\Src\ApachePackage.phpclass" />
+    <Content Include="WampManager\Src\ApachePackages.phpclass" />
+    <Content Include="WampManager\LICENSE" />
+    <Content Include="WampManager\Src\Dependencies\AssociativeArray.phpclass" />
+    <Content Include="WampManager\Src\Dependencies\IniFile.phpclass" />
+    <Content Include="WampManager\Src\Dependencies\LogicalDrives.phpclass" />
+    <Content Include="WampManager\Src\Dependencies\Path.phpclass" />
+    <Content Include="WampManager\Src\Dependencies\String.phpclass" />
+    <Content Include="WampManager\Src\Dependencies\Variables.phpclass" />
+    <Content Include="WampManager\Src\Dependencies\Wmi.phpclass" />
+    <Content Include="WampManager\Src\Dependencies\WShell.phpclass" />
+    <Content Include="WampManager\Src\MySqlPackage.phpclass" />
+    <Content Include="WampManager\Src\MySqlPackages.phpclass" />
+    <Content Include="WampManager\NOTICE" />
+    <Content Include="WampManager\Src\PhpPackage.phpclass" />
+    <Content Include="WampManager\Src\PhpPackages.phpclass" />
+    <Content Include="WampManager\Src\WampManager.phpclass" />
+    <Content Include="WampManager\Src\WampPackage.phpclass" />
+    <Content Include="WampManager\Src\WampPackages.phpclass" />
     <Content Include="WMI\.git\COMMIT_EDITMSG" />
     <Content Include="WMI\.git\config" />
     <Content Include="WMI\.git\description" />
@@ -640,6 +682,10 @@
     <Content Include="WMI\.git\refs\remotes\origin\master" />
     <Content Include="WMI\README.md" />
     <Content Include="WMI\Wmi.phpclass" />
+    <Content Include="WShell\LICENSE" />
+    <Content Include="WShell\NOTICE" />
+    <Content Include="WShell\README.md" />
+    <Content Include="WShell\WShell.phpclass" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\DEVSENSE\PHP Tools\VS$(VisualStudioVersion)\Devsense.PHP.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

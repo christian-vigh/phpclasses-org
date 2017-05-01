@@ -94,7 +94,9 @@
     <Folder Include="Minifiers\examples\js\" />
     <Folder Include="Minifiers\examples\php\" />
     <Folder Include="BitString\" />
+    <Folder Include="PdfToText\examples\formdata-extraction\" />
     <Folder Include="PdfToText\FontMetrics\" />
+    <Folder Include="PdfToText\FormTemplates\" />
     <Folder Include="TiffTools\" />
     <Folder Include="TiffTools\images\" />
     <Folder Include="WampManager\Src\" />
@@ -253,6 +255,7 @@
     <Compile Include="PdfToText\examples\example01\example.php" />
     <Compile Include="PdfToText\examples\example02\example.php" />
     <Compile Include="PdfToText\examples\example03\example.php" />
+    <Compile Include="PdfToText\examples\formdata-extraction\example.php" />
     <Compile Include="PdfToText\examples\image-extraction\example.php" />
     <Compile Include="PhpSettings\example.php" />
     <Compile Include="PhpUtilities\examples\evaluatetags.php" />
@@ -480,6 +483,9 @@
     <Content Include="PdfToText\examples\example03\README.md" />
     <Content Include="PdfToText\examples\example03\sample.pdf" />
     <Content Include="PdfToText\examples\example03\sample.txt" />
+    <Content Include="PdfToText\examples\formdata-extraction\README.md" />
+    <Content Include="PdfToText\examples\formdata-extraction\sample.pdf" />
+    <Content Include="PdfToText\examples\formdata-extraction\sample.xml" />
     <Content Include="PdfToText\examples\image-extraction\README.md" />
     <Content Include="PdfToText\examples\image-extraction\sample.01.jpg" />
     <Content Include="PdfToText\examples\image-extraction\sample.pdf" />
@@ -499,6 +505,7 @@
     <Content Include="PdfToText\FontMetrics\timesbi.fm" />
     <Content Include="PdfToText\FontMetrics\timesi.fm" />
     <Content Include="PdfToText\FontMetrics\zapfdingbats.fm" />
+    <Content Include="PdfToText\FormTemplates\US-IRS-W9.xml" />
     <Content Include="PdfToText\HISTORY.txt" />
     <Content Include="PdfToText\images\SamplePdfFile.png" />
     <Content Include="PdfToText\LICENSE" />

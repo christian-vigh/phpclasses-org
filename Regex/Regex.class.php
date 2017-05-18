@@ -1264,6 +1264,109 @@ class Regex
 	    }
 
 	
+	/*--------------------------------------------------------------------------------------------------------------
+	
+	    NAME
+	        PregStrReplace - Replace string(s) using regular expression(s)
+	
+	    PROTOTYPE
+	        $result		=  PdfToText::PregStrReplace ( $pattern, $replacement, $subject, $limit = -1, 
+						&$match_count = null )
+	
+	    DESCRIPTION
+	        This function behaves like a mix of str_replace() and preg_replace() ; it allows to search for strings
+		using regular expressions, but the replacements are plain-text strings and no reference to a capture
+		specified in the regular expression will be interpreted.
+		This is useful when processing replacement strings that contain constructs such as "\00" or "$", which 
+		are interpreted by preg_replace() as references to captures.
+
+		This function has the same parameters as preg_replace().
+	
+	    RETURN VALUE
+	        Returns the substituted text.
+	
+	 *-------------------------------------------------------------------------------------------------------------*/
+	public static function  PregStrReplace ( $pattern, $replacement, $subject, $limit = -1, &$match_count = null )
+	   {
+		// Make sure that $pattern and $replacement become arrays of the same size
+		if  ( is_array ( $pattern ) )
+		   {
+			if  ( is_array ( $replacement ) )
+			   {
+				if  ( count ( $pattern )  !==  count ( $replacement ) )
+				   {
+					trigger_error ( "The \$replacement parameter should have the same number of element as \$pattern." ) ;
+					return ( $subject ) ;
+				    }
+			    }
+			else
+				$replacement	=  array_fill ( $replacement, count ( $pattern ), $replacement ) ;
+		    }
+		else 
+		   {
+			if  ( is_array ( $replacement ) )
+			   {
+				trigger_error ( "Expected string for the \$replacement parameter." ) ;
+				return ( $subject ) ;
+			    }
+
+			$pattern	=  array ( $pattern ) ;
+			$replacement	=  array ( $replacement ) ;
+		    }
+
+		// Upper limit
+		if  ( $limit  <  1 )
+			$limit		=  PHP_INT_MAX ;
+
+		// Loop through each supplied pattern
+		$current_subject	=  $subject ;
+		$count			=  0 ;
+		
+		for  ( $i = 0, $pattern_count = count ( $pattern ) ; $i  <  $pattern_count ; $i ++ )
+		   {
+			$regex		=  $pattern [$i] ;
+
+			// Get all matches for this pattern
+			if  ( preg_match_all ( $regex, $current_subject, $matches, PREG_OFFSET_CAPTURE ) )
+			   {
+				$result		=  '' ;		// Current output result
+				$last_offset	=  0 ;
+
+				// Process each match
+				foreach  ( $matches [0]  as  $match )
+				   {
+					$offset		=  ( integer ) $match [1] ;
+
+					// Append data from the last seen offset up to the current one
+					if  ( $last_offset  <  $offset )
+						$result		.=  substr ( $current_subject, $last_offset, $offset - $last_offset ) ;
+
+					// Append the replacement string for this match
+					$result		.=  $replacement [$i] ;
+
+					// Compute next offset in $current_subject
+					$last_offset     =  $offset + strlen ( $match [0] ) ;
+
+					// Limit checking
+					$count ++ ;
+
+					if  ( $count  >  $limit )
+						break 2 ;
+				    }
+
+				// Append the last part of the subject that has not been matched by anything
+				$result			.=  substr ( $current_subject, $last_offset ) ;
+
+				// The current subject becomes the string that has been built in the steps above
+				$current_subject	 =  $result ;
+			    }
+		    }
+
+		/// All done, return
+		return ( $current_subject ) ;
+	    }
+
+
 	/**
 	 * 
 	 * Gives a unique id to each named capture within a regex.

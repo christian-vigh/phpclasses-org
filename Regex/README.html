@@ -259,6 +259,20 @@ h1, h2
  
 			Empty subarrays or subarrays having an offset of -1 will be removed from the resulting matches.<br />
 
+			<div class="function">
+				Regex::PregStrReplace ( $pattern, $replacement, $subject, $limit = -1, $count = null ) ;
+			</div>
+			<br />
+
+			This function behaves like a mix of str_replace() and preg_replace() ; it allows to search for strings
+			using regular expressions, but the replacements are plain-text strings and no reference to a capture
+			specified in the regular expression will be interpreted.<br/>
+			This is useful when processing replacement strings that contain constructs such as "\00" or "$", which
+			are interpreted by preg_replace() as references to captures.
+			<br /><br />
+
+			This function has the same parameters as preg_replace().
+
 		</div>
 
 		<h2>Expression development</h2>
